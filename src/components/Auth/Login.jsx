@@ -16,6 +16,8 @@ const Login = () => {
   const [statusModal, setStatusModal] = useState(false);
   const navigate = useNavigate();
   const [objE, setObjE] = useState({});
+
+  
   const setMainLoading = (l = false) => {
     dispatch({ type: "SET_LOADING", payload: l });
   };
@@ -35,12 +37,12 @@ const Login = () => {
     }
     if (t) {
       httpClient()
-        .post("/api/v1/dashboard/login/", obj)
+        .post("/api/v1/account/login/", obj, { headers: {} })
         .then((res) => {
           console.log(res, "res");
-
-          if (res?.data?.status === 1) {
-            const token = res?.data?.token ?? "";
+      
+          if (res?.status === 200) {
+            const token = res?.data?.tokens?.access ?? "";
             setToken(token);
             navigate("/company");
           } else {
@@ -111,7 +113,6 @@ const Login = () => {
               </div>
             </form>
           </>
-         
         </div>
       </Container>
       {statusModal === true ? (

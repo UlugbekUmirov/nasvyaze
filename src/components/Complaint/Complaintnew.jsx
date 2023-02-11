@@ -1,11 +1,14 @@
+import { get } from "lodash";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { Container } from "../../styleComponents/GlobalCompanyStyle";
 import UiCard from "../../styleComponents/UiComponents/UiCard";
 import Axios from "../../utils/httpClient";
-import { get } from "lodash";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-export default function Company() {
+
+export default function Complaint() {
+  const { id } = useParams();
+
   const [company, setCompany] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,7 +23,7 @@ export default function Company() {
   const getCompany = () => {
     setMainLoading(true);
     Axios()
-      .get("/api/v1/questionnaire/companys/")
+      .get(`/api/v1/questionnaire/form-list/${id}/`)
       .then((res) => {
         setCompany(get(res, "data", []));
       })
@@ -31,19 +34,16 @@ export default function Company() {
   return (
     <>
       <Container>
-        {console.log("ressas", company)}
         <div className="body">
-          <div className="title">Выберите компанию</div>
-          {company.map(({ name, id, image }) => (
-            <Link to={`/conversation-type/${id}`}>
-              <UiCard>
-                <div key={id}>
-                  {name}
-                  <img src={image} alt="" />
-                </div>
-              </UiCard>
-            </Link>
-          ))}
+          {company
+            ? company.map(({ label }) => (
+                <>
+                  <UiCard>
+                    <div className="companyCard">{label}</div>
+                  </UiCard>
+                </>
+              ))
+            : ""}
         </div>
       </Container>
     </>
