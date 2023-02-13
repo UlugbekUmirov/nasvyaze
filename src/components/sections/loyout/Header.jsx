@@ -5,27 +5,36 @@ export default function Header() {
   return (
     <>
       <Container>
-        <Link to={'/'}>
+        <Link to={"/"}>
           <img src="/images/image 1.svg" alt="" />
         </Link>
-        <Link
-          className="close"
-          style={{
-            alignItems: "center",
-            display: "flex",
-            textDecoration: "none",
-          }}
-          onClick={removeToken}
-          to={"/login"}
-        >
-          <img
-            src="/images/Vector (9).svg"
-            alt=""
-            style={{ marginRight: "10px", cursor: "pointer" }}
-          />
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Link
+          className="my_application"
+            
+            to={"/my-applications"}
+          >
+            Мои заявки
+          </Link>
+          <Link
+            className="close"
+            style={{
+              alignItems: "center",
+              display: "flex",
+              textDecoration: "none",
+            }}
+            onClick={removeToken}
+            to={"/login"}
+          >
+            <img
+              src="/images/Vector (9).svg"
+              alt=""
+              style={{ marginRight: "10px", cursor: "pointer" }}
+            />
 
-          <span className="close__span">Выйти</span>
-        </Link>
+            <span className="close__span">Выйти</span>
+          </Link>
+        </div>
       </Container>
     </>
   );

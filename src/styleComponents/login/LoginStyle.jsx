@@ -44,6 +44,7 @@ export const Container = styled.div`
         font-weight: 400;
         font-size: 15px;
         line-height: 18px;
+        caret-color: #223260;
       }
       & input:focus {
         outline: none;

@@ -1,25 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap");
 body {
   margin: 0;
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
 }
-.css-1xc3v61-indicatorContainer{
- padding: 0px!important;
+.css-1xc3v61-indicatorContainer {
+  padding: 0px !important;
 }
-.css-15lsz6c-indicatorContainer{
-  padding: 0px!important;
-  
+.css-15lsz6c-indicatorContainer {
+  padding: 0px !important;
 }
-.css-tj5bde-Svg{
-  color:#4F89CB;
-
+.css-tj5bde-Svg {
+  color: #4f89cb;
 }
-.css-tj5bde-Svg:focus{
+.css-tj5bde-Svg:focus {
   transform: rotate(180deg);
+}
+.header_login {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1086px;
+  padding: 17px 0px;
+}
+.footer_login {
+  background: #223260;
+  min-height: 146px;
+}
+.my_application {
+  text-decoration: none;
+  margin-right: 65px;
+  color: black;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+}
+@media (max-width: 450px) {
+  .my_application {
+    margin-right: 25px;
+    font-size: 14px;
+  }
 }

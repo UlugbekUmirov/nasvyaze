@@ -17,7 +17,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [objE, setObjE] = useState({});
 
-  
   const setMainLoading = (l = false) => {
     dispatch({ type: "SET_LOADING", payload: l });
   };
@@ -40,7 +39,7 @@ const Login = () => {
         .post("/api/v1/account/login/", obj, { headers: {} })
         .then((res) => {
           console.log(res, "res");
-      
+
           if (res?.status === 200) {
             const token = res?.data?.tokens?.access ?? "";
             setToken(token);
@@ -65,9 +64,12 @@ const Login = () => {
     setObj({ ...obj, [event.target.name]: event.target.value });
     setObjE({ ...objE, [event.target.name]: false, common: false });
   };
+
   return (
     <>
-      {console.log(obj, 999)}
+      <div className="header_login">
+        <img src="/images/image 1.svg" alt="" />
+      </div>
       <Container>
         <div className="body">
           <>
@@ -122,6 +124,9 @@ const Login = () => {
           statusYesN={false}
         />
       ) : null}
+      <div className="footer_login">
+
+      </div>
     </>
   );
 };

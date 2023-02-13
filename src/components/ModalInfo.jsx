@@ -121,7 +121,16 @@ const Main = styled.div`
     }
   }
 `;
-
+const copyToClipboard = () => {
+  navigator.clipboard.writeText(window.location.href).then(
+    function () {
+      alert("copied successfully!");
+    },
+    function (err) {
+      alert("Failed to copy");
+    }
+  );
+};
 const BodyHidden = createGlobalStyle`
       body{
             overflow: hidden;

@@ -18,4 +18,8 @@ export const Container = styled.div`
       line-height: 17px;
     }
   }
+  @media (max-width: 1100px) {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 `;

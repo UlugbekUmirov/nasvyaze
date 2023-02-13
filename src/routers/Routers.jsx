@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import Applications from "../components/Applications/Applications";
 import Login from "../components/Auth/Login";
 
 import Complaint from "../components/Complaint/Complaintnew";
@@ -26,6 +27,9 @@ const Routers = () => {
         </Route>
          <Route path="/conversation-type/:id/:idd/new">
           <Route index element={<Form />} />
+        </Route> 
+        <Route path="/my-applications">
+          <Route index element={<Applications />} />
         </Route> 
       </Routes>
     </>

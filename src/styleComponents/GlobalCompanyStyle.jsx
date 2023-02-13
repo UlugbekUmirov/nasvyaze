@@ -117,6 +117,7 @@ export const Container = styled.div`
             line-height: 18px;
             color: #223346;
             outline: none;
+            caret-color: #4f89cb;
           }
           @media (max-width: 900px) {
             width: 100%;
