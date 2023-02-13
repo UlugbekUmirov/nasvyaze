@@ -44,7 +44,7 @@ const Login = () => {
           if (res?.status === 200) {
             const token = res?.data?.tokens?.access ?? "";
             setToken(token);
-            navigate("/company");
+            navigate("/");
           } else {
             setStatusModal(true);
           }

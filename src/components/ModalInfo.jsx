@@ -9,7 +9,7 @@ const Main = styled.div`
     top: 0;
     left: 0;
     background: #000;
-    opacity: 0.2;
+    opacity: 0.5;
     z-index: 998;
     display: flex;
     justify-content: center;
@@ -25,37 +25,98 @@ const Main = styled.div`
     width: 100%;
     height: 100%;
     & .cardfilter {
-      width: 500px;
-      min-height: 1px;
+      width: 736px;
+      position: fixed;
+      min-height: 445px;
       background: #fff;
       overflow: hidden;
-      border-radius: 14px;
+      border-radius: 12px;
       @media only screen and (max-width: 784px) and (min-width: 320px) {
         width: 95%;
+      }
+      & .tekst {
+        width: 638px;
+        padding-left: 44px;
+        padding-right: 54px;
+        @media (max-width: 600px) {
+          padding-left: 20px;
+        }
+        & p {
+          margin: 10px 10px;
+          font-weight: 500;
+          font-size: 18px;
+          color: #223260;
+          width: auto;
+          & span {
+            color: #8f939a;
+          }
+        }
+      }
+      & .titlee {
+        display: flex;
+        justify-content: space-between;
+        padding: 0px 42px 22px 42px;
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 28px;
+        margin-top: 30px;
+        p {
+          margin: 0;
+          color: #223260;
+        }
+        img {
+          cursor: pointer;
+        }
       }
       .t1 {
         padding: 0 15px 15px 15px;
       }
     }
     & .btnOk {
-      padding: 10px;
-      background: #0193de;
+      height: 48px;
+      background: #ffffff;
+      border: 1px solid #ced5dc;
+      border-radius: 12px;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
       width: 100%;
-      color: white;
-      border: 1px solid #0193de;
-      height: 38px;
-      cursor: pointer;
+      display: block;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 20px;
+      color: #223346;
+      outline: none;
     }
     & .yesNoBtnGroup {
+      display: flex;
+      margin: 0px 90px;
       button {
-        width: 50%;
-        padding: 10px;
-        background: #ced5dc;
-        height: 38px;
+        height: 48px;
+        background: #eaf2f9;
+        border: 1px solid #ced5dc;
+        border-radius: 12px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        width: 100%;
+        display: block;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 20px;
+        line-height: 18px;
+        color: #4f89cb;
+        outline: none;
+        cursor: pointer;
         &:nth-child(1) {
-          background: #e42d4e;
-          color: #fff;
+          margin-right: 37px;
+          @media (max-width: 700px) {
+            margin-right: 15px;
+          }
         }
+        &:nth-child(2) {
+          background: #4f89cb;
+          color: #eaf2f9;
+        }
+      }
+      @media (max-width: 700px) {
+        margin: 30px;
       }
     }
   }
@@ -68,19 +129,73 @@ const BodyHidden = createGlobalStyle`
 `;
 
 const ModalInfo = (props) => {
-  const { title, close, statusYesN, del } = props;
+  const {
+    title0,
+    title2,
+    title1,
+    close,
+    statusYesN,
+    del,
+    name,
+    contact,
+    market,
+    data,
+    summa,
+    comment,
+    nomer,
+  } = props;
 
   return (
     <Main>
       <div className="layer" />
       <div className="cardfiltermain">
         <div className="cardfilter">
-          {title ? <p className="t1">{title}</p> : null}
-
+          <div className="titlee">
+            {title0 ? <p className="t0">{title0}</p> : null}
+            {title1 ? <p className="t1">{title1}</p> : null}
+            {title2 ? <img src={title2} alt="" /> : null}
+          </div>
+          <div className="tekst">
+            {name ? (
+              <p>
+                Ф.И.О клиента: <span>{name}</span>
+              </p>
+            ) : null}
+            {contact ? (
+              <p>
+                Контакт: <span>{contact}</span>
+              </p>
+            ) : null}
+            {market ? (
+              <p>
+                Маркет: <span>{market}</span>
+              </p>
+            ) : null}
+            {data ? (
+              <p>
+                Дата и время покупки: <span>{data}</span>
+              </p>
+            ) : null}
+            {summa ? (
+              <p>
+                Цена: <span>{summa}</span>
+              </p>
+            ) : null}
+            {comment ? (
+              <p>
+                Суть обращения: <span>{comment}</span>
+              </p>
+            ) : null}
+            {nomer ? (
+              <p>
+                Звонили с номера: <span>{nomer}</span>
+              </p>
+            ) : null}
+          </div>
           {statusYesN === true ? (
             <div className="yesNoBtnGroup">
-              <button onClick={del}>Да</button>
-              <button onClick={() => close(false)}>Отмена</button>
+              <button onClick={() => close(false)}>Отменить</button>
+              <button onClick={del}>Копировать и отправить</button>
             </div>
           ) : (
             <button onClick={() => close(false)} className="btnOk">
