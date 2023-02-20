@@ -7,7 +7,7 @@ const UiCard = styled.div`
   margin-bottom: 18.5px;
   transition: 0.5s;
   position: relative;
-  
+
   & .companyCardd {
     text-align: center;
     justify-content: center;
@@ -22,9 +22,48 @@ const UiCard = styled.div`
     top: 40%;
     width: 100%;
   }
+
   cursor: pointer;
-  :hover {
+  /* :hover {
     background: #4f89cb;
+  } */
+  & .otvet_informations {
+    padding: 30px;
+    & .otvet_information {
+      display: flex;
+      & p {
+        margin: 0;
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: 18px;
+        color: #223260;
+        line-height: 21px;
+        & span {
+          color: #8f939a;
+        }
+      }
+    }
+    & .otvet_title {
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 21px;
+      text-decoration-line: underline;
+      color: #223260;
+      margin-left: 25px;
+    }
+    & .otvet {
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 21px;
+      padding: 19px 20px;
+      background: #eaf2f9;
+      border-radius: 12px;
+      color: #223260;
+      margin-top:10px ;
+      & p {
+        margin: 0;
+      }
+    }
   }
 `;
 export default UiCard;

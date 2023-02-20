@@ -5,10 +5,10 @@ export default function Header() {
   return (
     <>
       <Container>
-        <Link to={"/"}>
-          <img src="/images/image 1.svg" alt="" />
+        <Link to={"/"} className='logo_a'>
+          <img src="/images/image 1.svg" alt=""  className="logo"/>
         </Link>
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center" }} className=''>
           <Link
           className="my_application"
             
@@ -29,7 +29,8 @@ export default function Header() {
             <img
               src="/images/Vector (9).svg"
               alt=""
-              style={{ marginRight: "10px", cursor: "pointer" }}
+             
+              className='log-out'
             />
 
             <span className="close__span">Выйти</span>

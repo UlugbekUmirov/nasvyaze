@@ -9,7 +9,14 @@ export const Container = styled.div`
   & .body {
     width: 679px;
     margin: 0 32px;
-
+    & .search {
+      position: relative;
+      & img {
+        position: absolute;
+        right: 0;
+        background-color: white;
+      }
+    }
     // max-width: 679px;
     & .forms {
       //max-width: 324px;
@@ -53,6 +60,9 @@ export const Container = styled.div`
             outline: none;
             outline: 0;
             font-family: "Rubik", sans-serif;
+            :focus {
+              border: 2px solid #4f89cb;
+            }
           }
         }
         & .input_target3 {
@@ -103,8 +113,9 @@ export const Container = styled.div`
             display: block;
             margin-bottom: 6px;
           }
+          
           & input {
-            height: 48px;
+            height: 44px;
             background: #ffffff;
             border: 1px solid #ced5dc;
             border-radius: 12px;
@@ -118,6 +129,9 @@ export const Container = styled.div`
             color: #223346;
             outline: none;
             caret-color: #4f89cb;
+            :focus {
+              border: 2px solid #4f89cb;
+            }
           }
           @media (max-width: 900px) {
             width: 100%;
@@ -129,6 +143,9 @@ export const Container = styled.div`
           width: 100%;
         }
       }
+       & .create-button{
+       width: 103%;
+      } 
     }
     & .tip {
       text-align: center;
@@ -141,7 +158,6 @@ export const Container = styled.div`
         max-width: 360px;
         margin: 24px;
         padding: 36px 67px;
-
         @media (max-width: 600px) {
           text-align: center;
           margin: 0;
@@ -162,13 +178,8 @@ export const Container = styled.div`
 
           & span {
             text-align: center;
-            :hover {
-              color: white;
-            }
           }
-          :hover {
-            color: white;
-          }
+
           @media (max-width: 500px) {
             font-size: 20px;
           }
@@ -190,16 +201,26 @@ export const Container = styled.div`
       margin-bottom: 22px;
       //margin-left: 20px;
       margin-right: 20px;
+      & div {
+        margin-top: 10px;
+        @media (max-width: 400px) {
+          font-size: 17px;
+        }
+      }
       & img {
         cursor: pointer;
       }
       @media (max-width: 450px) {
         display: block;
         text-align: left;
+        margin-top: 10px;
       }
     }
     @media (max-width: 900px) {
       width: 100%;
     }
+  }
+  & .complaint-old {
+    width: 800px;
   }
 `;

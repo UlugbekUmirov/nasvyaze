@@ -41,9 +41,28 @@ code {
   font-size: 14px;
   line-height: 17px;
 }
+.page {
+  text-align: center;
+  margin-top: 60px;
+}
+.page span {
+  margin: 12px;
+  background: #ffffff;
+  border: 1px solid #eaf2f9;
+  border-radius: 12px;
+  width: 31px;
+  height: 36px;
+  padding: 10px;
+}
 @media (max-width: 450px) {
   .my_application {
-    margin-right: 25px;
+    margin-right: 10px;
     font-size: 14px;
+  }
+}
+@media (max-width: 356px) {
+  .my_application {
+    margin-right: 10px;
+    font-size: 13px;
   }
 }

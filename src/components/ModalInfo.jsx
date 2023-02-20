@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const Main = styled.div`
   & .layer {
@@ -16,7 +17,7 @@ const Main = styled.div`
     align-items: center;
   }
   & .cardfiltermain {
-    position: fixed;
+    position: absolute;
     top: 0;
     z-index: 999;
     display: flex;
@@ -25,7 +26,6 @@ const Main = styled.div`
     width: 100%;
     height: 100%;
     & .cardfilter {
-      width: 736px;
       position: fixed;
       min-height: 445px;
       background: #fff;
@@ -40,6 +40,8 @@ const Main = styled.div`
         padding-right: 54px;
         @media (max-width: 600px) {
           padding-left: 20px;
+          padding-right: 20px;
+          width: 90%;
         }
         & p {
           margin: 10px 10px;
@@ -88,7 +90,7 @@ const Main = styled.div`
     }
     & .yesNoBtnGroup {
       display: flex;
-      margin: 0px 90px;
+      margin: 10px 90px 20px 90px;
       button {
         height: 48px;
         background: #eaf2f9;
@@ -121,16 +123,7 @@ const Main = styled.div`
     }
   }
 `;
-const copyToClipboard = () => {
-  navigator.clipboard.writeText(window.location.href).then(
-    function () {
-      alert("copied successfully!");
-    },
-    function (err) {
-      alert("Failed to copy");
-    }
-  );
-};
+
 const BodyHidden = createGlobalStyle`
       body{
             overflow: hidden;
@@ -138,6 +131,7 @@ const BodyHidden = createGlobalStyle`
 `;
 
 const ModalInfo = (props) => {
+  // const notify = () => toast("Wow so easy!");
   const {
     title0,
     title2,
@@ -152,7 +146,18 @@ const ModalInfo = (props) => {
     summa,
     comment,
     nomer,
+    onCopyText,
+    toast,
   } = props;
+
+  const codeSnippet = `
+  Ф.И.О клиента: ${name}
+  Контакт: ${contact} 
+  Маркет:${market}
+  Дата и время покупки:${data}
+  Суть обращения: ${comment}
+
+  `;
 
   return (
     <Main>
@@ -162,7 +167,31 @@ const ModalInfo = (props) => {
           <div className="titlee">
             {title0 ? <p className="t0">{title0}</p> : null}
             {title1 ? <p className="t1">{title1}</p> : null}
-            {title2 ? <img src={title2} alt="" /> : null}
+            {title2 ? (
+              <CopyToClipboard
+                text={codeSnippet}
+                // onClick={notify}
+                onCopy={onCopyText}
+              >
+                <img
+                  src={title2}
+                  alt=""
+                  /*    onClick={() =>
+                    toast({
+                      title: "Account created.",
+                      description: "We've created your account for you.",
+                      status: "success",
+                      duration: 9000,
+                      isClosable: true,
+                    })
+                  } */
+                />
+                {/*  <ToastContainer />*/}
+                {/*  <span>
+                  {isCopied ? "Copied!" : <img src={title2} alt="" />}
+                </span> */}
+              </CopyToClipboard>
+            ) : null}
           </div>
           <div className="tekst">
             {name ? (

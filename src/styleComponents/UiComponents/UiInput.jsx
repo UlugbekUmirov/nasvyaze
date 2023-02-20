@@ -27,7 +27,12 @@ const UiInput = styled.div`
     line-height: 20px;
     padding-left: 32px;
     @media (max-width:450px) {
-      padding-left: 10px;
+      padding-left: 8px;
+      /* width: 98%; */
+    }
+    @media (max-width:340px) {
+      
+      width: 98%; 
     }
   }
   /*  & input[type=submit] {

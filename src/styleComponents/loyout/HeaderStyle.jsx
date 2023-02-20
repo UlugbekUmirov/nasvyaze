@@ -9,6 +9,7 @@ export const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
   max-width: 1086px;
+
   & .close {
     cursor: pointer;
     & .close__span {
@@ -17,9 +18,25 @@ export const Container = styled.div`
       font-size: 14px;
       line-height: 17px;
     }
+    & .log-out{
+      margin-right: 10px;
+      cursor: pointer;
+    }
   }
   @media (max-width: 1100px) {
     padding-left: 12px;
     padding-right: 12px;
+  }
+  @media (max-width: 400px) {
+    & .logo_a{
+     width: 48%;
+      & .logo {
+        width: 90%;
+      }
+    }
+    & .log-out{
+      width: 25%;
+      margin-right: 4px!important;
+    }
   }
 `;
