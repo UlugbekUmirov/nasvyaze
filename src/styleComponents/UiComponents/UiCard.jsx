@@ -24,8 +24,8 @@ const UiCard = styled.div`
   }
 
   cursor: pointer;
-  /* :hover {
-    background: #4f89cb;
+ /*  :hover {
+    opacity: 0.8;
   } */
   & .otvet_informations {
     padding: 30px;
@@ -59,7 +59,7 @@ const UiCard = styled.div`
       background: #eaf2f9;
       border-radius: 12px;
       color: #223260;
-      margin-top:10px ;
+      margin-top: 10px;
       & p {
         margin: 0;
       }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-
+import { ToastContainer } from "react-toastify";
 const Main = styled.div`
   & .layer {
     position: fixed;
@@ -94,7 +94,7 @@ const Main = styled.div`
       button {
         height: 48px;
         background: #eaf2f9;
-        border: 1px solid #ced5dc;
+        border: none;
         border-radius: 12px;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         width: 100%;
@@ -131,7 +131,6 @@ const BodyHidden = createGlobalStyle`
 `;
 
 const ModalInfo = (props) => {
-  // const notify = () => toast("Wow so easy!");
   const {
     title0,
     title2,
@@ -147,7 +146,8 @@ const ModalInfo = (props) => {
     comment,
     nomer,
     onCopyText,
-    toast,
+
+    notify,
   } = props;
 
   const codeSnippet = `
@@ -170,26 +170,13 @@ const ModalInfo = (props) => {
             {title2 ? (
               <CopyToClipboard
                 text={codeSnippet}
-                // onClick={notify}
+                onClick={notify}
                 onCopy={onCopyText}
               >
-                <img
-                  src={title2}
-                  alt=""
-                  /*    onClick={() =>
-                    toast({
-                      title: "Account created.",
-                      description: "We've created your account for you.",
-                      status: "success",
-                      duration: 9000,
-                      isClosable: true,
-                    })
-                  } */
-                />
-                {/*  <ToastContainer />*/}
-                {/*  <span>
-                  {isCopied ? "Copied!" : <img src={title2} alt="" />}
-                </span> */}
+                <div>
+                  <ToastContainer style={{ color: "rebeccapurple" }} />
+                  {<img src={title2} alt="" onClick={notify} />}
+                </div>
               </CopyToClipboard>
             ) : null}
           </div>

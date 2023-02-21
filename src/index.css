@@ -36,7 +36,7 @@ code {
 .my_application {
   text-decoration: none;
   margin-right: 65px;
-  color: black;
+  color: #223260;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
@@ -53,6 +53,20 @@ code {
   width: 31px;
   height: 36px;
   padding: 10px;
+}
+.Toastify{
+   border-radius:10px;
+}
+.Toastify__progress-bar-theme--light {
+  background:  #223260 !important;
+}
+.Toastify__toast-theme--light  {
+  background: #4F89CB !important;
+  
+}
+.Toastify__toast-body{
+ color: white;
+ border-radius:10px;
 }
 @media (max-width: 450px) {
   .my_application {

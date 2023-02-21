@@ -9,10 +9,12 @@ import Loyout from "../sections/loyout/Loyout";
 import InputMask from "react-input-mask";
 import ModalInfo from "../ModalInfo";
 import Datetime from "react-datetime";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Form() {
   const navigate = useNavigate();
-
+  const notify = () => toast(`Copied!`);
   const { idd, id } = useParams();
   const [obj, setObj] = useState({});
   const [objE, setObjE] = useState({});
@@ -22,19 +24,20 @@ export default function Form() {
   const dispatch = useDispatch();
   const [iddd, setIddd] = useState(0);
   const [login, setLogin] = useState(0);
-
+  const [val, setVal] = useState([[]]);
   const setMainLoading = (l = false) => {
     dispatch({ type: "SET_LOADING", payload: l });
   };
   const defaultOptionsss = {
-    isMulti: true,
+    isMulti: false,
     isSearchable: false,
     isDisabled: false,
     styles: {
       control: (styles) => ({
         ...styles,
-        width: "104%",
+        width: "100%",
         maxHeight: "48px",
+        border:'none',
         borderRadius: "12px",
         boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)",
         "&:hover": {
@@ -73,7 +76,6 @@ export default function Form() {
       }),
       placeholder: (styles) => ({
         ...styles,
-        paddingBottom: "7px",
         fontWeight: 400,
         fontSize: "15px",
         lineHeight: "18px",
@@ -91,9 +93,6 @@ export default function Form() {
     setObjE({ ...objE, [e.target.name]: false, common: false });
   };
 
-  /* const changeInput2 = (e) => {
-  
-  }; */
   const onCopyText = () => {
     setIsCopied(true);
     setTimeout(() => {
@@ -111,10 +110,26 @@ export default function Form() {
         setMainLoading(false);
       });
   };
+  const options = [
+    { id: 1, name: "ulugbek" },
+    { id: 2, name: "umirov" },
+    { id: 3, name: "otabek" },
+  ];
+
+  const handleAdd = () => {
+    const abc = [...val, []];
+    setVal(abc);
+  };
+
+  const handlechange = (onchangevalue, i) => {
+    const inputdata = [...val];
+    inputdata[i] = onchangevalue.target.value;
+    setVal(inputdata);
+    console.log(val, "vallll");
+  };
   return (
     <>
       <Loyout>
-        {isCopied ? <>as</> : <>assdd</>}
         <Container>
           <div className="body">
             <div className="title">
@@ -151,73 +166,69 @@ export default function Form() {
                     formatChars={{ b: "[0-9]" }}
                     mask="+998 (bb) bbb-bb-bb"
                     maskChar=""
-                    name="login"
-                    value={obj?.login || ""}
+                    name="phone"
+                    value={obj?.phone || ""}
                     onChange={(e) => {
                       changeInput(e);
-                      /*  const login = e.target.value
-                        .replace(/-/g, "")
-                        .replace(/\(/g, "")
-                        .replace(/\)/g, "")
-                        .replace(/\+/g, "")
-                        .replace(/\s/g, "")
-                        .replace(/_/g, ""); */
-                      //setLogin(login);
+              
                     }}
                     //  onFocus={() => setSmsInvalid(false)}
                   />
                 </div>
               </div>
-              <div className="create">
-                <div className="input_target">
-                  <label>Филиал</label>
-                  <Select
-                    {...defaultOptionsss}
-                    //onChange={(value) => selectGroups(value)}
-                    // value={obj?.groups}
-                    name="groups"
-                    /*    options={groupsList.map(({ id, name }) => ({
-                      label: name,
-                      value: id,
-                    }))} */
-                    placeholder="Выберите филиал"
-                  />
-                </div>
-                <div className="input_target">
-                  <label>Дата и время</label>
-                  {/*                   <Datetime className="" /> */}
 
-                  <Select
-                    {...defaultOptionsss}
-                    //onChange={(value) => selectGroups(value)}
-                    // value={obj?.groups}
-                    name="groups"
-                    /*    options={groupsList.map(({ id, name }) => ({
-                      label: name,
-                      value: id,
-                    }))} */
-                    placeholder="Выберите филиал"
-                  />
-                </div>
-              </div>
-              <div className="create">
-                <div className="input_target2">
-                  <label>Комментарий</label>
-                  <textarea
-                    id=""
-                    placeholder="Напишите свою жалобу"
-                    value={obj?.comment || ""}
-                    name="comment"
-                    onChange={changeInput}
-                  ></textarea>
-                </div>
-              </div>
+              {val.map((data, i) => {
+                return (
+                  <>
+                    <div className="create">
+                      <div className="input_target">
+                        <label>Филиал</label>
+                        <Select
+                          {...defaultOptionsss}
+                          onChange={(e) => handlechange(e, i)}
+                          value={data || ""}
+                          name="groups"
+                          options={options.map(({ id, name }) => ({
+                            label: name,
+                            value: id,
+                          }))}
+                          placeholder="Выберите филиал"
+                        />
+                      </div>
+                      <div className="input_target">
+                        <label>Дата и время</label>
+                        {/*                   <Datetime className="" /> */}
+
+                        <Select
+                          {...defaultOptionsss}
+                          onChange={(e) => handlechange(e, i)}
+                          // value={obj?.groups}
+                          name="groups"
+                          placeholder="Выберите филиал"
+                        />
+                      </div>
+                    </div>
+                    <div className="create">
+                      <div className="input_target2">
+                        <label>Комментарий</label>
+                        <textarea
+                          placeholder="Напишите свою жалобу"
+                          value={data || ""}
+                          name="comment"
+                          onChange={(e) => handlechange(e, i)}
+                        ></textarea>
+                      </div>
+                    </div>
+                  </>
+                );
+              })}
               <div className="create create-button">
                 <div className="input_target3">
                   <input
                     className="button_add"
                     value={"+ Дополнительная жалоба"}
                     type="button"
+                    onClick={handleAdd}
                   />
                 </div>
                 <div className="input_target3">
@@ -231,6 +242,7 @@ export default function Form() {
               </div>
             </form>
           </div>
+          {console.log(val, "valllllllllllllllll")}
         </Container>
       </Loyout>
       {statusModal ? (
@@ -247,8 +259,9 @@ export default function Form() {
           summa={`${"s"}`}
           comment={obj?.comment}
           //  nomer={`${"n"}`}
-
+          notify={notify}
           statusYesN={true}
+          isCopied={isCopied}
           // del={handlegetIdForRemove}
         />
       ) : null}

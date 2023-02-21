@@ -21,6 +21,7 @@ export const Container = styled.div`
     & .log-out{
       margin-right: 10px;
       cursor: pointer;
+      color: #223260;
     }
   }
   @media (max-width: 1100px) {

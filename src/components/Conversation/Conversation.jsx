@@ -42,12 +42,20 @@ export default function Conversation() {
       <Container>
         <div className="body">
           <div className="title">
-            <img src="/images/back-arrow-icon 1.svg" alt=""  onClick={() =>navigate('/')}/>
+            <img
+              src="/images/back-arrow-icon 1.svg"
+              alt=""
+              onClick={() => navigate("/")}
+            />
             <div>
-              Тип разговора с {''}
-              {company
-                .filter(({ id }) => id === parseInt(idd))
-                .map(({ name }) => name)}
+              <div style={{margin:"0"}}>Тип разговора</div>
+              <div style={{margin:"0"}}>
+                с
+                {company
+                  .filter(({ id }) => id === parseInt(idd))
+                  .map(({ name }) => name)}
+                s
+              </div>
             </div>
             <div></div>
           </div>

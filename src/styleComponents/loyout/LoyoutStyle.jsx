@@ -5,4 +5,5 @@ export const Container = styled.div`
        /// padding: 24px;
        min-height: 740px;
     }
+    
 `;

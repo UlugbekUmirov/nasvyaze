@@ -17,9 +17,8 @@ export const Container = styled.div`
         background-color: white;
       }
     }
-    // max-width: 679px;
+
     & .forms {
-      //max-width: 324px;
       margin-bottom: 20px;
       width: 100%;
       & .create {
@@ -40,20 +39,21 @@ export const Container = styled.div`
             font-size: 14px;
             line-height: 20px;
             display: block;
+            color: #223260;
             margin-bottom: 6px;
           }
           & textarea {
             height: 113px;
             resize: none;
             background: #ffffff;
-            border: 1px solid #ced5dc;
             border-radius: 12px;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            width: 100%;
+            width: calc(100% - 15px);
             display: block;
             font-weight: 400;
             font-size: 15px;
             padding-left: 15px;
+            border: 1px solid #ffffff;
             padding-top: 15px;
             line-height: 18px;
             color: #223346;
@@ -75,18 +75,18 @@ export const Container = styled.div`
             line-height: 20px;
             display: block;
             margin-bottom: 6px;
+            color: #223260;
           }
           & input[type="button"] {
             height: 48px;
-            border: 1px solid #ced5dc;
+            border: none;
             border-radius: 12px;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            width: 100%;
+            width: calc(100%);
             display: block;
             font-weight: 700;
             font-size: 14px;
             line-height: 20px;
-            //padding-left: 15px;
             outline: none;
             text-align: center;
           }
@@ -109,18 +109,19 @@ export const Container = styled.div`
           & label {
             font-weight: 400;
             font-size: 14px;
-            line-height: 20px;
             display: block;
             margin-bottom: 6px;
+            line-height: 20px;
+            color: #223260;
           }
-          
+
           & input {
             height: 44px;
             background: #ffffff;
-            border: 1px solid #ced5dc;
+            border: 1px solid #ffffff;
             border-radius: 12px;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            width: 100%;
+            width: calc(100% - 15px);
             display: block;
             font-weight: 400;
             font-size: 15px;
@@ -139,28 +140,29 @@ export const Container = styled.div`
         }
         @media (max-width: 900px) {
           display: block;
-
           width: 100%;
         }
       }
-       & .create-button{
-       width: 103%;
-      } 
+      & .create-button {
+        width: 100%;
+      }
     }
     & .tip {
       text-align: center;
       display: flex;
-      @media (max-width: 700px) {
+      justify-content: center;
+      @media (max-width: 900px) {
         display: block;
         width: 100%;
       }
       & .card_comp {
-        max-width: 360px;
+        min-width: 360px;
         margin: 24px;
-        padding: 36px 67px;
+        padding: 36px 0px;
         @media (max-width: 600px) {
           text-align: center;
           margin: 0;
+          min-width: 250px;
           margin-bottom: 32px;
         }
         & .companyCard {
@@ -170,7 +172,7 @@ export const Container = styled.div`
           justify-content: center;
           text-align: center;
           align-items: center;
-          color: black;
+          color: #223260;
           font-weight: 500;
           font-size: 25px;
           line-height: 20px;
@@ -199,7 +201,6 @@ export const Container = styled.div`
       color: #001d56;
       text-align: center;
       margin-bottom: 22px;
-      //margin-left: 20px;
       margin-right: 20px;
       & div {
         margin-top: 10px;
@@ -214,6 +215,9 @@ export const Container = styled.div`
         display: block;
         text-align: left;
         margin-top: 10px;
+        & div {
+          text-align: center;
+        }
       }
     }
     @media (max-width: 900px) {
