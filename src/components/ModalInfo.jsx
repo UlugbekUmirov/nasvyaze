@@ -201,21 +201,6 @@ const ModalInfo = (props) => {
                 Дата и время покупки: <span>{data}</span>
               </p>
             ) : null}
-            {summa ? (
-              <p>
-                Цена: <span>{summa}</span>
-              </p>
-            ) : null}
-            {comment ? (
-              <p>
-                Суть обращения: <span>{comment}</span>
-              </p>
-            ) : null}
-            {nomer ? (
-              <p>
-                Звонили с номера: <span>{nomer}</span>
-              </p>
-            ) : null}
           </div>
           {statusYesN === true ? (
             <div className="yesNoBtnGroup">

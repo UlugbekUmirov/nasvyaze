@@ -21,18 +21,34 @@ export const Container = styled.div`
     & .forms {
       margin-bottom: 20px;
       width: 100%;
-      & .create {
+      & .complaint {
+        margin: 10px 0px;
         display: flex;
         justify-content: space-between;
-        width: 100%;
+        & div:nth-child(1) {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 20px;
+        }
+        & div:nth-child(2) {
+          cursor: pointer;
+          max-width: 29px;
+          max-height: 14px;
+        }
+      }
+      & .create {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(324px, 1.6fr));
+        gap: 31px;
         & .input_target:nth-child(1) {
-          margin-right: 39px;
+          /*     margin-right: 39px; */
         }
         & .input_target3:nth-child(1) {
           margin-right: 24px;
         }
         & .input_target2 {
-          margin-top: 24px;
+          /*   margin-top: 24px; */
           width: 100%;
           & label {
             font-weight: 400;
@@ -103,9 +119,9 @@ export const Container = styled.div`
           }
         }
         & .input_target {
-          margin-top: 24px;
-          width: 100%;
-          justify-content: space-between;
+          /*  margin-top: 24px; */
+
+          /*   justify-content: space-between; */
           & label {
             font-weight: 400;
             font-size: 14px;
