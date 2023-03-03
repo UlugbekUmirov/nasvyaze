@@ -8,7 +8,7 @@ import Loyout from "./sections/loyout/Loyout";
 import { Container } from "../styleComponents/GlobalCompanyStyle";
 import UiCard from "../styleComponents/UiComponents/UiCard";
 import UiInput from "../styleComponents/UiComponents/UiInput";
-
+import { TbRefresh } from "react-icons/tb";
 export default function Home() {
   const [company, setCompany] = useState([]);
   const navigate = useNavigate();
@@ -52,6 +52,15 @@ export default function Home() {
   const handleSearch = (e) => {
     e.preventDefault();
   };
+  const Refresh = () => {
+    /* setSearchParams({
+      search: "",
+      page: 1,
+    }); */
+    setSearch("");
+
+    navigate(`/`);
+  };
   return (
     <Loyout>
       <Container>
@@ -65,6 +74,7 @@ export default function Home() {
             action="
           
           "
+          className="formm"
           >
             <UiInput className="search" onSubmit={(e) => handleSearch(e)}>
               <input
@@ -81,9 +91,17 @@ export default function Home() {
                 <img src="/images/Group (2).svg" alt="" />
               </button>
             </UiInput>
+            <div>
+              <UiInput className="icons-search" onClick={Refresh}>
+                <TbRefresh size={"2em"} color={"#4F89CB"} />
+              </UiInput>
+            </div>
           </form>
           {company.map(({ name, id, image }) => (
-            <Link to={`/conversation-type/${id}`} style={{'textDecoration':'none'}}>
+            <Link
+              to={`/conversation-type/${id}`}
+              style={{ textDecoration: "none" }}
+            >
               {}
               <UiCard>
                 <div className="companyCardd" key={id}>

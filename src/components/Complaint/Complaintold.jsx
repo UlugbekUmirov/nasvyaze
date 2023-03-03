@@ -18,7 +18,6 @@ import UiResult from "../../styleComponents/UiComponents/UIResult";
 import { MdDeleteOutline, MdOutlineModeEditOutline } from "react-icons/md";
 import Modal from "../Modal";
 
-
 export default function Complaintold() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -28,6 +27,7 @@ export default function Complaintold() {
   const [results, setResults] = useState();
   const [statusModal, setStatusModal] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [staff, setStaff] = useState(false);
   const [search, setSearch] = useState(
     searchParams.get("search") ? searchParams.get("search") : ""
   );
@@ -40,6 +40,7 @@ export default function Complaintold() {
 
   useEffect(() => {
     getlist();
+    getRole();
     setSearch(searchParams.get("search") ? searchParams.get("search") : "");
     setPage(searchParams.get("page") ? searchParams.get("page") : 1);
   }, [searchParams]);
@@ -120,6 +121,18 @@ export default function Complaintold() {
         setStatusModal(false);
       });
   };
+  const getRole = () => {
+    setMainLoading(true);
+    Axios()
+      .get("/api/v1/account/get-role/")
+      .then((res) => {
+        console.log(res?.data, "res");
+        setStaff(res?.data?.is_staff);
+      })
+      .finally(() => {
+        setMainLoading();
+      });
+  };
   let totalP = [];
   for (let i = 0; i < count / 10; i++) {
     totalP.push(i);
@@ -169,9 +182,14 @@ export default function Complaintold() {
               <>
                 {results.map((results) => (
                   <UiResult>
-                    <Link to={`/edit/${results?.id}`} className="edit">
-                      <MdOutlineModeEditOutline color="black" />
-                    </Link>
+                    {staff === true ? (
+                      <Link to={`/edit/${results?.id}`} className="edit">
+                        <MdOutlineModeEditOutline color="black" />
+                      </Link>
+                    ) : (
+                      ""
+                    )}
+
                     <div
                       onClick={() => {
                         setFindId(results?.id);
@@ -289,16 +307,15 @@ export default function Complaintold() {
             </div>
           </div>
         </Container>
-      {statusModal === true ? (
-        <Modal
-          title={"Вы уверены, что хотите удалить?"}
-          close={setStatusModal}
-          statusYesN={true}
-          del={handlDelete}
-        />
-      ) : null}
+        {statusModal === true ? (
+          <Modal
+            title={"Вы уверены, что хотите удалить?"}
+            close={setStatusModal}
+            statusYesN={true}
+            del={handlDelete}
+          />
+        ) : null}
       </Loyout>
-
     </>
   );
 }

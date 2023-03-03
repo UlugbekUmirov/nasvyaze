@@ -381,7 +381,6 @@ export default function Form() {
     <>
       <Loyout>
         <Container>
-          {console.log(objList,'obj')}
           <div className="body">
             <div className="title">
               <img
@@ -417,8 +416,8 @@ export default function Form() {
                   <label>Телефон номер для обращения</label>
                   <InputMask
                     placeholder="+998 __ ___ __ __"
-                    formatChars={{ b: "[0-9]" }}
-                    mask="+998 (bb) bbb-bb-bb"
+                    formatChars={{ b: "[0-9]", k: "[33-99]" }}
+                    mask="+998 (kk) bbb-bb-bb"
                     maskChar=""
                     name="phone"
                     className={errP ? "err InputMask" : "InputMask"}
@@ -625,8 +624,8 @@ export default function Form() {
                                 <>
                                   <InputMask
                                     placeholder="+998 __ ___ __ __"
-                                    formatChars={{ b: "[0-9]" }}
-                                    mask="+998 (bb) bbb-bb-bb"
+                                    formatChars={{ b: "[0-9]", k: "[33-99]" }}
+                                    mask="+998 (kk) bbb-bb-bb"
                                     maskChar=""
                                     name={question?.id}
                                     value={
@@ -657,14 +656,30 @@ export default function Form() {
                 );
               })}
               <div className="create create-button">
-                <div className="input_target3">
-                  <input
-                    className="button_add"
-                    value={"+ Дополнительная жалоба"}
-                    type="button"
-                    onClick={handleAdd}
-                  />
-                </div>
+                {objList && objList?.toString().length ? (
+                  <>
+                    <div className="input_target3">
+                      <input
+                        className="button_add"
+                        value={"+ Дополнительная жалоба"}
+                        type="button"
+                        onClick={handleAdd}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="input_target3">
+                      <input
+                        className="button_add"
+                        value={"+ Дополнительная жалоба"}
+                        type="button"
+                        //onClick={handleAdd}
+                      />
+                    </div>
+                  </>
+                )}
+
                 <div className="input_target3">
                   <input
                     onClick={handleModal}

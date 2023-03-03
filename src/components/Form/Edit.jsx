@@ -25,7 +25,7 @@ export default function Edit() {
   const [obj, setObj] = useState({
     answers: [[]],
   });
-  const notify = () => toast(`Copied!`);  
+  const notify = () => toast(`Copied!`);
   const [input, setInput] = useState([]);
 
   const [obj2, setObj2] = useState({});
@@ -237,6 +237,11 @@ export default function Edit() {
           });
         });
         setObjList(lista);
+        setObj2({
+          ...obj2,
+          full_name: res?.data?.full_name,
+          phone: res?.data?.phone,
+        });
         let ls = [];
         res.data.app_item.forEach((qq, index) => {
           let cl = [];
@@ -347,7 +352,7 @@ export default function Edit() {
                 alt=""
                 onClick={() => navigate(-1)}
               />
-              <div>Жалоба на </div>
+              <div></div>
               <div></div>
             </div>
             <form className="forms">
@@ -358,7 +363,7 @@ export default function Edit() {
                     type="text"
                     placeholder="ФИО"
                     name="full_name"
-                    value={obj2?.full_name || input?.full_name}
+                    value={obj2?.full_name || ''}
                     className={errN ? "err " : ""}
                     onChange={(e) => {
                       handlechangeInput(e);
@@ -370,12 +375,12 @@ export default function Edit() {
                   <label>Телефон номер для обращения</label>
                   <InputMask
                     placeholder="+998 __ ___ __ __"
-                    formatChars={{ b: "[0-9]" }}
-                    mask="+998 (bb) bbb-bb-bb"
+                    formatChars={{ b: "[0-9]", k: "[33-99]" }}
+                    mask="+998 (kk) bbb-bb-bb"
                     maskChar=""
                     name="phone"
                     className={errP ? "err InputMask" : "InputMask"}
-                    value={obj2?.phone || input?.phone}
+                    value={obj2?.phone || ''}
                     onChange={(e) => {
                       handlechangeInput(e);
                       setErrP(false);
@@ -578,8 +583,8 @@ export default function Edit() {
                                 <>
                                   <InputMask
                                     placeholder="+998 __ ___ __ __"
-                                    formatChars={{ b: "[0-9]" }}
-                                    mask="+998 (bb) bbb-bb-bb"
+                                    formatChars={{ b: "[0-9]", k: "[33-99]" }}
+                    mask="+998 (kk) bbb-bb-bb"
                                     maskChar=""
                                     name={question?.id}
                                     value={
@@ -610,14 +615,29 @@ export default function Edit() {
                 );
               })}
               <div className="create create-button">
-                <div className="input_target3">
-                  <input
-                    className="button_add"
-                    value={"+ Дополнительная жалоба"}
-                    type="button"
-                    onClick={handleAdd}
-                  />
-                </div>
+                {objList && objList?.toString().length ? (
+                  <>
+                    <div className="input_target3">
+                      <input
+                        className="button_add"
+                        value={"+ Дополнительная жалоба"}
+                        type="button"
+                        onClick={handleAdd}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="input_target3">
+                      <input
+                        className="button_add"
+                        value={"+ Дополнительная жалоба"}
+                        type="button"
+                        //onClick={handleAdd}
+                      />
+                    </div>
+                  </>
+                )}
                 <div className="input_target3">
                   <input
                     onClick={handleModal}

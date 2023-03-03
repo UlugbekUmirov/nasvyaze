@@ -27,13 +27,13 @@ const Main = styled.div`
     height: 100%;
   }
   .cardfilter {
-    width: 784px;
+    width: 500px;
     min-height: 1px;
     background: #fff;
     overflow: hidden;
     border-radius: 14px;
     @media only screen and (max-width: 784px) and (min-width: 320px) {
-      width: 95%;
+      width: 80%;
     }
     .t1 {
       padding: 15px;
@@ -51,10 +51,12 @@ const Main = styled.div`
       width: 50%;
       padding: 10px;
       background: #ced5dc;
+      border: #ffff;
       height: 38px;
       &:nth-child(1) {
-        background: #e42d4e;
+        background: #4F89CB;
         color: #fff;
+        border: #ffff;
       }
     }
   }
