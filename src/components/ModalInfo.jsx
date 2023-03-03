@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { ToastContainer } from "react-toastify";
+import { MdContentCopy } from "react-icons/md";
+import { get } from "lodash";
 const Main = styled.div`
   & .layer {
     position: fixed;
@@ -10,7 +12,7 @@ const Main = styled.div`
     top: 0;
     left: 0;
     background: #000;
-    opacity: 0.5;
+    opacity: 0.6;
     z-index: 998;
     display: flex;
     justify-content: center;
@@ -37,6 +39,7 @@ const Main = styled.div`
       & .tekst {
         width: 638px;
         padding-left: 44px;
+        min-height: 270px;
         padding-right: 54px;
         @media (max-width: 600px) {
           padding-left: 20px;
@@ -57,7 +60,7 @@ const Main = styled.div`
       & .titlee {
         display: flex;
         justify-content: space-between;
-        padding: 0px 42px 22px 42px;
+        padding: 0px 42px 0px 42px;
         font-weight: 700;
         font-size: 24px;
         line-height: 28px;
@@ -90,7 +93,7 @@ const Main = styled.div`
     }
     & .yesNoBtnGroup {
       display: flex;
-      margin: 10px 90px 20px 90px;
+      margin: 25px 90px 30px 90px;
       button {
         height: 48px;
         background: #eaf2f9;
@@ -131,9 +134,10 @@ const BodyHidden = createGlobalStyle`
 `;
 
 const ModalInfo = (props) => {
+  const [copyy, setCopy] = useState("");
+  const copy = useRef(null);
   const {
     title0,
-    title2,
     title1,
     close,
     statusYesN,
@@ -142,70 +146,186 @@ const ModalInfo = (props) => {
     contact,
     market,
     data,
-    summa,
+    obj2,
     comment,
-    nomer,
     onCopyText,
-
+    obj,
     notify,
+    objList,
+    company,
   } = props;
-
+  // let html = document.getElementById("copy").innerHTML;
+  /* ${(document.getElementById("demo").innerHTML = html)} */
+  useEffect(() => {
+    const copyy = copy.current;
+    console.log(copyy.innerText, "sss");
+    setCopy(copyy.innerText);
+  }, []);
   const codeSnippet = `
-  Ф.И.О клиента: ${name}
-  Контакт: ${contact} 
-  Маркет:${market}
-  Дата и время покупки:${data}
-  Суть обращения: ${comment}
-
+   ${copyy}
   `;
 
   return (
     <Main>
       <div className="layer" />
+
       <div className="cardfiltermain">
         <div className="cardfilter">
           <div className="titlee">
             {title0 ? <p className="t0">{title0}</p> : null}
             {title1 ? <p className="t1">{title1}</p> : null}
-            {title2 ? (
-              <CopyToClipboard
-                text={codeSnippet}
-                onClick={notify}
-                onCopy={onCopyText}
-              >
-                <div>
-                  <ToastContainer style={{ color: "rebeccapurple" }} />
-                  {<img src={title2} alt="" onClick={notify} />}
-                </div>
-              </CopyToClipboard>
-            ) : null}
+
+            <CopyToClipboard
+              text={codeSnippet}
+              onClick={notify}
+              onCopy={onCopyText}
+            >
+              <div>
+                <ToastContainer style={{ color: "rebeccapurple" }} />
+                <MdContentCopy
+                  onClick={notify}
+                  color="#4F89CB"
+                  size={"1.5em"}
+                  style={{ cursor: "pointer" }}
+                />
+              </div>
+            </CopyToClipboard>
           </div>
-          <div className="tekst">
-            {name ? (
+          <div id="copy" ref={copy} className="tekst">
+            {obj2?.full_name ? (
               <p>
-                Ф.И.О клиента: <span>{name}</span>
+                Ф.И.О клиента: <span>{obj2?.full_name}</span>
               </p>
             ) : null}
-            {contact ? (
+            {obj2?.phone ? (
               <p>
-                Контакт: <span>{contact}</span>
+                Контакт: <span>{obj2?.phone}</span>
               </p>
             ) : null}
-            {market ? (
+            {company && company?.toString().length ? (
               <p>
-                Маркет: <span>{market}</span>
+                Маркет: <span>{company}</span>
               </p>
             ) : null}
-            {data ? (
-              <p>
-                Дата и время покупки: <span>{data}</span>
-              </p>
-            ) : null}
+            {console.log(company?.toString().length, ";sss")}
+            {obj?.answers.map((anasrersItem, i) => {
+              return (
+                <div>
+                  {objList.map((item, index) => (
+                    <>
+                      {item.type === 1 ? (
+                        <p>
+                          {item.label ? item.label : ""}:
+                          <span>
+                            {get(
+                              get(obj, `answers[${i}]`, []).find(
+                                (qq) => qq.question === item.id
+                              ),
+                              "answer",
+                              ""
+                            )}
+                          </span>
+                        </p>
+                      ) : item.type === 2 ? (
+                        <p>
+                          {item.label ? item.label : ""}:
+                          <span>
+                            {get(
+                              get(obj, `answers[${i}]`, []).find(
+                                (qq) => qq.question === item.id
+                              ),
+                              "answer",
+                              ""
+                            )}{" "}
+                          </span>
+                        </p>
+                      ) : item.type === 3 ? (
+                        <p>
+                          {item.label ? item.label : ""}:
+                          <span>
+                            {" "}
+                            {get(
+                              get(obj, `answers[${i}]`, []).find(
+                                (qq) => qq.question === item.id
+                              ),
+                              "answer",
+                              ""
+                            )}
+                          </span>
+                        </p>
+                      ) : item.type === 4 ? (
+                        <p>
+                          {item.label ? item.label : ""}:
+                          <span>
+                            {
+                              get(
+                                get(obj, `answers[${i}]`, []).find(
+                                  (qq) => qq.question === item.id
+                                ),
+                                "answer",
+                                ""
+                              )?.label
+                            }
+                          </span>
+                        </p>
+                      ) : item.type === 5 ? (
+                        <p>
+                          {item.label ? item.label : ""}:
+                          <span>
+                            {get(
+                              get(obj, `answers[${i}]`, []).find(
+                                (qq) => qq.question === item.id
+                              ),
+                              "answer",
+                              ""
+                            )?.map((e) => e?.label)}
+                          </span>
+                        </p>
+                      ) : item.type === 6 ? (
+                        <>
+                          <p>
+                            {item.label ? item.label : ""}:
+                            <span>
+                              {get(
+                                get(obj, `answers[${i}]`, []).find(
+                                  (qq) => qq.question === item.id
+                                ),
+                                "answer",
+                                ""
+                              )}{" "}
+                            </span>
+                          </p>
+                        </>
+                      ) : item.type === 7 ? (
+                        <>
+                          <p>
+                            {item.label ? item.label : ""}:
+                            <span>
+                              {get(
+                                get(obj, `answers[${i}]`, []).find(
+                                  (qq) => qq.question === item.id
+                                ),
+                                "answer",
+                                ""
+                              )}{" "}
+                            </span>
+                          </p>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  ))}
+                </div>
+              );
+            })}
           </div>
           {statusYesN === true ? (
             <div className="yesNoBtnGroup">
               <button onClick={() => close(false)}>Отменить</button>
-              <button onClick={del}>Копировать и отправить</button>
+              <CopyToClipboard text={codeSnippet} onCopy={onCopyText}>
+                <button onClick={del}>Копировать и отправить</button>
+              </CopyToClipboard>
             </div>
           ) : (
             <button onClick={() => close(false)} className="btnOk">

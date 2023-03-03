@@ -11,13 +11,45 @@ export const Container = styled.div`
     margin: 0 32px;
     & .search {
       position: relative;
+      width: 100%;
+      & input {
+        width: 100%;
+      }
       & img {
         position: absolute;
         right: 0;
         background-color: white;
       }
     }
-
+    & .formm {
+      display: flex;
+      align-items: center;
+      & div {
+        display: flex;
+        & .icons-search {
+          padding: 0 5px;
+          cursor: pointer;
+          margin-left: 15px;
+        }
+      }
+      & .filter {
+        margin-right: 10px;
+      }
+      @media (max-width: 500px) {
+        display: block;
+        & div {
+          & .icons-search {
+            max-width: 40px;
+            max-height: 40px;
+            text-align: center;
+          }
+        }
+        & .filter {
+          margin: 0;
+          margin-right: 10px;
+        }
+      }
+    }
     & .forms {
       margin-bottom: 20px;
       width: 100%;
@@ -157,6 +189,11 @@ export const Container = styled.div`
         @media (max-width: 900px) {
           display: block;
           width: 100%;
+          & .input_target,
+         & .input_target2,
+         & .input_target3 {
+            margin-top: 24px;
+          }
         }
       }
       & .create-button {

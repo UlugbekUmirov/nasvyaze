@@ -5,6 +5,7 @@ import Login from "../components/Auth/Login";
 import Complaint from "../components/Complaint/Complaintnew";
 import Complaintold from "../components/Complaint/Complaintold";
 import Conversation from "../components/Conversation/Conversation";
+import Edit from "../components/Form/Edit";
 import Form from "../components/Form/Form";
 import TestForm from "../components/Form/TestForm";
 import Home from "../components/Home";
@@ -32,9 +33,9 @@ const Routers = () => {
         <Route path="/my-applications">
           <Route index element={<Applications />} />
         </Route>
-      {/*   <Route path="/test/:id/:idd/new">
-          <Route index element={<TestForm />} />
-        </Route> */}
+        <Route path="/edit/:id">
+          <Route index element={<Edit />} />
+        </Route> 
       </Routes>
     </>
   );

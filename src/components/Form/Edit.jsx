@@ -8,16 +8,12 @@ import Select from "react-select";
 import Loyout from "../sections/loyout/Loyout";
 import InputMask from "react-input-mask";
 import ModalInfo from "../ModalInfo";
-import Datetime from "react-datetime";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-export default function Form() {
+import { toast } from "react-toastify";
+export default function Edit() {
   const navigate = useNavigate();
-  const notify = () => toast(`Copied!`);
-  const { idd, id } = useParams();
-
-  const [objE, setObjE] = useState({});
+  //const notify = () => toast(`Copied!`);
+  const dispatch = useDispatch();
+  const { id } = useParams();
   const [question, setQuestion] = useState([]);
   const [complaints, setComplaints] = useState([]);
   const [statusModal, setStatusModal] = useState(false);
@@ -25,19 +21,15 @@ export default function Form() {
   const [company, setCompany] = useState([]);
   const [errP, setErrP] = useState(false);
   const [errN, setErrN] = useState(false);
-  const dispatch = useDispatch();
-  const [iddd, setIddd] = useState(0);
-
+  const [objE, setObjE] = useState({});
   const [obj, setObj] = useState({
     answers: [[]],
   });
+  const notify = () => toast(`Copied!`);  
+  const [input, setInput] = useState([]);
 
   const [obj2, setObj2] = useState({});
   const [objList, setObjList] = useState([]);
-
-  const setMainLoading = (l = false) => {
-    dispatch({ type: "SET_LOADING", payload: l });
-  };
   const defaultOptionsss = {
     isMulti: false,
     isSearchable: false,
@@ -111,7 +103,7 @@ export default function Form() {
       indicatorContainer: (styles) => ({
         ...styles,
         /*  backgroundColor: "white",
-        with: "0px", */
+      with: "0px", */
         margin: "0px 5px",
         height: "25px",
         width: "25px",
@@ -157,93 +149,33 @@ export default function Form() {
     },
   };
   useEffect(() => {
-    getQuestion();
-    getForm();
-    setIddd(idd);
-    getCompanyyyyy();
-    // setObjE({ ...objE, login: false, common: false });
+    getDetail();
   }, []);
-  const handlechangeInput = (e) => {
-    setObj2({ ...obj2, [e.target.name]: e.target.value });
-    setObjE({ ...objE, [e.target.name]: false });
-  };
-  const onCopyText = () => {
-    setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 1000);
-  };
-  const getQuestion = () => {
-    setMainLoading(true);
-    Axios()
-      .get(`/api/v1/questionnaire/question-list/${id}/${idd}/`)
-      .then((res) => {
-        setObjList(get(res, "data", []));
-      })
-      .finally(() => {
-        setMainLoading(false);
-      });
+  const setMainLoading = (l = false) => {
+    dispatch({ type: "SET_LOADING", payload: l });
   };
 
-  const getForm = () => {
-    setMainLoading(true);
-    Axios()
-      .get(`/api/v1/questionnaire/form-list/${id}/`)
-      .then((res) => {
-        setComplaints(get(res, "data", []));
-      })
-      .finally(() => {
-        setMainLoading(false);
-      });
-  };
-
-  const getCompanyyyyy = () => {
-    setMainLoading(true);
-    Axios()
-      .get("/api/v1/questionnaire/companys/")
-      .then((res) => {
-        setCompany(get(res, "data", []));
-      })
-      .finally(() => {
-        setMainLoading(false);
-      });
-  };
-
-  const handleAdd = () => {
-    setObj({ ...obj, answers: [...obj?.answers, []] });
-  };
-  const handlDelete = (i) => {
-    let l = [];
-    const objj = { ...obj, answers: [...obj?.answers] };
-    objj?.answers.forEach((item, index) => {
-      if (i !== index) {
-        l.push(item);
-      }
-    });
-    setObj({ ...obj, answers: l });
-  };
-
-  const changeInput = (e, i, q_id, q_type) => {
+  const selectAnswerMulti = (val, i, q_id, q_type) => {
     let l = get(obj, "answers", []);
     let cl = get(l, `[${i}]`, []);
     let ncl = [],
       t = true;
-
-    cl.forEach((cc) => {
-      console.log(cc, "cc");
-      if (cc?.question === q_id) {
-        ncl = [...ncl, { ...cc, answer: e?.target?.value ?? "", type: q_type }];
+    cl.forEach((qq) => {
+      if (qq?.question === q_id) {
+        ncl = [...ncl, { ...qq, answer: val, type: q_type }];
         t = false;
       } else {
-        ncl = [...ncl, cc];
+        ncl = [...ncl, qq];
       }
     });
     if (t) {
-      ncl = [...ncl, { question: q_id, answer: e?.target?.value }];
+      ncl = [...ncl, { question: q_id, answer: val, type: q_type }];
     }
     l[i] = ncl;
-
-    setObj({ ...obj, answers: l });
+    setObj({
+      ...obj,
+      answers: l,
+    });
   };
   const selectAnswer = (val, i, q_id, q_type) => {
     let l = get(obj, "answers", []);
@@ -268,28 +200,83 @@ export default function Form() {
       answers: l,
     });
   };
-  const selectAnswerMulti = (val, i, q_id, q_type) => {
+  const changeInput = (e, i, q_id, q_type) => {
     let l = get(obj, "answers", []);
     let cl = get(l, `[${i}]`, []);
     let ncl = [],
       t = true;
-    cl.forEach((qq) => {
-      if (qq?.question === q_id) {
-        ncl = [...ncl, { ...qq, answer: val, type: q_type }];
+
+    cl.forEach((cc) => {
+      if (cc?.question === q_id) {
+        ncl = [...ncl, { ...cc, answer: e?.target?.value ?? "", type: q_type }];
         t = false;
       } else {
-        ncl = [...ncl, qq];
+        ncl = [...ncl, cc];
       }
     });
     if (t) {
-      ncl = [...ncl, { question: q_id, answer: val, type: q_type }];
+      ncl = [...ncl, { question: q_id, answer: e?.target?.value }];
     }
     l[i] = ncl;
-    setObj({
-      ...obj,
-      answers: l,
-    });
+
+    setObj({ ...obj, answers: l });
   };
+  const getDetail = () => {
+    setMainLoading(true);
+    Axios()
+      .get(`/api/v1/application/list/${id}/`)
+      .then((res) => {
+        let lista = [];
+        get(res, "data.app_item[0].app_answer", []).forEach((ee) => {
+          lista.push({
+            id: ee?.question?.id,
+            label: ee?.question?.label,
+            order: ee?.order,
+            select_answer: ee?.select_answer,
+            type: ee?.question?.type,
+          });
+        });
+        setObjList(lista);
+        let ls = [];
+        res.data.app_item.forEach((qq, index) => {
+          let cl = [];
+          qq?.app_answer?.forEach((ss) => {
+            cl.push({
+              question: ss?.question?.id,
+              answer: ss?.answer,
+              type: ss?.question?.type,
+            });
+          });
+          ls.push(cl);
+        });
+        setObj({ answers: ls });
+      })
+
+      .finally(() => {
+        setMainLoading();
+      });
+  };
+  const handlechangeInput = (e) => {
+    setObj2({ ...obj2, [e.target.name]: e.target.value });
+    setObjE({ ...objE, [e.target.name]: false });
+  };
+  const handleAdd = () => {
+    setObj({ ...obj, answers: [...obj?.answers, []] });
+  };
+  const handleModal = () => {
+    setStatusModal(true);
+  };
+  const handlDelete = (i) => {
+    let l = [];
+    const objj = { ...obj, answers: [...obj?.answers] };
+    objj?.answers.forEach((item, index) => {
+      if (i !== index) {
+        l.push(item);
+      }
+    });
+    setObj({ ...obj, answers: l });
+  };
+
   const handleSumbit = () => {
     let ls = [];
 
@@ -324,8 +311,6 @@ export default function Form() {
     let post_data = {
       ...obj,
       full_name: obj2?.full_name,
-      company: parseInt(id),
-      form: parseInt(idd),
       answers: ls,
       phone: obj2?.phone
         .replace(/-/g, "")
@@ -337,7 +322,7 @@ export default function Form() {
     };
     if (t) {
       Axios()
-        .post("/api/v1/application/create/", post_data)
+        .post(`/api/v1/application/updated/${id}/`, post_data)
         .then((res) => {
           navigate("/");
         })
@@ -349,52 +334,20 @@ export default function Form() {
         });
     }
   };
-  const handleModal = () => {
-    setStatusModal(true);
-    if (
-      obj2?.phone === "" ||
-      obj2?.phone === undefined ||
-      obj2?.full_name === "" ||
-      obj2?.full_name === undefined ||
-      get(obj2?.phone, "phone", "").replace(/-/g, "").toString().length < 10
-    ) {
-      setStatusModal(false);
-      //setErr(true);
-    }
-    if (
-      //  get(obj2?.phone, "phone", "").replace(/-/g, "").toString().length < 10 ||
-      obj2?.phone == undefined ||
-      obj2?.phone == ""
-    ) {
-      setErrP(true);
-    } else {
-      setErrP(false);
-      setStatusModal(true);
-    }
-    if (obj2?.full_name === "" || obj2?.full_name === undefined) {
-      setErrN(true);
-    } else {
-      setErrN(false);
-    }
-  };
+
   return (
     <>
       <Loyout>
         <Container>
-          {console.log(objList,'obj')}
+          {console.log(obj, "obj")}
           <div className="body">
             <div className="title">
               <img
                 src="/images/back-arrow-icon 1.svg"
                 alt=""
-                onClick={() => navigate(`/conversation-type/${id}/new`)}
+                onClick={() => navigate(-1)}
               />
-              <div>
-                Жалоба на{" "}
-                {complaints
-                  .filter(({ id }) => id === parseInt(iddd))
-                  .map(({ label }) => label)}
-              </div>
+              <div>Жалоба на </div>
               <div></div>
             </div>
             <form className="forms">
@@ -405,7 +358,7 @@ export default function Form() {
                     type="text"
                     placeholder="ФИО"
                     name="full_name"
-                    value={obj2?.full_name || ""}
+                    value={obj2?.full_name || input?.full_name}
                     className={errN ? "err " : ""}
                     onChange={(e) => {
                       handlechangeInput(e);
@@ -422,7 +375,7 @@ export default function Form() {
                     maskChar=""
                     name="phone"
                     className={errP ? "err InputMask" : "InputMask"}
-                    value={obj2?.phone || ""}
+                    value={obj2?.phone || input?.phone}
                     onChange={(e) => {
                       handlechangeInput(e);
                       setErrP(false);
@@ -430,7 +383,7 @@ export default function Form() {
                     //  onFocus={() => setSmsInvalid(false)}
                   />
                 </div>
-              </div>
+              </div>{" "}
               {obj?.answers.map((anasrersItem, i) => {
                 return (
                   <>
@@ -682,13 +635,11 @@ export default function Form() {
         <ModalInfo
           title0={"  "}
           title1={"Тескт жалобы"}
-          // title2={"/images/Vector (10).svg"}
+          title2={"/images/Vector (10).svg"}
           close={setStatusModal}
-          market={`${"m"}`}
-          data={`${"d"}`}
           obj2={obj2}
-          onCopyText={onCopyText}
-          summa={`${"s"}`}
+          // onCopyText={onCopyText}
+
           obj={obj}
           notify={notify}
           statusYesN={true}

@@ -40,7 +40,7 @@ export default function Conversation() {
   return (
     <Loyout>
       <Container>
-        <div className="body">
+        <div className="body">  
           <div className="title">
             <img
               src="/images/back-arrow-icon 1.svg"
@@ -50,11 +50,10 @@ export default function Conversation() {
             <div>
               <div style={{margin:"0"}}>Тип разговора</div>
               <div style={{margin:"0"}}>
-                с
+                с{" "}
                 {company
                   .filter(({ id }) => id === parseInt(idd))
                   .map(({ name }) => name)}
-                s
               </div>
             </div>
             <div></div>

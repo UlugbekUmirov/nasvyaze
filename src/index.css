@@ -11,6 +11,9 @@ code {
 }
 .css-1xc3v61-indicatorContainer {
   padding: 0px !important;
+  border: 2px solid #4f89cb;
+  border-radius: 50%;
+  margin: 0px 5px;
 }
 .css-15lsz6c-indicatorContainer {
   padding: 0px !important;
@@ -21,7 +24,15 @@ code {
 .css-tj5bde-Svg:focus {
   transform: rotate(180deg);
 }
-
+.css-3vpw3a-IndicatorsContainer {
+  margin: 11px 20px !important;
+}
+.css-15lsz6c-IndicatorsContainer {
+  padding: 0px !important;
+  border: 2px solid #4f89cb !important;
+  border-radius: 50% !important;
+  margin: 0px 5px !important;
+}
 .header_login {
   margin-top: 0;
   margin-bottom: 0;
@@ -45,6 +56,22 @@ code {
 .page {
   text-align: center;
   margin-top: 60px;
+
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+  /*  grid-template-columns: repeat(auto-fill, minmax(43px, 1fr)); */
+  gap: 1rem;
+  /*   grid-template-columns: auto 1fr; */
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+.err {
+  border: 2px solid #e46c4b !important;
 }
 .page span {
   margin: 12px;
@@ -53,7 +80,10 @@ code {
   border-radius: 12px;
   width: 31px;
   height: 36px;
-  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .Toastify {
   border-radius: 10px;
@@ -68,40 +98,14 @@ code {
   color: white;
   border-radius: 10px;
 }
-/* .input_target2 {
-  margin-top: 24px;
-  width: 100%;
+.active {
+  background: #eaf2f9 !important;
 }
-.input_target2 label {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  display: block;
-  color: #223260;
-  margin-bottom: 6px;
-}
-.input_target2 textarea {
-  height: 113px;
-  resize: none;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: calc(100% - 15px);
-  display: block;
-  font-weight: 400;
-  font-size: 15px;
-  padding-left: 15px;
-  border: 1px solid #ffffff;
-  padding-top: 15px;
-  line-height: 18px;
-  color: #223346;
-  outline: none;
-  outline: 0;
-  font-family: "Rubik", sans-serif;
-  
-} */
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
+}
+.notFoundResult {
+  text-align: center;
 }
 @media (max-width: 450px) {
   .my_application {

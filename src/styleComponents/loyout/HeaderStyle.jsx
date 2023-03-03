@@ -8,7 +8,7 @@ export const Container = styled.div`
   margin-bottom: 0;
   margin-left: auto;
   margin-right: auto;
-  max-width: 1086px;
+  max-width: 1126px;
 
   & .close {
     cursor: pointer;
@@ -18,7 +18,7 @@ export const Container = styled.div`
       font-size: 14px;
       line-height: 17px;
     }
-    & .log-out{
+    & .log-out {
       margin-right: 10px;
       cursor: pointer;
       color: #223260;
@@ -29,15 +29,15 @@ export const Container = styled.div`
     padding-right: 12px;
   }
   @media (max-width: 400px) {
-    & .logo_a{
-     width: 48%;
+    & .logo_a {
+      width: 48%;
       & .logo {
         width: 90%;
       }
     }
-    & .log-out{
+    & .log-out {
       width: 25%;
-      margin-right: 4px!important;
+      margin-right: 4px !important;
     }
   }
 `;

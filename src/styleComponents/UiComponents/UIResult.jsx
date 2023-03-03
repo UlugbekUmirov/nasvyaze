@@ -1,44 +1,51 @@
 import styled from "styled-components";
 
-const UiCard = styled.div`
+const UIResult = styled.div`
   border-radius: 12px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   min-height: 101.5px;
   margin-bottom: 18.5px;
   //transition: 0.5s;
-  //position: relative;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  & .companyCardd {
-    text-align: center;
-    justify-content: center;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-    color: black;
-    font-weight: 500;
-    font-size: 25px;
-    line-height: 20px;
-    //  position: absolute;
-    //top: 40%;
-    width: 100%;
-    & img {
-      max-height: 70px;
-      background-repeat: no-repeat;
-      background-position: center;
-      background: no-repeat scroll center scroll;
-      -webkit-background-size: cover;
-      background-size: cover;
-      width: auto;
-    }
-  }
 
   cursor: pointer;
-  /*  :hover {
-    opacity: 0.8;
-  } */
 
+  display: flow-root;
+  & .edit {
+    position: absolute;
+    border: 1.5px solid white;
+    padding: 6px 7px 3px 7px;
+    border-radius: 50%;
+    right: 60px;
+    top: 15px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    :hover {
+      background-color: #efeeee;
+      border: 1.5px solid #efeeee;
+    }
+    @media (max-width: 450px) {
+      top: 10px;
+    }
+  }
+  & .delete {
+    position: absolute;
+    border: 1.5px solid white;
+    padding: 6px 7px 3px 7px;
+    border-radius: 50%;
+    right: 20px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    top: 15px;
+    :hover {
+      background-color: #efeeee;
+      border: 1.5px solid #efeeee;
+    }
+    @media (max-width: 450px) {
+      top: 10px;
+    }
+  }
   & .otvet_informations {
     padding: 30px;
     text-align: left;
@@ -65,8 +72,8 @@ const UiCard = styled.div`
       text-decoration-line: underline;
       color: #223260;
       text-align: left;
-      margin-top: 15px;
       margin-left: 25px;
+      margin-top: 15px;
     }
     & .otvet {
       font-weight: 500;
@@ -81,6 +88,9 @@ const UiCard = styled.div`
         margin: 0;
       }
     }
+    @media (max-width: 450px) {
+      padding: 50px 30px 30px 30px;
+    }
   }
 `;
-export default UiCard;
+export default UIResult;

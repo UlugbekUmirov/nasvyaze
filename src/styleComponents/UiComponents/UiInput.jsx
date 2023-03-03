@@ -13,7 +13,7 @@ const UiInput = styled.div`
   & img {
     padding-right: 32px;
     cursor: pointer;
-    @media (max-width:450px) {
+    @media (max-width: 450px) {
       padding-right: 10px;
     }
   }
@@ -26,19 +26,34 @@ const UiInput = styled.div`
     font-size: 25px;
     line-height: 20px;
     padding-left: 32px;
-    @media (max-width:450px) {
+    /*  @media (max-width: 450px) {
       padding-left: 8px;
-      /* width: 98%; */
+      width: 98%;
+    } */
+    @media (max-width: 340px) {
+      width: 98%;
     }
-    @media (max-width:340px) {
-      
-      width: 98%; 
+  }
+  & input[type="search"] {
+    outline: none;
+    border: 1px solid white;
+    min-height: 48px;
+    border-radius: 12px;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 20px;
+    padding-left: 32px;
+    /*  @media (max-width: 450px) {
+    padding-left: 8px;
+    width: 98%;
+  } */
+    @media (max-width: 340px) {
+      width: 98%;
     }
   }
   /*  & input[type=submit] {
     padding-right: 32px;
     
   } */
-   
 `;
 export default UiInput;
