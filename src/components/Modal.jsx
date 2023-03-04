@@ -53,6 +53,7 @@ const Main = styled.div`
       background: #ced5dc;
       border: #ffff;
       height: 38px;
+      cursor: pointer;
       &:nth-child(1) {
         background: #4F89CB;
         color: #fff;

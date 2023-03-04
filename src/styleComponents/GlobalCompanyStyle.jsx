@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
-  min-height:500px;
-  padding-top:50px;
+  min-height: 500px;
+  padding-top: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,6 +128,7 @@ export const Container = styled.div`
           }
           & input[type="button"] {
             height: 48px;
+            padding-right: 15px;
             border: none;
             border-radius: 12px;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -163,17 +164,23 @@ export const Container = styled.div`
             line-height: 20px;
             color: #223260;
           }
-
+          & .date-time {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            font-family: "Rubik", sans-serif;
+          }
           & input {
             height: 44px;
             background: #ffffff;
             border: 1px solid #ffffff;
             border-radius: 12px;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            width: calc(100% - 15px);
+            width: calc(100% - 30px);
             display: block;
             font-weight: 400;
             font-size: 15px;
+            padding-right: 15px;
             padding-left: 15px;
             line-height: 18px;
             color: #223346;
@@ -191,8 +198,8 @@ export const Container = styled.div`
           display: block;
           width: 100%;
           & .input_target,
-         & .input_target2,
-         & .input_target3 {
+          & .input_target2,
+          & .input_target3 {
             margin-top: 24px;
           }
         }

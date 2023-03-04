@@ -43,6 +43,7 @@ export default function Home() {
       });
   };
   const handlechange = (e) => {
+    e.preventDefault();
     if (e.target.value == null) {
       setSearch(null);
     } else {
@@ -74,7 +75,7 @@ export default function Home() {
             action="
           
           "
-          className="formm"
+            className="formm"
           >
             <UiInput className="search" onSubmit={(e) => handleSearch(e)}>
               <input
@@ -97,28 +98,32 @@ export default function Home() {
               </UiInput>
             </div>
           </form>
-          {company.map(({ name, id, image }) => (
-            <Link
-              to={`/conversation-type/${id}`}
-              style={{ textDecoration: "none" }}
-            >
-              {}
-              <UiCard>
-                <div className="companyCardd" key={id}>
-                  {image === "" ? (
-                    <div className="name">{name}</div>
-                  ) : (
-                    <img
-                      width={"100%"}
-                      height={"100%"}
-                      src={`https://isurvey.gazon-tashkent.uz/media/${image}`}
-                      alt=""
-                    />
-                  )}
-                </div>
-              </UiCard>
-            </Link>
-          ))}
+          {company && company.toString().length !== 0 ? (
+            company.map(({ name, id, image }) => (
+              <Link
+                to={`/conversation-type/${id}`}
+                style={{ textDecoration: "none" }}
+              >
+                {}
+                <UiCard>
+                  <div className="companyCardd" key={id}>
+                    {image === "" ? (
+                      <div className="name">{name}</div>
+                    ) : (
+                      <img
+                        width={"100%"}
+                        height={"100%"}
+                        src={`https://isurvey.gazon-tashkent.uz/media/${image}`}
+                        alt=""
+                      />
+                    )}
+                  </div>
+                </UiCard>
+              </Link>
+            ))
+          ) : (
+            <h4 style={{ textAlign: "center" }}>Not Result Found</h4>
+          )}
         </div>
       </Container>
     </Loyout>

@@ -14,6 +14,8 @@ export default function Complaint() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [idd, setIdd] = useState(0);
+  const [parentt, setParent] = useState(null);
+  const [index, setIndex] = useState([null]);
   const setMainLoading = (l = false) => {
     dispatch({ type: "SET_LOADING", payload: l });
   };
@@ -34,38 +36,44 @@ export default function Complaint() {
         setMainLoading(false);
       });
   };
+  const getChild = (i) => {
+    setIndex([...index, i]);
+    setParent(i);
+    const o = company.filter((parent) => i === parent.parent);
+    if (o.length === 0) {
+      navigate(`/conversation-type/${idd}/${i}/new`);
+    }
+  };
+  const GoBack = () => {
+    if (index.length === 1) {
+      navigate("/conversation-type/" + idd);
+    } else {
+      setParent(index[index.length - 2]);
+      setIndex(index.slice(0, index.length - 1));
+    }
+  };
   return (
     <Loyout>
+
       <Container>
         <div className="body">
           <div className="title">
-            <img
-              src="/images/back-arrow-icon 1.svg"
-              alt=""
-              onClick={() => navigate(`/conversation-type/${id}`)}
-            />
+            <img src="/images/back-arrow-icon 1.svg" alt="" onClick={GoBack} />
             <div>Новая жалоба</div>
             <div></div>
           </div>
           {company
-            ? company.map(({ label, id }) => (
-                <>
-                  <UiCard
-                    key={id}
-                    onClick={() =>
-                      navigate(`/conversation-type/${idd}/${id}/new`)
-                    }
-                  >
-                    <Link
-                      style={{ textDecoration: "none" }}
-                      className="companyCardd"
-                      to={`/conversation-type/${idd}/${id}/new`}
-                    >
-                      <span>{label}</span>
-                    </Link>
-                  </UiCard>
-                </>
-              ))
+            ? company
+                .filter((parent) => parentt === parent.parent)
+                .map(({ label, id, parent }) => (
+                  <>
+                    <UiCard key={id} onClick={() => getChild(id)}>
+                      <div className="companyCardd">
+                        <span>{label}</span>
+                      </div>
+                    </UiCard>
+                  </>
+                ))
             : ""}
         </div>
       </Container>

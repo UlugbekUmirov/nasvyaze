@@ -47,7 +47,7 @@ const UIResult = styled.div`
     }
   }
   & .otvet_informations {
-    padding: 30px;
+    padding: 40px 30px 30px 30px;
     text-align: left;
     display: flow-root;
     & .otvet_information {
@@ -89,7 +89,7 @@ const UIResult = styled.div`
       }
     }
     @media (max-width: 450px) {
-      padding: 50px 30px 30px 30px;
+      padding: 45px 30px 30px 30px;
     }
   }
 `;

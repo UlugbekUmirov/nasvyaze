@@ -12,10 +12,10 @@ axios.interceptors.response.use(
   (e) => {
     if (typeof e?.toJSON === "function") {
       const error = e?.toJSON();
-      // if (error?.status === 401) {
-      // 	removeToken();
-      // 	window.location.href = '/login';
-      // }
+      if (error?.status === 401) {
+        removeToken();
+        window.location.href = "/login";
+      }
       if (error?.message === "Network Error") {
         // toast.warning(
         // 	localStorage.getItem('i18nextLng') === 'uz'

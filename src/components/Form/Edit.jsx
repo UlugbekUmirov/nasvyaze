@@ -246,11 +246,38 @@ export default function Edit() {
         res.data.app_item.forEach((qq, index) => {
           let cl = [];
           qq?.app_answer?.forEach((ss) => {
-            cl.push({
-              question: ss?.question?.id,
-              answer: ss?.answer,
-              type: ss?.question?.type,
-            });
+            if (ss?.question?.type === 4) {
+              cl.push({
+                question: ss?.question?.id,
+                answer: ss?.select_answer.reduce(
+                  (a, v) => ({
+                    ...a,
+                    label: v?.name,
+                    value: v?.id,
+                  }),
+                  {}
+                ),
+                type: ss?.question?.type,
+              });
+            } else if (ss?.question?.type === 5) {
+              cl.push({
+                question: ss?.question?.id,
+                answer: ss?.select_answer,
+                type: ss?.question?.type,
+              });
+            } else if (ss?.question?.type === 6) {
+              cl.push({
+                question: ss?.question?.id,
+                answer: ss?.answer?.replace(/ /g, "T0"),
+                type: ss?.question?.type,
+              });
+            } else {
+              cl.push({
+                question: ss?.question?.id,
+                answer: ss?.answer,
+                type: ss?.question?.type,
+              });
+            }
           });
           ls.push(cl);
         });
@@ -295,6 +322,11 @@ export default function Edit() {
           cl.push({
             question: ss?.question,
             answer: ss?.answer.map((e) => e.value),
+          });
+        } else if (ss.type === 6) {
+          cl.push({
+            question: ss?.question,
+            answer: ss?.answer.replace(/T0/, " "),
           });
         } else {
           cl.push({ question: ss?.question, answer: ss?.answer });
@@ -344,7 +376,7 @@ export default function Edit() {
     <>
       <Loyout>
         <Container>
-          {console.log(obj, "obj")}
+        
           <div className="body">
             <div className="title">
               <img
@@ -363,7 +395,7 @@ export default function Edit() {
                     type="text"
                     placeholder="ФИО"
                     name="full_name"
-                    value={obj2?.full_name || ''}
+                    value={obj2?.full_name || ""}
                     className={errN ? "err " : ""}
                     onChange={(e) => {
                       handlechangeInput(e);
@@ -380,7 +412,7 @@ export default function Edit() {
                     maskChar=""
                     name="phone"
                     className={errP ? "err InputMask" : "InputMask"}
-                    value={obj2?.phone || ''}
+                    value={obj2?.phone || ""}
                     onChange={(e) => {
                       handlechangeInput(e);
                       setErrP(false);
@@ -558,10 +590,34 @@ export default function Edit() {
                                 <>
                                   <div className="input_target">
                                     <label htmlFor="">{item?.label}</label>
-                                    <InputMask
+
+                                    <input
+                                      className="date-time"
+                                      type="datetime-local"
                                       placeholder="дд.мм.гг. - чч.мм."
-                                      formatChars={{ B: "[0-9]" }}
-                                      mask="BBBB-BB-BB BB:BB"
+                                      onChange={(e) =>
+                                        changeInput(e, i, item?.id, item?.type)
+                                      }
+                                      value={
+                                        get(
+                                          get(obj, `answers[${i}]`, []).find(
+                                            (qq) => qq.question === item.id
+                                          ),
+                                          "answer",
+                                          ""
+                                        ) || ""
+                                      }
+                                    />
+                                  </div>
+                                </>
+                              ) : item.type === 7 ? (
+                                <>
+                                  <div className="input_target">
+                                    <label htmlFor="">{item?.label}</label>
+                                    <InputMask
+                                      placeholder="+998 __ ___ __ __"
+                                      formatChars={{ b: "[0-9]", k: "[33-99]" }}
+                                      mask="+998 (kk) bbb-bb-bb"
                                       maskChar=""
                                       name={question?.id}
                                       value={
@@ -579,27 +635,30 @@ export default function Edit() {
                                     />
                                   </div>
                                 </>
-                              ) : item.type === 7 ? (
+                              ) : item.type === 8 ? (
                                 <>
-                                  <InputMask
-                                    placeholder="+998 __ ___ __ __"
-                                    formatChars={{ b: "[0-9]", k: "[33-99]" }}
-                    mask="+998 (kk) bbb-bb-bb"
-                                    maskChar=""
-                                    name={question?.id}
-                                    value={
-                                      get(
-                                        get(obj, `answers[${i}]`, []).find(
-                                          (qq) => qq.question === item.id
-                                        ),
-                                        "answer",
-                                        ""
-                                      ) || ""
-                                    }
-                                    onChange={(e) =>
-                                      changeInput(e, i, item?.id, item?.type)
-                                    }
-                                  />
+                                  {" "}
+                                  <div className="input_target">
+                                    <label htmlFor="">{item?.label}</label>
+
+                                    <input
+                                      className="date-time"
+                                      type="date"
+                                      placeholder="дд.мм.гг. - чч.мм."
+                                      onChange={(e) =>
+                                        changeInput(e, i, item?.id, item?.type)
+                                      }
+                                      value={
+                                        get(
+                                          get(obj, `answers[${i}]`, []).find(
+                                            (qq) => qq.question === item.id
+                                          ),
+                                          "answer",
+                                          ""
+                                        ) || ""
+                                      }
+                                    />
+                                  </div>
                                 </>
                               ) : (
                                 <></>

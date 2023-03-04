@@ -126,7 +126,7 @@ export default function Complaintold() {
     Axios()
       .get("/api/v1/account/get-role/")
       .then((res) => {
-        console.log(res?.data, "res");
+
         setStaff(res?.data?.is_staff);
       })
       .finally(() => {
@@ -146,17 +146,16 @@ export default function Complaintold() {
         <Container>
           <div className="body complaint-old">
             <div className="title">
-              <div>
-                <img
-                  src="/images/back-arrow-icon 1.svg"
-                  alt=""
-                  onClick={() => navigate(`/conversation-type/${id}`)}
-                />
-              </div>
+              <img
+                src="/images/back-arrow-icon 1.svg"
+                alt=""
+                onClick={() => navigate(`/conversation-type/${id}`)}
+              />
+
               <div>Тип жалобы</div>
               <div></div>
             </div>
-            <form action=" " className="formm">
+            <form className="formm">
               <UiInput className="search" onSubmit={(e) => handleSearch(e)}>
                 <input
                   type="text"
@@ -210,11 +209,7 @@ export default function Complaintold() {
                           Контакт: <span>{results?.phone}</span>
                         </p>
                       </div>
-                      <div className="otvet_information">
-                        <p>
-                          Маркет: <span>{results?.company?.name}</span>
-                        </p>
-                      </div>
+
                       {results?.app_item.map((e) => {
                         return (e?.app_answer).map((ee) => {
                           return (
@@ -244,14 +239,14 @@ export default function Complaintold() {
                                 ) : ee?.question?.type === 4 ? (
                                   <>
                                     <p>
-                                      {ee?.question?.name} :{" "}
+                                      {ee?.question?.name} :
                                       <span>
                                         {" "}
                                         {ee?.select_answer?.map((e) => e?.name)}
                                       </span>
                                     </p>
                                   </>
-                                ) : (
+                                ) : ee?.question?.type === 5 ? (
                                   <>
                                     <p>
                                       {ee?.question?.name} :{" "}
@@ -260,6 +255,29 @@ export default function Complaintold() {
                                       </span>
                                     </p>
                                   </>
+                                ) : ee?.question?.type === 6 ? (
+                                  <>
+                                    <p>
+                                      {ee?.question?.name} :{" "}
+                                      <span>{ee.answer}</span>
+                                    </p>
+                                  </>
+                                ) : ee?.question?.type === 7 ? (
+                                  <>
+                                    <p>
+                                      {ee?.question?.name} :{" "}
+                                      <span>{ee.answer}</span>
+                                    </p>
+                                  </>
+                                ) : ee?.question?.type === 8 ? (
+                                  <>
+                                    <p>
+                                      {ee?.question?.name} :{" "}
+                                      <span>{ee.answer}</span>
+                                    </p>
+                                  </>
+                                ) : (
+                                  <></>
                                 )}
                               </div>
                             </>

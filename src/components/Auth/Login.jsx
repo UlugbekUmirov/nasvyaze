@@ -38,7 +38,7 @@ const Login = () => {
       httpClient()
         .post("/api/v1/account/login/", obj, { headers: {} })
         .then((res) => {
-          console.log(res, "res");
+    
 
           if (res?.status === 200) {
             const token = res?.data?.tokens?.access ?? "";
@@ -55,7 +55,7 @@ const Login = () => {
           setMainLoading(false);
         });
     } else {
-      console.log("err", err);
+
       setObjE(err);
       setMainLoading(false);
     }

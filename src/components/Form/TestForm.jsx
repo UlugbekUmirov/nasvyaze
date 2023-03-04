@@ -53,7 +53,7 @@ const TestForm = () => {
   };
 
   const selectAnswer = (val, i, q_id, q_type) => {
-    console.log(val);
+   
 
     let l = get(obj, "answers", []);
     let cl = get(l, `[${i}]`, []);
@@ -81,17 +81,7 @@ const TestForm = () => {
     setObj({ ...obj, answers: [...obj?.answers, []] });
   };
 
-  //  const handlechangeSingle = (e, i, question_id) => {
-  //   const inputdata = [...val];
-  //   inputdata[i] = e.value;
-  //   setVal(inputdata);
-  //   console.log(e, "e");
-  //   setArr(
-  //     val.map((ee) => {
-  //       return [{ 'question': question_id, label: ee }];
-  //     })
-  //   );
-  // };
+
 
   const getQuestion = () => {
     setMainLoading(true);
@@ -117,7 +107,7 @@ const TestForm = () => {
             {obj?.answers.map((anasrersItem, i) => {
               return (
                 <Flex>
-                  {console.log("==>", obj?.answers)}
+              
                   {objList.map((item, index) => {
                     return (
                       <React.Fragment key={index}>

@@ -230,7 +230,7 @@ export default function Form() {
       t = true;
 
     cl.forEach((cc) => {
-      console.log(cc, "cc");
+
       if (cc?.question === q_id) {
         ncl = [...ncl, { ...cc, answer: e?.target?.value ?? "", type: q_type }];
         t = false;
@@ -304,7 +304,12 @@ export default function Form() {
             question: ss?.question,
             answer: ss?.answer.map((e) => e.value),
           });
-        } else {
+        } else if (ss.type === 6) {
+          cl.push({
+            question: ss?.question,
+            answer: ss?.answer.replace(/T0/, " "),
+          });
+        }  else {
           cl.push({ question: ss?.question, answer: ss?.answer });
         }
       });
@@ -382,6 +387,7 @@ export default function Form() {
       <Loyout>
         <Container>
           <div className="body">
+      
             <div className="title">
               <img
                 src="/images/back-arrow-icon 1.svg"
@@ -389,7 +395,6 @@ export default function Form() {
                 onClick={() => navigate(`/conversation-type/${id}/new`)}
               />
               <div>
-                Жалоба на{" "}
                 {complaints
                   .filter(({ id }) => id === parseInt(iddd))
                   .map(({ label }) => label)}
@@ -599,10 +604,34 @@ export default function Form() {
                                 <>
                                   <div className="input_target">
                                     <label htmlFor="">{item?.label}</label>
-                                    <InputMask
+
+                                    <input
+                                      className="date-time"
+                                      type="datetime-local"
                                       placeholder="дд.мм.гг. - чч.мм."
-                                      formatChars={{ B: "[0-9]" }}
-                                      mask="BBBB-BB-BB BB:BB"
+                                      onChange={(e) =>
+                                        changeInput(e, i, item?.id, item?.type)
+                                      }
+                                      value={ 
+                                        get(
+                                          get(obj, `answers[${i}]`, []).find(
+                                            (qq) => qq.question === item.id
+                                          ),
+                                          "answer",
+                                          ""
+                                        ) || ""
+                                      }
+                                    />
+                                  </div>
+                                </>
+                              ) : item.type === 7 ? (
+                                <>
+                                  <div className="input_target">
+                                    <label htmlFor="">{item?.label}</label>
+                                    <InputMask
+                                      placeholder="+998 __ ___ __ __"
+                                      formatChars={{ b: "[0-9]", k: "[33-99]" }}
+                                      mask="+998 (kk) bbb-bb-bb"
                                       maskChar=""
                                       name={question?.id}
                                       value={
@@ -620,27 +649,30 @@ export default function Form() {
                                     />
                                   </div>
                                 </>
-                              ) : item.type === 7 ? (
+                              ) : item.type === 8 ? (
                                 <>
-                                  <InputMask
-                                    placeholder="+998 __ ___ __ __"
-                                    formatChars={{ b: "[0-9]", k: "[33-99]" }}
-                                    mask="+998 (kk) bbb-bb-bb"
-                                    maskChar=""
-                                    name={question?.id}
-                                    value={
-                                      get(
-                                        get(obj, `answers[${i}]`, []).find(
-                                          (qq) => qq.question === item.id
-                                        ),
-                                        "answer",
-                                        ""
-                                      ) || ""
-                                    }
-                                    onChange={(e) =>
-                                      changeInput(e, i, item?.id, item?.type)
-                                    }
-                                  />
+                                  {" "}
+                                  <div className="input_target">
+                                    <label htmlFor="">{item?.label}</label>
+
+                                    <input
+                                      className="date-time"
+                                      type="date"
+                                      placeholder="дд.мм.гг. - чч.мм."
+                                      onChange={(e) =>
+                                        changeInput(e, i, item?.id, item?.type)
+                                      }
+                                      value={
+                                        get(
+                                          get(obj, `answers[${i}]`, []).find(
+                                            (qq) => qq.question === item.id
+                                          ),
+                                          "answer",
+                                          ""
+                                        ) || ""
+                                      }
+                                    />
+                                  </div>
                                 </>
                               ) : (
                                 <></>

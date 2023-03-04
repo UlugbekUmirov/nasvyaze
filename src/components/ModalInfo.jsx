@@ -142,23 +142,15 @@ const ModalInfo = (props) => {
     close,
     statusYesN,
     del,
-    name,
-    contact,
-    market,
-    data,
     obj2,
-    comment,
     onCopyText,
     obj,
     notify,
     objList,
-    company,
   } = props;
-  // let html = document.getElementById("copy").innerHTML;
-  /* ${(document.getElementById("demo").innerHTML = html)} */
+
   useEffect(() => {
     const copyy = copy.current;
-    console.log(copyy.innerText, "sss");
     setCopy(copyy.innerText);
   }, []);
   const codeSnippet = `
@@ -175,7 +167,7 @@ const ModalInfo = (props) => {
             {title0 ? <p className="t0">{title0}</p> : null}
             {title1 ? <p className="t1">{title1}</p> : null}
 
-            <CopyToClipboard
+        {/*     <CopyToClipboard
               text={codeSnippet}
               onClick={notify}
               onCopy={onCopyText}
@@ -183,13 +175,14 @@ const ModalInfo = (props) => {
               <div>
                 <ToastContainer style={{ color: "rebeccapurple" }} />
                 <MdContentCopy
+                  className="MdContentCopy"
                   onClick={notify}
                   color="#4F89CB"
                   size={"1.5em"}
                   style={{ cursor: "pointer" }}
                 />
               </div>
-            </CopyToClipboard>
+            </CopyToClipboard> */}
           </div>
           <div id="copy" ref={copy} className="tekst">
             {obj2?.full_name ? (
@@ -202,12 +195,6 @@ const ModalInfo = (props) => {
                 Контакт: <span>{obj2?.phone}</span>
               </p>
             ) : null}
-            {company && company?.toString().length ? (
-              <p>
-                Маркет: <span>{company}</span>
-              </p>
-            ) : null}
-            {console.log(company?.toString().length, ";sss")}
             {obj?.answers.map((anasrersItem, i) => {
               return (
                 <div>
@@ -215,7 +202,7 @@ const ModalInfo = (props) => {
                     <>
                       {item.type === 1 ? (
                         <p>
-                          {item.label ? item.label : ""}:
+                          {item.label ? item.label : ""}:{" "}
                           <span>
                             {get(
                               get(obj, `answers[${i}]`, []).find(
@@ -228,7 +215,7 @@ const ModalInfo = (props) => {
                         </p>
                       ) : item.type === 2 ? (
                         <p>
-                          {item.label ? item.label : ""}:
+                          {item.label ? item.label : ""}:{" "}
                           <span>
                             {get(
                               get(obj, `answers[${i}]`, []).find(
@@ -236,14 +223,13 @@ const ModalInfo = (props) => {
                               ),
                               "answer",
                               ""
-                            )}{" "}
+                            )}
                           </span>
                         </p>
                       ) : item.type === 3 ? (
                         <p>
-                          {item.label ? item.label : ""}:
+                          {item.label ? item.label : ""}:{" "}
                           <span>
-                            {" "}
                             {get(
                               get(obj, `answers[${i}]`, []).find(
                                 (qq) => qq.question === item.id
@@ -255,7 +241,7 @@ const ModalInfo = (props) => {
                         </p>
                       ) : item.type === 4 ? (
                         <p>
-                          {item.label ? item.label : ""}:
+                          {item.label ? item.label : ""}:{" "}
                           <span>
                             {
                               get(
@@ -270,7 +256,7 @@ const ModalInfo = (props) => {
                         </p>
                       ) : item.type === 5 ? (
                         <p>
-                          {item.label ? item.label : ""}:
+                          {item.label ? item.label : ""}:{" "}
                           <span>
                             {get(
                               get(obj, `answers[${i}]`, []).find(
@@ -282,35 +268,43 @@ const ModalInfo = (props) => {
                           </span>
                         </p>
                       ) : item.type === 6 ? (
-                        <>
-                          <p>
-                            {item.label ? item.label : ""}:
-                            <span>
-                              {get(
-                                get(obj, `answers[${i}]`, []).find(
-                                  (qq) => qq.question === item.id
-                                ),
-                                "answer",
-                                ""
-                              )}{" "}
-                            </span>
-                          </p>
-                        </>
+                        <p>
+                          {item.label ? item.label : ""}:{" "}
+                          <span>
+                            {get(
+                              get(obj, `answers[${i}]`, []).find(
+                                (qq) => qq.question === item.id
+                              ),
+                              "answer",
+                              ""
+                            )}
+                          </span>
+                        </p>
                       ) : item.type === 7 ? (
-                        <>
-                          <p>
-                            {item.label ? item.label : ""}:
-                            <span>
-                              {get(
-                                get(obj, `answers[${i}]`, []).find(
-                                  (qq) => qq.question === item.id
-                                ),
-                                "answer",
-                                ""
-                              )}{" "}
-                            </span>
-                          </p>
-                        </>
+                        <p>
+                          {item.label ? item.label : ""}:{" "}
+                          <span>
+                            {get(
+                              get(obj, `answers[${i}]`, []).find(
+                                (qq) => qq.question === item.id
+                              ),
+                              "answer",
+                              ""
+                            )}
+                          </span>
+                        </p>) : item.type === 8 ? (
+                        <p>
+                          {item.label ? item.label : ""}:{" "}
+                          <span>
+                            {get(
+                              get(obj, `answers[${i}]`, []).find(
+                                (qq) => qq.question === item.id
+                              ),
+                              "answer",
+                              ""
+                            )}
+                          </span>
+                        </p>
                       ) : (
                         ""
                       )}

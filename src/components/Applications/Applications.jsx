@@ -1,5 +1,5 @@
 import { get } from "lodash";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -9,10 +9,16 @@ import Axios from "../../utils/httpClient";
 import Loyout from "../sections/loyout/Loyout";
 import InputMask from "react-input-mask";
 import UIResult from "../../styleComponents/UiComponents/UIResult";
+import { MdContentCopy } from "react-icons/md";
+import { toast, ToastContainer } from "react-toastify";
+import CopyToClipboard from "react-copy-to-clipboard";
+import Select from "react-select";
 export default function Applications() {
   const [company, setCompany] = useState([]);
   const [results, setResults] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const [copyy, setCopy] = useState("");
   const [answer, setAnswer] = useState(
     searchParams.get("company") ? searchParams.get("company") : ""
   );
@@ -21,18 +27,79 @@ export default function Applications() {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const notify = () => toast(`Copied!`);
+  const copy = useRef(null);
   const setMainLoading = (l = false) => {
     dispatch({ type: "SET_LOADING", payload: l });
   };
 
   useEffect(() => {
     getCompany();
-    setAnswer(searchParams.get("company") ? searchParams.get("company") : "");
-    setPhone(searchParams.get("phone") ? searchParams.get("phone") : "");
-    getlist();
-  }, [searchParams]);
+    const c = searchParams.get("company") ? searchParams.get("company") : "";
+    const p = searchParams.get("phone") ? searchParams.get("phone") : "";
+    setAnswer(c);
+    setPhone(p);
+    getlist(p, c);
 
+    //setCopy(copy.current.innerText);
+  }, [searchParams]);
+  const codeSnippet = `
+  ${copyy}
+ `;
+  const defaultOptionsss = {
+    isMulti: false,
+    isSearchable: false,
+    isDisabled: false,
+    styles: {
+      control: (styles) => ({
+        ...styles,
+        width: "100%",
+        maxHeight: "48px",
+        border: "none",
+        borderRadius: "12px",
+        boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)",
+        "&:hover": {
+          borderColor: "#CED5DC",
+        },
+      }),
+      indicatorSeparator: (styles) => ({
+        ...styles,
+        backgroundColor: "white",
+        with: "0px",
+      }),
+      indicatorsContainer: (styles) => ({
+        ...styles,
+        color: "black",
+        margin: "10px 14px",
+        height: "25px",
+        width: "25px",
+        //  border: "2px solid #4F89CB",
+        borderRadius: "50%",
+      }),
+      indicatorContainer: (styles) => ({
+        ...styles,
+        padding: "0px",
+      }),
+      MultiValueGeneric: (styles) => ({
+        ...styles,
+        paddingTop: "10px",
+      }),
+      multiValue: (styles) => ({
+        ...styles,
+        maxHeight: "35px",
+        borderRadius: "5px",
+        marginLeft: "-6px",
+        marginRight: "8px",
+        background: "#F4F6F9",
+      }),
+      placeholder: (styles) => ({
+        ...styles,
+        fontWeight: 400,
+        fontSize: "15px",
+        lineHeight: "18px",
+      }),
+    },
+  };
   const getCompany = () => {
     setMainLoading(true);
     Axios()
@@ -46,13 +113,15 @@ export default function Applications() {
   };
   const Client = (ee) => {
     setAnswer(ee.target.value);
-    // const inputValueToUrll = encodeURI(ee.target.value);
+    const inputValueToUrll = encodeURI(ee.target.value);
 
-    getlist(
-      searchParams.get("phone") ? searchParams.get("phone") : "",
-      ee.target.value
+    // getlist(
+    //   searchParams.get("phone") ? searchParams.get("phone") : "",
+    //   ee.target.value
+    // );
+    navigate(
+      "./?company=" + inputValueToUrll + (phone ? "&phone=" + phone : "")
     );
-    //window.location.href = "?company=" + inputValueToUrll;
   };
   const PhoneNum = (e) => {
     setPhone(e.target.value);
@@ -76,11 +145,13 @@ export default function Applications() {
         .replace(/_/g, "")
         .toString().length === 12
     ) {
-      getlist(
-        e.target.value,
-        searchParams.get("company") ? searchParams.get("company") : ""
+      // getlist(
+      //   e.target.value,
+      //   searchParams.get("company") ? searchParams.get("company") : ""
+      // );
+      navigate(
+        "./?phone=" + inputValueToUrl + (answer ? "&company=" + answer : "")
       );
-      window.location.href = "?phone=" + inputValueToUrl;
     }
   };
   const Clear = () => {
@@ -89,6 +160,7 @@ export default function Applications() {
     navigate("/my-applications");
   };
   const getlist = (phoneNum = phone, Client = answer) => {
+    //setCopy(copy.current.innerText);
     setMainLoading(true);
     Axios()
       .get(
@@ -123,7 +195,6 @@ export default function Applications() {
     <>
       <Loyout>
         <Container>
-          {console.log(answer, "aa")}
           <div className="body">
             <div className="filter">
               <h4>Клиент</h4>
@@ -142,7 +213,18 @@ export default function Applications() {
                   </label>
                 </div>
               ))}
-
+              {/* 
+              <Select
+                {...defaultOptionsss}
+                value={company.find((ee) => ee?.id === answer)}
+                onChange={(e) => Client(e)}
+          
+                options={company.map(({ id, name }) => ({
+                  label: name,
+                  value: id,
+                }))}
+               
+              /> */}
               <h4>Номер телефона</h4>
               <InputMask
                 className="InputMask"
@@ -174,9 +256,39 @@ export default function Applications() {
               </div>
               {results && results?.length ? (
                 <>
-                  {results.map((results) => (
+                  {results.map((results, ind) => (
                     <UIResult>
-                      <div className="otvet_informations">
+                      <div
+                        style={{
+                          display: "flex",
+                          textAlign: "end",
+                          justifyContent: "end",
+                          right: "2px",
+                          top: "11px",
+                          position: "absolute",
+                          margin: "0px 20px 0px 0px",
+                        }}
+                      >
+                        <CopyToClipboard text={codeSnippet} onClick={notify}>
+                          <div>
+                            <ToastContainer
+                              style={{ color: "rebeccapurple" }}
+                            />
+                            <MdContentCopy
+                              className="MdContentCopy"
+                              onClick={notify}
+                              color="#4F89CB"
+                              size={"1.5em"}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </div>
+                        </CopyToClipboard>
+                      </div>
+                      <div
+                        className="otvet_informations"
+                        ref={copy}
+                        key={results}
+                      >
                         <div className="otvet_information">
                           <p>
                             Ф.И.О клиента: <span>{results?.full_name}</span>
@@ -185,11 +297,6 @@ export default function Applications() {
                         <div className="otvet_information">
                           <p>
                             Контакт: <span>{results?.phone}</span>
-                          </p>
-                        </div>
-                        <div className="otvet_information">
-                          <p>
-                            Маркет: <span>{results?.company?.name}</span>
                           </p>
                         </div>
                         {results?.app_item.map((e) => {
@@ -230,7 +337,7 @@ export default function Applications() {
                                         </span>
                                       </p>
                                     </>
-                                  ) : (
+                                  ) : ee?.question?.type === 5 ? (
                                     <>
                                       <p>
                                         {ee?.question?.name} :{" "}
@@ -241,6 +348,29 @@ export default function Applications() {
                                         </span>
                                       </p>
                                     </>
+                                  ) : ee?.question?.type === 6 ? (
+                                    <>
+                                      <p>
+                                        {ee?.question?.name} :{" "}
+                                        <span>{ee.answer}</span>
+                                      </p>
+                                    </>
+                                  ) : ee?.question?.type === 7 ? (
+                                    <>
+                                      <p>
+                                        {ee?.question?.name} :{" "}
+                                        <span>{ee.answer}</span>
+                                      </p>
+                                    </>
+                                  ) : ee?.question?.type === 8 ? (
+                                    <>
+                                      <p>
+                                        {ee?.question?.name} :{" "}
+                                        <span>{ee.answer}</span>
+                                      </p>
+                                    </>
+                                  ) : (
+                                    <></>
                                   )}
                                 </div>
                               </>

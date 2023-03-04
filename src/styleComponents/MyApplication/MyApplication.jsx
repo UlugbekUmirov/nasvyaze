@@ -54,6 +54,7 @@ export const Container = styled.div`
         line-height: 19px;
         color: #6f818f;
         background: #f6f6f6;
+        margin-bottom: 50px;
         border-radius: 8px;
         padding: 16px 31.5px;
         border: none;

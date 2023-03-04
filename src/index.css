@@ -29,7 +29,7 @@ code {
 }
 .css-15lsz6c-IndicatorsContainer {
   padding: 0px !important;
-  border: 2px solid #4f89cb !important;
+  border: 2px solid #4f95cb !important;
   border-radius: 50% !important;
   margin: 0px 5px !important;
 }
@@ -52,6 +52,10 @@ code {
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
+}
+::-webkit-calendar-picker-indicator {
+  border-radius:50%;
+  color:#4f89cb
 }
 .page {
   text-align: center;
@@ -106,6 +110,9 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 .notFoundResult {
   text-align: center;
+}
+.MdContentCopy:hover {
+  background: #f1f3f4;
 }
 @media (max-width: 450px) {
   .my_application {
