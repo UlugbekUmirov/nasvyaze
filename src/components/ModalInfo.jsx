@@ -167,7 +167,7 @@ const ModalInfo = (props) => {
             {title0 ? <p className="t0">{title0}</p> : null}
             {title1 ? <p className="t1">{title1}</p> : null}
 
-        {/*     <CopyToClipboard
+            <CopyToClipboard
               text={codeSnippet}
               onClick={notify}
               onCopy={onCopyText}
@@ -182,7 +182,7 @@ const ModalInfo = (props) => {
                   style={{ cursor: "pointer" }}
                 />
               </div>
-            </CopyToClipboard> */}
+            </CopyToClipboard>
           </div>
           <div id="copy" ref={copy} className="tekst">
             {obj2?.full_name ? (
@@ -277,7 +277,7 @@ const ModalInfo = (props) => {
                               ),
                               "answer",
                               ""
-                            )}
+                            ).replace(/T/, " ")}
                           </span>
                         </p>
                       ) : item.type === 7 ? (

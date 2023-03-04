@@ -71,59 +71,34 @@ export default function Home() {
             <div>Выберите компанию</div>
             <div></div>
           </div>
-          <form
-            action="
-          
-          "
-            className="formm"
-          >
-            <UiInput className="search" onSubmit={(e) => handleSearch(e)}>
-              <input
-                type="search"
-                placeholder="Искать"
-                value={search !== null ? search : ""}
-                name="search"
-                onChange={handlechange}
-              />
-              <button
-                type="submit"
-                style={{ border: "none", marginBottom: "27px", padding: "0" }}
-              >
-                <img src="/images/Group (2).svg" alt="" />
-              </button>
-            </UiInput>
-            <div>
-              <UiInput className="icons-search" onClick={Refresh}>
-                <TbRefresh size={"2em"} color={"#4F89CB"} />
-              </UiInput>
-            </div>
-          </form>
-          {company && company.toString().length !== 0 ? (
-            company.map(({ name, id, image }) => (
-              <Link
-                to={`/conversation-type/${id}`}
-                style={{ textDecoration: "none" }}
-              >
-                {}
-                <UiCard>
-                  <div className="companyCardd" key={id}>
-                    {image === "" ? (
-                      <div className="name">{name}</div>
-                    ) : (
-                      <img
-                        width={"100%"}
-                        height={"100%"}
-                        src={`https://isurvey.gazon-tashkent.uz/media/${image}`}
-                        alt=""
-                      />
-                    )}
-                  </div>
-                </UiCard>
-              </Link>
-            ))
-          ) : (
-            <h4 style={{ textAlign: "center" }}>Not Result Found</h4>
-          )}
+          <div className="home-company">
+            {company && company.toString().length !== 0 ? (
+              company.map(({ name, id, image }) => (
+                <Link
+                  to={`/conversation-type/${id}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  {}
+                  <UiCard>
+                    <div className="companyCardd" key={id}>
+                      {image === "" ? (
+                        <div className="name">{name}</div>
+                      ) : (
+                        <img
+                          width={"100%"}
+                          height={"100%"}
+                          src={`https://isurvey.gazon-tashkent.uz/media/${image}`}
+                          alt=""
+                        />
+                      )}
+                    </div>
+                  </UiCard>
+                </Link>
+              ))
+            ) : (
+              <h4 style={{ textAlign: "center" }}>Not Result Found</h4>
+            )}
+          </div>
         </div>
       </Container>
     </Loyout>

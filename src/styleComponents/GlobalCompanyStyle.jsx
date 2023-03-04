@@ -10,6 +10,11 @@ export const Container = styled.div`
   & .body {
     width: 679px;
     margin: 0 32px;
+    & .home-company {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 1rem;
+    }
     & .search {
       position: relative;
       width: 100%;

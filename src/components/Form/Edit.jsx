@@ -487,6 +487,7 @@ export default function Edit() {
                                     <label>{item?.label}</label>
                                     <input
                                       type="number"
+                                      pattern="[0-9]*"
                                       placeholder={item?.label}
                                       name={question?.id}
                                       value={get(

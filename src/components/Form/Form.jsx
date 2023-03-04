@@ -230,7 +230,6 @@ export default function Form() {
       t = true;
 
     cl.forEach((cc) => {
-
       if (cc?.question === q_id) {
         ncl = [...ncl, { ...cc, answer: e?.target?.value ?? "", type: q_type }];
         t = false;
@@ -309,7 +308,7 @@ export default function Form() {
             question: ss?.question,
             answer: ss?.answer.replace(/T0/, " "),
           });
-        }  else {
+        } else {
           cl.push({ question: ss?.question, answer: ss?.answer });
         }
       });
@@ -361,33 +360,54 @@ export default function Form() {
       obj2?.phone === undefined ||
       obj2?.full_name === "" ||
       obj2?.full_name === undefined ||
-      get(obj2?.phone, "phone", "").replace(/-/g, "").toString().length < 10
+      get(obj2, "phone", "")
+        .replace(/-/g, "")
+        .replace(/\(/g, "")
+        .replace(/\)/g, "")
+        .replace(/\+/g, "")
+        .replace(/\s/g, "")
+        .replace(/_/g, "")
+        .toString().length < 12
     ) {
       setStatusModal(false);
       //setErr(true);
     }
     if (
-      //  get(obj2?.phone, "phone", "").replace(/-/g, "").toString().length < 10 ||
+      get(obj2, "phone", "")
+        .replace(/-/g, "")
+        .replace(/\(/g, "")
+        .replace(/\)/g, "")
+        .replace(/\+/g, "")
+        .replace(/\s/g, "")
+        .replace(/_/g, "")
+        .toString().length < 12 ||
       obj2?.phone == undefined ||
       obj2?.phone == ""
     ) {
       setErrP(true);
-    } else {
-      setErrP(false);
-      setStatusModal(true);
+      setStatusModal(false);
     }
-    if (obj2?.full_name === "" || obj2?.full_name === undefined) {
+    if (obj2?.full_name?.length === 0 || obj2?.full_name === undefined) {
       setErrN(true);
-    } else {
-      setErrN(false);
+      setStatusModal(false);
     }
   };
   return (
     <>
       <Loyout>
         <Container>
+          {console.log(
+            get(obj2, "phone", "")
+              .replace(/-/g, "")
+              .replace(/\(/g, "")
+              .replace(/\)/g, "")
+              .replace(/\+/g, "")
+              .replace(/\s/g, "")
+              .replace(/_/g, "")
+              .toString().length,
+            "ssssss"
+          )}
           <div className="body">
-      
             <div className="title">
               <img
                 src="/images/back-arrow-icon 1.svg"
@@ -501,6 +521,7 @@ export default function Form() {
                                     <label>{item?.label}</label>
                                     <input
                                       type="number"
+                                      pattern="[0-9]*"
                                       placeholder={item?.label}
                                       name={question?.id}
                                       value={get(
@@ -612,7 +633,7 @@ export default function Form() {
                                       onChange={(e) =>
                                         changeInput(e, i, item?.id, item?.type)
                                       }
-                                      value={ 
+                                      value={
                                         get(
                                           get(obj, `answers[${i}]`, []).find(
                                             (qq) => qq.question === item.id
@@ -728,7 +749,7 @@ export default function Form() {
       {statusModal ? (
         <ModalInfo
           title0={"  "}
-          title1={"Тескт жалобы"}
+          title1={"Текст жалобы"}
           // title2={"/images/Vector (10).svg"}
           close={setStatusModal}
           market={`${"m"}`}

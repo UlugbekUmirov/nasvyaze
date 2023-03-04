@@ -269,7 +269,7 @@ export default function Applications() {
                           margin: "0px 20px 0px 0px",
                         }}
                       >
-                        <CopyToClipboard text={codeSnippet} onClick={notify}>
+                    {/*     <CopyToClipboard text={codeSnippet} onClick={notify}>
                           <div>
                             <ToastContainer
                               style={{ color: "rebeccapurple" }}
@@ -282,7 +282,7 @@ export default function Applications() {
                               style={{ cursor: "pointer" }}
                             />
                           </div>
-                        </CopyToClipboard>
+                        </CopyToClipboard> */}
                       </div>
                       <div
                         className="otvet_informations"

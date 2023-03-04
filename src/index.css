@@ -45,6 +45,9 @@ code {
   background: #223260;
   min-height: 146px;
 }
+.css-8mmkcg{
+ color:#4f95cb
+}
 .my_application {
   text-decoration: none;
   margin-right: 65px;
@@ -74,6 +77,7 @@ code {
   justify-content: center;
   align-content: center;
 }
+
 .err {
   border: 2px solid #e46c4b !important;
 }
