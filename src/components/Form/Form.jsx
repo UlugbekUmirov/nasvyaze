@@ -295,6 +295,7 @@ export default function Form() {
       }
     });
     setObjErr(a);
+
     l[i] = ncl;
     setObj({
       ...obj,
@@ -424,7 +425,12 @@ export default function Form() {
       let oerr = {};
       objList.forEach((item, index) => {
         const s = anasrersItem.find((qq) => qq.question === item.id);
-        console.log(
+        console.log(oerr, "ddddd");
+        console.log(item?.type);
+        if (s?.answer && item?.type !== 7) {
+          oerr = { ...oerr, [item?.id]: false };
+        } else if (
+          item?.type === 7 &&
           s?.answer
             .replace(/-/g, "")
             .replace(/\(/g, "")
@@ -432,28 +438,9 @@ export default function Form() {
             .replace(/\+/g, "")
             .replace(/\s/g, "")
             .replace(/_/g, "")
-            .toString().length,
-          "sss"
-        );
-        if (s?.answer) {
-          if (item?.type === 7) {
-            if (
-              s?.answer
-                .replace(/-/g, "")
-                .replace(/\(/g, "")
-                .replace(/\)/g, "")
-                .replace(/\+/g, "")
-                .replace(/\s/g, "")
-                .replace(/_/g, "")
-                .toString().length < 12
-            ) {
-              oerr = { ...oerr, [item?.id]: true };
-            } else {
-              oerr = { ...oerr, [item?.id]: false };
-            }
-          } else {
-            oerr = { ...oerr, [item?.id]: false };
-          }
+            .toString().length >= 12
+        ) {
+          oerr = { ...oerr, [item?.id]: false };
         } else {
           oerr = { ...oerr, [item?.id]: true };
           answerErr = false;
