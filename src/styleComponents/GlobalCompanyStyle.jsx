@@ -267,9 +267,11 @@ export const Container = styled.div`
       color: #001d56;
       text-align: center;
       margin-bottom: 22px;
-      margin-right: 20px;
+      & .info{
+      cursor: pointer;
+      }
       & div {
-        margin-top: 10px;
+        
         @media (max-width: 400px) {
           font-size: 17px;
         }

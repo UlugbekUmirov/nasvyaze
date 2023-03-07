@@ -191,6 +191,36 @@ export default function Applications() {
       });
   };
 
+  const copyTextGenerete = (item) => {
+    let s = ` Ф.И.О клиента: ${item?.full_name}\nКонтакт: ${item?.phone} `;
+    item?.app_item.forEach((e) => {
+      e?.app_answer.forEach((ee) => {
+        if (ee?.question?.type === 1) {
+          s += `\n${ee?.question?.name}: ${ee.answer}`;
+        } else if (ee?.question?.type === 2) {
+          s += `\n${ee?.question?.name}: ${ee.answer}`;
+        } else if (ee?.question?.type === 3) {
+          s += `\n${ee?.question?.name}: ${ee.answer}`;
+        } else if (ee?.question?.type === 4) {
+          s += `\n${ee?.question?.name}: ${ee?.select_answer?.map(
+            (e) => e?.name
+          )}`;
+        } else if (ee?.question?.type === 5) {
+          s += `\n${ee?.question?.name}: ${ee?.select_answer?.map(
+            (e) => e?.name
+          )}`;
+        } else if (ee?.question?.type === 6) {
+          s += `\n${ee?.question?.name}: ${ee.answer.replace(/T/g, " ")}`;
+        } else if (ee?.question?.type === 7) {
+          s += `\n${ee?.question?.name}: ${ee.answer}`;
+        } else {
+          s += `\n${ee?.question?.name}: ${ee.answer}`;
+        }
+      });
+    });
+    s += `\nОператор: ${item?.operator}`;
+    return s;
+  };
   return (
     <>
       <Loyout>
@@ -268,26 +298,36 @@ export default function Applications() {
                           position: "absolute",
                           margin: "0px 20px 0px 0px",
                         }}
+                        key={ind}
                       >
-                    {/*     <CopyToClipboard text={codeSnippet} onClick={notify}>
-                          <div>
-                            <ToastContainer
-                              style={{ color: "rebeccapurple" }}
-                            />
-                            <MdContentCopy
-                              className="MdContentCopy"
-                              onClick={notify}
-                              color="#4F89CB"
-                              size={"1.5em"}
-                              style={{ cursor: "pointer" }}
-                            />
-                          </div>
+                        {/*     <CopyToClipboard text={codeSnippet}>
                         </CopyToClipboard> */}
+                        <div>
+                          <CopyToClipboard
+                            text={copyTextGenerete(results)}
+                            onClick={notify}
+                            //  onCopy={onCopyText}
+                          >
+                            <div>
+                              <ToastContainer
+                                style={{ color: "rebeccapurple" }}
+                              />
+                              <MdContentCopy
+                                className="MdContentCopy"
+                                color="#4F89CB"
+                                size={"1.5em"}
+                                onClick={notify}
+                                style={{ cursor: "pointer" }}
+                              />
+                            </div>
+                          </CopyToClipboard>
+                        </div>
                       </div>
                       <div
                         className="otvet_informations"
-                        ref={copy}
-                        key={results}
+                        //ref={copy}
+
+                        id={"item_" + ind}
                       >
                         <div className="otvet_information">
                           <p>
@@ -307,28 +347,28 @@ export default function Applications() {
                                   {ee?.question?.type === 1 ? (
                                     <>
                                       <p>
-                                        {ee?.question?.name} :{" "}
+                                        {ee?.question?.name}:{" "}
                                         <span>{ee.answer}</span>
                                       </p>
                                     </>
                                   ) : ee?.question?.type === 2 ? (
                                     <>
                                       <p>
-                                        {ee?.question?.name} :{" "}
+                                        {ee?.question?.name}:{" "}
                                         <span>{ee.answer}</span>
                                       </p>
                                     </>
                                   ) : ee?.question?.type === 3 ? (
                                     <>
                                       <p>
-                                        {ee?.question?.name} :{" "}
+                                        {ee?.question?.name}:{" "}
                                         <span>{ee.answer}</span>
                                       </p>
                                     </>
                                   ) : ee?.question?.type === 4 ? (
                                     <>
                                       <p>
-                                        {ee?.question?.name} :{" "}
+                                        {ee?.question?.name}:{" "}
                                         <span>
                                           {" "}
                                           {ee?.select_answer?.map(
@@ -340,7 +380,7 @@ export default function Applications() {
                                   ) : ee?.question?.type === 5 ? (
                                     <>
                                       <p>
-                                        {ee?.question?.name} :{" "}
+                                        {ee?.question?.name}:{" "}
                                         <span>
                                           {ee?.select_answer?.map(
                                             (e) => e?.name
@@ -351,21 +391,23 @@ export default function Applications() {
                                   ) : ee?.question?.type === 6 ? (
                                     <>
                                       <p>
-                                        {ee?.question?.name} :{" "}
-                                        <span>{ee.answer}</span>
+                                        {ee?.question?.name}:{" "}
+                                        <span>
+                                          {ee.answer.replace(/T/g, " ")}
+                                        </span>
                                       </p>
                                     </>
                                   ) : ee?.question?.type === 7 ? (
                                     <>
                                       <p>
-                                        {ee?.question?.name} :{" "}
+                                        {ee?.question?.name}:{" "}
                                         <span>{ee.answer}</span>
                                       </p>
                                     </>
                                   ) : ee?.question?.type === 8 ? (
                                     <>
                                       <p>
-                                        {ee?.question?.name} :{" "}
+                                        {ee?.question?.name}:{" "}
                                         <span>{ee.answer}</span>
                                       </p>
                                     </>
@@ -377,6 +419,11 @@ export default function Applications() {
                             );
                           });
                         })}
+                        <div className="otvet_information">
+                          <p>
+                            Оператор: <span>{results?.operator}</span>
+                          </p>
+                        </div>
                         {results?.reply.toString().length !== 0 ? (
                           <>
                             <div className="otvet_title">Ответ:</div>
@@ -403,7 +450,7 @@ export default function Applications() {
                   style={{ marginLeft: "14px", marginBottom: "20px" }}
                 >
                   {" "}
-                  <h4>Not Result Found! </h4>
+                  <h4>Результат не найден! </h4>
                 </div>
               )}
             </div>

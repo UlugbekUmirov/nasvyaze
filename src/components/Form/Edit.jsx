@@ -21,6 +21,7 @@ export default function Edit() {
   const [company, setCompany] = useState([]);
   const [errP, setErrP] = useState(false);
   const [errN, setErrN] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
   const [objE, setObjE] = useState({});
   const [obj, setObj] = useState({
     answers: [[]],
@@ -376,7 +377,6 @@ export default function Edit() {
     <>
       <Loyout>
         <Container>
-        
           <div className="body">
             <div className="title">
               <img
@@ -643,9 +643,9 @@ export default function Edit() {
                                     <label htmlFor="">{item?.label}</label>
 
                                     <input
-                                      className="date-time"
+                                      className="date"
                                       type="date"
-                                      placeholder="дд.мм.гг. - чч.мм."
+                                      placeholder="дд.мм.гг"
                                       onChange={(e) =>
                                         changeInput(e, i, item?.id, item?.type)
                                       }

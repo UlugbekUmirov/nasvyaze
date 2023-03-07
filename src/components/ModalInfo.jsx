@@ -46,8 +46,8 @@ const Main = styled.div`
           padding-right: 20px;
           width: 90%;
         }
-        & p {
-          margin: 10px 10px;
+        & div {
+          margin: 10px 10px 10px 0px;
           font-weight: 500;
           font-size: 18px;
           color: #223260;
@@ -151,6 +151,7 @@ const ModalInfo = (props) => {
 
   useEffect(() => {
     const copyy = copy.current;
+    console.log("===>", copyy, copyy.innerText);
     setCopy(copyy.innerText);
   }, []);
   const codeSnippet = `
@@ -170,7 +171,7 @@ const ModalInfo = (props) => {
             <CopyToClipboard
               text={codeSnippet}
               onClick={notify}
-              onCopy={onCopyText}
+              //  onCopy={onCopyText}
             >
               <div>
                 <ToastContainer style={{ color: "rebeccapurple" }} />
@@ -186,14 +187,14 @@ const ModalInfo = (props) => {
           </div>
           <div id="copy" ref={copy} className="tekst">
             {obj2?.full_name ? (
-              <p>
+              <div>
                 Ф.И.О клиента: <span>{obj2?.full_name}</span>
-              </p>
+              </div>
             ) : null}
             {obj2?.phone ? (
-              <p>
+              <div>
                 Контакт: <span>{obj2?.phone}</span>
-              </p>
+              </div>
             ) : null}
             {obj?.answers.map((anasrersItem, i) => {
               return (
@@ -201,7 +202,7 @@ const ModalInfo = (props) => {
                   {objList.map((item, index) => (
                     <>
                       {item.type === 1 ? (
-                        <p>
+                        <div>
                           {item.label ? item.label : ""}:{" "}
                           <span>
                             {get(
@@ -212,9 +213,9 @@ const ModalInfo = (props) => {
                               ""
                             )}
                           </span>
-                        </p>
+                        </div>
                       ) : item.type === 2 ? (
-                        <p>
+                        <div>
                           {item.label ? item.label : ""}:{" "}
                           <span>
                             {get(
@@ -225,9 +226,9 @@ const ModalInfo = (props) => {
                               ""
                             )}
                           </span>
-                        </p>
+                        </div>
                       ) : item.type === 3 ? (
-                        <p>
+                        <div>
                           {item.label ? item.label : ""}:{" "}
                           <span>
                             {get(
@@ -238,9 +239,9 @@ const ModalInfo = (props) => {
                               ""
                             )}
                           </span>
-                        </p>
+                        </div>
                       ) : item.type === 4 ? (
-                        <p>
+                        <div>
                           {item.label ? item.label : ""}:{" "}
                           <span>
                             {
@@ -253,9 +254,9 @@ const ModalInfo = (props) => {
                               )?.label
                             }
                           </span>
-                        </p>
+                        </div>
                       ) : item.type === 5 ? (
-                        <p>
+                        <div>
                           {item.label ? item.label : ""}:{" "}
                           <span>
                             {get(
@@ -266,9 +267,9 @@ const ModalInfo = (props) => {
                               ""
                             )?.map((e) => e?.label)}
                           </span>
-                        </p>
+                        </div>
                       ) : item.type === 6 ? (
-                        <p>
+                        <div>
                           {item.label ? item.label : ""}:{" "}
                           <span>
                             {get(
@@ -279,9 +280,9 @@ const ModalInfo = (props) => {
                               ""
                             ).replace(/T/, " ")}
                           </span>
-                        </p>
+                        </div>
                       ) : item.type === 7 ? (
-                        <p>
+                        <div>
                           {item.label ? item.label : ""}:{" "}
                           <span>
                             {get(
@@ -292,8 +293,9 @@ const ModalInfo = (props) => {
                               ""
                             )}
                           </span>
-                        </p>) : item.type === 8 ? (
-                        <p>
+                        </div>
+                      ) : item.type === 8 ? (
+                        <div>
                           {item.label ? item.label : ""}:{" "}
                           <span>
                             {get(
@@ -304,7 +306,7 @@ const ModalInfo = (props) => {
                               ""
                             )}
                           </span>
-                        </p>
+                        </div>
                       ) : (
                         ""
                       )}

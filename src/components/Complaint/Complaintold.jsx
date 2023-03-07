@@ -126,7 +126,6 @@ export default function Complaintold() {
     Axios()
       .get("/api/v1/account/get-role/")
       .then((res) => {
-
         setStaff(res?.data?.is_staff);
       })
       .finally(() => {
@@ -259,7 +258,7 @@ export default function Complaintold() {
                                   <>
                                     <p>
                                       {ee?.question?.name} :{" "}
-                                      <span>{ee.answer}</span>
+                                      <span>{ee.answer.replace(/T/,' ')}</span>
                                     </p>
                                   </>
                                 ) : ee?.question?.type === 7 ? (
@@ -284,6 +283,13 @@ export default function Complaintold() {
                           );
                         });
                       })}
+                      {
+                        <div className="otvet_information">
+                          <p>
+                            Оператор: <span>{results?.operator}</span>
+                          </p>
+                        </div>
+                      }
                       {results?.reply.toString().length !== 0 ? (
                         <>
                           <div className="otvet_title">Ответ:</div>
@@ -305,7 +311,7 @@ export default function Complaintold() {
                 ))}
               </>
             ) : (
-              <h4 className="notFoundResult">Not Result Found</h4>
+              <h4 className="notFoundResult">Результат не найден!</h4>
             )}
 
             <div className="page">

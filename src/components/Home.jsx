@@ -96,7 +96,7 @@ export default function Home() {
                 </Link>
               ))
             ) : (
-              <h4 style={{ textAlign: "center" }}>Not Result Found</h4>
+              <h4 style={{ textAlign: "center" }}>Результат не найден!</h4>
             )}
           </div>
         </div>
