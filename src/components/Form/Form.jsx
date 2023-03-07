@@ -8,11 +8,8 @@ import Select from "react-select";
 import Loyout from "../sections/loyout/Loyout";
 import InputMask from "react-input-mask";
 import ModalInfo from "../ModalInfo";
-import Datetime from "react-datetime";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { DatePicker } from "react-rainbow-components";
-import DateTimePicker from "react-datetime-picker";
 import { FaQuestion } from "react-icons/fa";
 import ModalInfoForm from "../ModalInfoForm";
 export default function Form() {
@@ -30,6 +27,7 @@ export default function Form() {
   const [errN, setErrN] = useState(false);
   const [objErr, setObjErr] = useState([]);
   const [infoModal, setInfoModal] = useState(false);
+
   const dispatch = useDispatch();
 
   const [iddd, setIddd] = useState(0);
@@ -236,29 +234,32 @@ export default function Form() {
       t = true;
 
     cl.forEach((cc) => {
-      console.log(cc?.question, q_id, "sss");
       if (cc?.question === q_id) {
-        /*  setObjErr([
-          {
-            oerr: {
-              ...get(objErr, `${i}.${cc?.question }`, false),
-              [q_id]: false,
-            },
-          },
-        ]); */
         ncl = [...ncl, { ...cc, answer: e?.target?.value ?? "", type: q_type }];
-        if (q_type === 6) {
+        /*  if (q_type === 6) {
           ncl = [
             ...ncl,
             { ...cc, answer: e?.target?.value ?? new Date(), type: q_type },
           ];
-        }
+        } */
         t = false;
       } else {
         ncl = [...ncl, cc];
       }
     });
-    // setObjErr([{ oerr: { ...q_id, [q_id]: false } }]);
+    let a = [];
+    objErr.forEach((o, index) => {
+      console.log(o, "ooo");
+      if (i === index) {
+        let p = o;
+        p.oerr[q_id] = false;
+        a = [...a, p];
+      } else {
+        a = [...a, o];
+      }
+    });
+    setObjErr(a);
+
     if (t) {
       ncl = [...ncl, { question: q_id, answer: e?.target?.value }];
     }
@@ -282,7 +283,18 @@ export default function Form() {
     if (t) {
       ncl = [...ncl, { question: q_id, answer: val, type: q_type }];
     }
-
+    let a = [];
+    objErr.forEach((o, index) => {
+      console.log(o, "ooo");
+      if (i === index) {
+        let p = o;
+        p.oerr[q_id] = false;
+        a = [...a, p];
+      } else {
+        a = [...a, o];
+      }
+    });
+    setObjErr(a);
     l[i] = ncl;
     setObj({
       ...obj,
@@ -306,6 +318,17 @@ export default function Form() {
       ncl = [...ncl, { question: q_id, answer: val, type: q_type }];
     }
     l[i] = ncl;
+    let a = [];
+    objErr.forEach((o, index) => {
+      if (i === index) {
+        let p = o;
+        p.oerr[q_id] = false;
+        a = [...a, p];
+      } else {
+        a = [...a, o];
+      }
+    });
+    setObjErr(a);
     setObj({
       ...obj,
       answers: l,
@@ -387,8 +410,8 @@ export default function Form() {
         .replace(/\s/g, "")
         .replace(/_/g, "")
         .toString().length < 12 ||
-      obj2?.phone == undefined ||
-      obj2?.phone == ""
+      obj2?.phone === undefined ||
+      obj2?.phone === ""
     ) {
       setErrP(true);
     }
@@ -401,9 +424,36 @@ export default function Form() {
       let oerr = {};
       objList.forEach((item, index) => {
         const s = anasrersItem.find((qq) => qq.question === item.id);
-
+        console.log(
+          s?.answer
+            .replace(/-/g, "")
+            .replace(/\(/g, "")
+            .replace(/\)/g, "")
+            .replace(/\+/g, "")
+            .replace(/\s/g, "")
+            .replace(/_/g, "")
+            .toString().length,
+          "sss"
+        );
         if (s?.answer) {
-          oerr = { ...oerr, [item?.id]: false };
+          if (item?.type === 7) {
+            if (
+              s?.answer
+                .replace(/-/g, "")
+                .replace(/\(/g, "")
+                .replace(/\)/g, "")
+                .replace(/\+/g, "")
+                .replace(/\s/g, "")
+                .replace(/_/g, "")
+                .toString().length < 12
+            ) {
+              oerr = { ...oerr, [item?.id]: true };
+            } else {
+              oerr = { ...oerr, [item?.id]: false };
+            }
+          } else {
+            oerr = { ...oerr, [item?.id]: false };
+          }
         } else {
           oerr = { ...oerr, [item?.id]: true };
           answerErr = false;
@@ -431,6 +481,7 @@ export default function Form() {
       obj2?.full_name === undefined
     ) {
       setStatusModal(false);
+      window.scrollTo(0, 0);
     } else {
       setStatusModal(true);
     }
@@ -441,6 +492,7 @@ export default function Form() {
       <Loyout>
         <Container>
           <div className="body">
+            {console.log(objErr, "lllll")}
             <div className="title">
               <img
                 src="/images/back-arrow-icon 1.svg"
@@ -598,7 +650,6 @@ export default function Form() {
                                 </>
                               ) : item.type === 3 ? (
                                 <>
-                                  {console.log(objErr, "ss")}
                                   <div className="input_target2">
                                     <label>{item?.label}</label>
                                     <textarea
@@ -724,11 +775,7 @@ export default function Form() {
                                           ? "err time"
                                           : "time"
                                       }
-                                      id="Test"
-                                      name="Test"
-                                      format-value="yyyy-MM-ddTHH:mm"
                                       placeholder="дд.мм.гг. - чч.мм."
-                                      pattern="[0-9]{2}:[0-9]{2}"
                                       onChange={(e) =>
                                         changeInput(e, i, item?.id, item?.type)
                                       }
@@ -742,27 +789,6 @@ export default function Form() {
                                         ) || ""
                                       }
                                     />
-
-                                    {/*   <DatePicker
-                                   
-                                      locale="pt-BR"
-                                      showTimeSelect
-                                      timeFormat="p"
-                                      timeIntervals={15}
-                                      dateFormat="Pp"
-                                      onChange={(e) =>
-                                        changeInput(e, i, item?.id, item?.type)
-                                      }
-                                      selected={
-                                        get(
-                                          get(obj, `answers[${i}]`, []).find(
-                                            (qq) => qq.question === item.id
-                                          ),
-                                          "answer",
-                                          ""
-                                        ) || ""
-                                      }
-                                    /> */}
                                   </div>
                                 </>
                               ) : item.type === 7 ? (

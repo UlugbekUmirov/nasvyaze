@@ -45,8 +45,8 @@ code {
   background: #223260;
   min-height: 146px;
 }
-.css-8mmkcg{
- color:#4f95cb
+.css-8mmkcg {
+  color: #4f95cb;
 }
 .my_application {
   text-decoration: none;
@@ -57,8 +57,8 @@ code {
   line-height: 17px;
 }
 ::-webkit-calendar-picker-indicator {
-  border-radius:50%;
-  color:#4f89cb
+  border-radius: 50%;
+  color: #4f89cb;
 }
 .page {
   text-align: center;
@@ -80,6 +80,8 @@ code {
 
 .err {
   border: 2px solid #e46c4b !important;
+  border-radius: 12px;
+
 }
 .page span {
   margin: 12px;

@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import { ToastContainer } from "react-toastify";
-import { MdContentCopy } from "react-icons/md";
-import { get } from "lodash";
+
+import { IoMdClose } from "react-icons/io";
+
 const Main = styled.div`
   & .layer {
     position: fixed;
@@ -29,7 +28,7 @@ const Main = styled.div`
     height: 100%;
     & .cardfilter {
       position: fixed;
-      min-height: 445px;
+      min-height: 200px;
       max-width: 600px;
       background: #fff;
       overflow: hidden;
@@ -147,7 +146,7 @@ const ModalInfoForm = (props) => {
               <div className="t1"></div>
               <div>
                 <div style={{ cursor: "pointer" }} onClick={() => close(false)}>
-                  x
+                  <IoMdClose></IoMdClose>
                 </div>
               </div>
             </div>
@@ -156,6 +155,7 @@ const ModalInfoForm = (props) => {
             </div>
           </div>
         </div>
+        <BodyHidden />
       </Main>
     </>
   );
