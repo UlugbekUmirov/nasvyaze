@@ -111,6 +111,7 @@ export const Container = styled.div`
             padding-top: 15px;
             line-height: 18px;
             color: #223346;
+            width: 100%!important;
             outline: none;
             outline: 0;
             font-family: "Rubik", sans-serif;
@@ -141,6 +142,7 @@ export const Container = styled.div`
             display: block;
             font-weight: 700;
             font-size: 14px;
+
             line-height: 20px;
             outline: none;
             text-align: center;
@@ -175,11 +177,12 @@ export const Container = styled.div`
             line-height: 20px;
             font-family: "Rubik", sans-serif;
           }
-          & input {
+          & input , & .input{
             height: 44px;
             background: #ffffff;
             border: 1px solid #ffffff;
             border-radius: 12px;
+            width: 100%!important;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             width: calc(100% - 30px);
             display: block;
@@ -263,15 +266,15 @@ export const Container = styled.div`
       justify-content: space-between;
       font-weight: 700;
       font-size: 20px;
+      align-items: center;
       line-height: 24px;
       color: #001d56;
       text-align: center;
       margin-bottom: 22px;
-      & .info{
-      cursor: pointer;
+      & .info {
+        cursor: pointer;
       }
       & div {
-        
         @media (max-width: 400px) {
           font-size: 17px;
         }

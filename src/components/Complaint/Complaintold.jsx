@@ -32,7 +32,7 @@ export default function Complaintold() {
     searchParams.get("search") ? searchParams.get("search") : ""
   );
   const [page, setPage] = useState(
-    searchParams.get("page") ? searchParams.get("page") : ""
+    searchParams.get("page") ? searchParams.get("page") : 1
   );
   const setMainLoading = (l = false) => {
     dispatch({ type: "SET_LOADING", payload: l });
@@ -67,6 +67,7 @@ export default function Complaintold() {
       });
   };
   const handlechange = (e) => {
+    console.log(e.target.value, "value");
     if (e.target.value == null) {
       setSearch(null);
     } else {
@@ -138,6 +139,21 @@ export default function Complaintold() {
   }
   const handleSearch = (e) => {
     e.preventDefault();
+    console.log(search, "s");
+    if (search !== "") {
+      setSearchParams({
+        // ...searchParams,
+        search: search,
+        page: 1,
+      });
+    } else {
+      setSearchParams({
+        // ...searchParams,
+        search: "",
+        page: 1,
+      });
+      navigate("/conversation-type/9/old");
+    }
   };
   return (
     <>
@@ -154,15 +170,20 @@ export default function Complaintold() {
               <div>Тип жалобы</div>
               <div></div>
             </div>
-            <form className="formm">
-              <UiInput className="search" onSubmit={(e) => handleSearch(e)}>
-                <input
-                  type="text"
-                  placeholder="Искать"
-                  value={search !== null ? search : ""}
-                  name="search"
-                  onChange={handlechange}
-                />
+            <form className="formm" onSubmit={handleSearch}>
+              <UiInput className="search">
+                <label
+                  htmlFor="
+              "
+                >
+                  <input
+                    type="text"
+                    placeholder="Искать"
+                    value={search !== null ? search : ""}
+                    name="search"
+                    onChange={handlechange}
+                  />
+                </label>
                 <button
                   type="submit"
                   style={{ border: "none", marginBottom: "27px", padding: "0" }}
@@ -258,7 +279,7 @@ export default function Complaintold() {
                                   <>
                                     <p>
                                       {ee?.question?.name} :{" "}
-                                      <span>{ee.answer.replace(/T/,' ')}</span>
+                                      <span>{ee.answer.replace(/T/, " ")}</span>
                                     </p>
                                   </>
                                 ) : ee?.question?.type === 7 ? (

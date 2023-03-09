@@ -151,12 +151,10 @@ const ModalInfo = (props) => {
 
   useEffect(() => {
     const copyy = copy.current;
-    console.log("===>", copyy, copyy.innerText);
+
     setCopy(copyy.innerText);
   }, []);
-  const codeSnippet = `
-   ${copyy}
-  `;
+  const codeSnippet = `${copyy}`;
 
   return (
     <Main>
@@ -170,7 +168,7 @@ const ModalInfo = (props) => {
 
             <CopyToClipboard
               text={codeSnippet}
-              onClick={notify}
+              //onClick={notify}
               //  onCopy={onCopyText}
             >
               <div>

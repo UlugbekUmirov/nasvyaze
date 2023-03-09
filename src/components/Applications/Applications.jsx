@@ -192,7 +192,7 @@ export default function Applications() {
   };
 
   const copyTextGenerete = (item) => {
-    let s = ` Ф.И.О клиента: ${item?.full_name}\nКонтакт: ${item?.phone} `;
+    let s = `Ф.И.О клиента: ${item?.full_name}\nКонтакт: ${item?.phone} `;
     item?.app_item.forEach((e) => {
       e?.app_answer.forEach((ee) => {
         if (ee?.question?.type === 1) {

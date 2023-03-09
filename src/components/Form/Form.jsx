@@ -4,14 +4,22 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Container } from "../../styleComponents/GlobalCompanyStyle";
 import Axios from "../../utils/httpClient";
+import "rsuite/dist/rsuite.css";
+import "react-datetime/css/react-datetime.css";
 import Select from "react-select";
 import Loyout from "../sections/loyout/Loyout";
 import InputMask from "react-input-mask";
 import ModalInfo from "../ModalInfo";
 import { ToastContainer, toast } from "react-toastify";
+import { DatePicker, Stack } from "rsuite";
 import "react-toastify/dist/ReactToastify.css";
 import { FaQuestion } from "react-icons/fa";
 import ModalInfoForm from "../ModalInfoForm";
+/* 
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers"; */
+
 export default function Form() {
   const navigate = useNavigate();
   const notify = () => toast(`Copied!`);
@@ -31,13 +39,12 @@ export default function Form() {
   const dispatch = useDispatch();
 
   const [iddd, setIddd] = useState(0);
-
+  const [objList, setObjList] = useState([]);
   const [obj, setObj] = useState({
     answers: [[]],
   });
 
   const [obj2, setObj2] = useState({});
-  const [objList, setObjList] = useState([]);
 
   const setMainLoading = (l = false) => {
     dispatch({ type: "SET_LOADING", payload: l });
@@ -232,10 +239,17 @@ export default function Form() {
     let cl = get(l, `[${i}]`, []);
     let ncl = [],
       t = true;
-
+    console.log(cl, "cl");
     cl.forEach((cc) => {
       if (cc?.question === q_id) {
-        ncl = [...ncl, { ...cc, answer: e?.target?.value ?? "", type: q_type }];
+        ncl = [
+          ...ncl,
+          {
+            ...cc,
+            answer: e?.target?.value ?? "",
+            type: q_type,
+          },
+        ];
         /*  if (q_type === 6) {
           ncl = [
             ...ncl,
@@ -441,6 +455,7 @@ export default function Form() {
             .toString().length >= 12
         ) {
           oerr = { ...oerr, [item?.id]: false };
+        } else if (item?.type === 5) {
         } else {
           oerr = { ...oerr, [item?.id]: true };
           answerErr = false;
@@ -479,14 +494,13 @@ export default function Form() {
       <Loyout>
         <Container>
           <div className="body">
-            {console.log(objErr, "lllll")}
             <div className="title">
               <img
                 src="/images/back-arrow-icon 1.svg"
                 alt=""
                 onClick={() => navigate(`/conversation-type/${id}/new`)}
               />
-              <div>{complaints?.label}</div>
+              <div style={{ padding: "0px 25px" }}>{complaints?.label}</div>
               <div>
                 <FaQuestion
                   size={"30px"}
@@ -521,8 +535,8 @@ export default function Form() {
                   <label>Телефон номер для обращения</label>
                   <InputMask
                     placeholder="+998 __ ___ __ __"
-                    formatChars={{ b: "[0-9]", k: "[33-99]" }}
-                    mask="+998 (kk) bbb-bb-bb"
+                    formatChars={{ b: "[0-9]", k: "[3-9]" }}
+                    mask="+998 (kb) bbb-bb-bb"
                     maskChar=""
                     name="phone"
                     className={errP ? "err InputMask" : "InputMask"}
@@ -648,6 +662,11 @@ export default function Form() {
                                         "answer",
                                         get(item, "select_answer.0.name", "")
                                       )}
+                                      defaultValue={get(
+                                        item,
+                                        "select_answer.0.name",
+                                        ""
+                                      )}
                                       className={
                                         get(
                                           objErr,
@@ -750,6 +769,38 @@ export default function Form() {
                                 <>
                                   <div className="input_target">
                                     <label htmlFor="">{item?.label}</label>
+                                    {/* <Stack>
+                                      <DatePicker
+                                        format="yyyy-MM-dd HH:mm"
+                                        className={
+                                          get(
+                                            objErr,
+                                            `${i}.oerr.${item?.id}`,
+                                            false
+                                          )
+                                            ? "err time input"
+                                            : "time input"
+                                        }
+                                        placeholder="дд.мм.гг. - чч.мм."
+                                        onChange={(e) =>
+                                          changeInput(
+                                            e,
+                                            i,
+                                            item?.id,
+                                            item?.type
+                                          )
+                                        }
+                                        value={
+                                          get(
+                                            get(obj, `answers[${i}]`, []).find(
+                                              (qq) => qq.question === item.id
+                                            ),
+                                            "answer",
+                                            ""
+                                          ) || ""
+                                        }
+                                      />
+                                    </Stack> */}
 
                                     <input
                                       type="datetime-local"
@@ -762,6 +813,7 @@ export default function Form() {
                                           ? "err time"
                                           : "time"
                                       }
+                                      max="2200-06-07T00:00"
                                       placeholder="дд.мм.гг. - чч.мм."
                                       onChange={(e) =>
                                         changeInput(e, i, item?.id, item?.type)
@@ -776,6 +828,34 @@ export default function Form() {
                                         ) || ""
                                       }
                                     />
+                                    {/*     <InputMask
+                                      placeholder={item?.label}
+                                      formatChars={{ b: "[0-9]", k: "[3-9]" }}
+                                      mask="bb/bb/bbbb bb:bb"
+                                      maskChar=""
+                                      className={
+                                        get(
+                                          objErr,
+                                          `${i}.oerr.${item?.id}`,
+                                          false
+                                        )
+                                          ? "err time"
+                                          : "time"
+                                      }
+                                     // placeholder="дд.мм.гг. - чч.мм."
+                                      onChange={(e) =>
+                                        changeInput(e, i, item?.id, item?.type)
+                                      }
+                                      value={
+                                        get(
+                                          get(obj, `answers[${i}]`, []).find(
+                                            (qq) => qq.question === item.id
+                                          ),
+                                          "answer",
+                                          ""
+                                        ) || ""
+                                      }
+                                    /> */}
                                   </div>
                                 </>
                               ) : item.type === 7 ? (
@@ -784,8 +864,8 @@ export default function Form() {
                                     <label htmlFor="">{item?.label}</label>
                                     <InputMask
                                       placeholder={item?.label}
-                                      formatChars={{ b: "[0-9]", k: "[33-99]" }}
-                                      mask="+998 (kk) bbb-bb-bb"
+                                      formatChars={{ b: "[0-9]", k: "[3-9]" }}
+                                      mask="+998 (kb) bbb-bb-bb"
                                       maskChar=""
                                       className={
                                         get(
@@ -819,6 +899,8 @@ export default function Form() {
                                     <label htmlFor="">{item?.label}</label>
 
                                     <input
+                                      max="2200-06-14"
+                                      /*  min="2018-06-07" */
                                       type={"date"}
                                       placeholder={item?.label}
                                       className={

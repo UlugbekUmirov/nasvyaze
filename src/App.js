@@ -1,6 +1,7 @@
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import createStore from "./utils/store";
+import { StyledEngineProvider } from "@mui/material/styles";
 import "./App.css";
 import Routers from "./routers/Routers";
 import LoadingProvider from "./components/sections/loading/LoadingProvider";
@@ -12,7 +13,7 @@ function App() {
         <BrowserRouter>
           <Routers />
         </BrowserRouter>
-        <LoadingProvider/>
+        <LoadingProvider />
       </Provider>
     </div>
   );
