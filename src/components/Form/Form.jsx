@@ -10,10 +10,11 @@ import Select from "react-select";
 import Loyout from "../sections/loyout/Loyout";
 import InputMask from "react-input-mask";
 import ModalInfo from "../ModalInfo";
+import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
-import { DatePicker, Stack } from "rsuite";
+import { DatePicker } from "rsuite";
 import "react-toastify/dist/ReactToastify.css";
-import { FaQuestion } from "react-icons/fa";
+
 import ModalInfoForm from "../ModalInfoForm";
 /* 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -31,8 +32,7 @@ export default function Form() {
   const [statusModal, setStatusModal] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [company, setCompany] = useState([]);
-  const [errP, setErrP] = useState(false);
-  const [errN, setErrN] = useState(false);
+
   const [objErr, setObjErr] = useState([]);
   const [infoModal, setInfoModal] = useState(false);
 
@@ -51,7 +51,7 @@ export default function Form() {
   };
   const defaultOptionsss = {
     isMulti: false,
-    isSearchable: false,
+    isSearchable: true,
     isDisabled: false,
     styles: {
       control: (styles) => ({
@@ -95,6 +95,11 @@ export default function Form() {
         marginRight: "8px",
         background: "#F4F6F9",
       }),
+      Option: (styles) => ({
+        ...styles,
+        zIndex: "9999999999",
+        color: "black",
+      }),
       placeholder: (styles) => ({
         ...styles,
         fontWeight: 400,
@@ -105,7 +110,7 @@ export default function Form() {
   };
   const defaultOptionss = {
     isMulti: true,
-    isSearchable: false,
+    isSearchable: true,
     isDisabled: false,
     styles: {
       control: (styles) => ({
@@ -129,11 +134,15 @@ export default function Form() {
         border: "2px solid #4F89CB",
         borderRadius: "50%",
       }),
+      Option: (styles) => ({
+        ...styles,
+        zIndex: "9999999999",
+      }),
       indicatorsContainer: (styles) => ({
         ...styles,
         color: "black",
         margin: "12px 6px",
-        height: "25px",
+        minHeight: "25px",
       }),
       indicatorSeparator: (styles) => ({
         ...styles,
@@ -154,7 +163,7 @@ export default function Form() {
       }),
       valueContainer: (styles) => ({
         ...styles,
-        padding: "7px 11px",
+        padding: "0px 11px",
       }),
       placeholder: (styles) => ({
         ...styles,
@@ -162,7 +171,7 @@ export default function Form() {
         fontSize: "15px",
         marginLeft: "7px",
         lineHeight: "18px",
-        paddingBottom: "11px",
+
         paddinfLeft: "7px",
       }),
     },
@@ -174,10 +183,7 @@ export default function Form() {
     getCompanyyyyy();
     // setObjE({ ...objE, login: false, common: false });
   }, []);
-  const handlechangeInput = (e) => {
-    setObj2({ ...obj2, [e.target.name]: e.target.value });
-    setObjE({ ...objE, [e.target.name]: false });
-  };
+
   const onCopyText = () => {
     setIsCopied(true);
     setTimeout(() => {
@@ -190,6 +196,19 @@ export default function Form() {
       .get(`/api/v1/questionnaire/question-list/${id}/${idd}/`)
       .then((res) => {
         setObjList(get(res, "data", []));
+        let lc = [];
+        let ls = [];
+        get(res, "data", []).forEach((ss) => {
+          if (ss?.type === 3) {
+            ls.push({
+              question: ss?.id,
+              answer: get(ss, "select_answer[0].name", ""),
+            });
+          }
+        });
+        lc.push(ls);
+
+        setObj({ answers: lc });
       })
       .finally(() => {
         setMainLoading(false);
@@ -221,7 +240,19 @@ export default function Form() {
   };
 
   const handleAdd = () => {
-    setObj({ ...obj, answers: [...obj?.answers, []] });
+    //  setObj({ ...obj, answers: [...obj?.answers, []] });
+
+    let ls = [];
+    objList.forEach((ss) => {
+      if (ss?.type === 3) {
+        ls.push({
+          question: ss?.id,
+          answer: get(ss, "select_answer[0].name", ""),
+        });
+      }
+    });
+
+    setObj({ ...obj, answers: [...obj?.answers, ls] });
   };
   const handlDelete = (i) => {
     let l = [];
@@ -239,23 +270,16 @@ export default function Form() {
     let cl = get(l, `[${i}]`, []);
     let ncl = [],
       t = true;
-    console.log(cl, "cl");
     cl.forEach((cc) => {
       if (cc?.question === q_id) {
         ncl = [
           ...ncl,
           {
             ...cc,
-            answer: e?.target?.value ?? "",
+            answer: q_type === 6 ? e : e?.target?.value ?? "",
             type: q_type,
           },
         ];
-        /*  if (q_type === 6) {
-          ncl = [
-            ...ncl,
-            { ...cc, answer: e?.target?.value ?? new Date(), type: q_type },
-          ];
-        } */
         t = false;
       } else {
         ncl = [...ncl, cc];
@@ -263,7 +287,6 @@ export default function Form() {
     });
     let a = [];
     objErr.forEach((o, index) => {
-      console.log(o, "ooo");
       if (i === index) {
         let p = o;
         p.oerr[q_id] = false;
@@ -275,7 +298,14 @@ export default function Form() {
     setObjErr(a);
 
     if (t) {
-      ncl = [...ncl, { question: q_id, answer: e?.target?.value }];
+      ncl = [
+        ...ncl,
+        {
+          question: q_id,
+          answer: q_type === 6 ? e : e?.target?.value ?? "",
+          type: q_type,
+        },
+      ];
     }
     l[i] = ncl;
 
@@ -299,7 +329,6 @@ export default function Form() {
     }
     let a = [];
     objErr.forEach((o, index) => {
-      console.log(o, "ooo");
       if (i === index) {
         let p = o;
         p.oerr[q_id] = false;
@@ -351,7 +380,6 @@ export default function Form() {
   };
   const handleSumbit = () => {
     let ls = [];
-
     const objs = { ...obj, answers: [...obj?.answers] };
     objs?.answers.forEach((qq, index) => {
       let cl = [];
@@ -366,7 +394,17 @@ export default function Form() {
         } else if (ss.type === 6) {
           cl.push({
             question: ss?.question,
-            answer: ss?.answer.replace(/T0/, " "),
+            answer: moment(ss?.answer).format("DD-MM-YYYY HH:ss"),
+          });
+        } else if (ss.type === 7) {
+          cl.push({
+            question: ss?.question,
+            answer: ss?.answer
+              .replace(/-/g, "")
+              .replace(/\(/g, "")
+              .replace(/\)/g, "")
+              .replace(/\s/g, "")
+              .replace(/_/g, ""),
           });
         } else {
           cl.push({ question: ss?.question, answer: ss?.answer });
@@ -375,87 +413,55 @@ export default function Form() {
       ls.push(cl);
     });
 
-    let t = true,
-      err = {};
-
-    if (!obj2?.phone) {
-      t = false;
-      err = { ...err, phone: true };
-    }
-
     setMainLoading(true);
 
     let post_data = {
       ...obj,
-      full_name: obj2?.full_name,
       company: parseInt(id),
       form: parseInt(idd),
       answers: ls,
-      phone: obj2?.phone
-        .replace(/-/g, "")
-        .replace(/\(/g, "")
-        .replace(/\)/g, "")
-        .replace(/\+/g, "")
-        .replace(/\s/g, "")
-        .replace(/_/g, ""),
     };
-    if (t) {
-      Axios()
-        .post("/api/v1/application/create/", post_data)
-        .then((res) => {
-          navigate("/");
-        })
-        .catch((err) => {
-          setObjE(err);
-        })
-        .finally(() => {
-          setMainLoading(false);
-        });
-    }
+
+    Axios()
+      .post("/api/v1/application/create/", post_data)
+      .then((res) => {
+        navigate("/");
+      })
+      .catch((err) => {
+        setObjE(err);
+      })
+      .finally(() => {
+        setMainLoading(false);
+      });
   };
   const handleModal = () => {
     setStatusModal(true);
-
-    if (
-      get(obj2, "phone", "")
-        .replace(/-/g, "")
-        .replace(/\(/g, "")
-        .replace(/\)/g, "")
-        .replace(/\+/g, "")
-        .replace(/\s/g, "")
-        .replace(/_/g, "")
-        .toString().length < 12 ||
-      obj2?.phone === undefined ||
-      obj2?.phone === ""
-    ) {
-      setErrP(true);
-    }
-    if (obj2?.full_name?.length === 0 || obj2?.full_name === undefined) {
-      setErrN(true);
-    }
     let errr = [],
       answerErr = true;
     obj?.answers.forEach((anasrersItem, i) => {
       let oerr = {};
       objList.forEach((item, index) => {
         const s = anasrersItem.find((qq) => qq.question === item.id);
-        console.log(oerr, "ddddd");
-        console.log(item?.type);
-        if (s?.answer && item?.type !== 7) {
-          oerr = { ...oerr, [item?.id]: false };
-        } else if (
-          item?.type === 7 &&
-          s?.answer
-            .replace(/-/g, "")
-            .replace(/\(/g, "")
-            .replace(/\)/g, "")
-            .replace(/\+/g, "")
-            .replace(/\s/g, "")
-            .replace(/_/g, "")
-            .toString().length >= 12
+
+        if (
+          (s?.answer && item?.type !== 7 && item?.is_required === true) ||
+          (item?.is_requerid === false && item?.type !== 7)
         ) {
           oerr = { ...oerr, [item?.id]: false };
-        } else if (item?.type === 5) {
+        } else if (
+          (item?.type === 7 &&
+            s?.answer
+              .replace(/-/g, "")
+              .replace(/\(/g, "")
+              .replace(/\)/g, "")
+              .replace(/\+/g, "")
+              .replace(/\s/g, "")
+              .replace(/_/g, "")
+              .toString().length >= 12 &&
+            item?.is_required === true) ||
+          (item?.is_requerid === false && item?.type === 7)
+        ) {
+          oerr = { ...oerr, [item?.id]: false };
         } else {
           oerr = { ...oerr, [item?.id]: true };
           answerErr = false;
@@ -465,23 +471,7 @@ export default function Form() {
     });
     setObjErr(errr);
 
-    if (
-      answerErr === false ||
-      obj2?.phone === "" ||
-      obj2?.phone === undefined ||
-      obj2?.full_name === "" ||
-      obj2?.full_name === undefined ||
-      get(obj2, "phone", "")
-        .replace(/-/g, "")
-        .replace(/\(/g, "")
-        .replace(/\)/g, "")
-        .replace(/\+/g, "")
-        .replace(/\s/g, "")
-        .replace(/_/g, "")
-        .toString().length < 12 ||
-      obj2?.full_name?.length === 0 ||
-      obj2?.full_name === undefined
-    ) {
+    if (answerErr === false) {
       setStatusModal(false);
       window.scrollTo(0, 0);
     } else {
@@ -495,13 +485,15 @@ export default function Form() {
         <Container>
           <div className="body">
             <div className="title">
+              {console.log(obj?.answers, "obj")}
               <img
                 src="/images/back-arrow-icon 1.svg"
                 alt=""
                 onClick={() => navigate(`/conversation-type/${id}/new`)}
               />
               <div style={{ padding: "0px 25px" }}>{complaints?.label}</div>
-              <div>
+              <div></div>
+              {/*   <div>
                 <FaQuestion
                   size={"30px"}
                   color="#4F89CB"
@@ -513,42 +505,14 @@ export default function Form() {
                   }
                 ></FaQuestion>
                 <ToastContainer />
-              </div>
+              </div> */}
             </div>
+            {complaints?.info ? (
+              <div className="infooo">{complaints?.info}</div>
+            ) : (
+              ""
+            )}
             <form className="forms">
-              <div className="create">
-                <div className="input_target">
-                  <label>ФИО Заявителя</label>
-                  <input
-                    type="text"
-                    placeholder="ФИО"
-                    name="full_name"
-                    value={obj2?.full_name || ""}
-                    className={errN ? "err " : ""}
-                    onChange={(e) => {
-                      handlechangeInput(e);
-                      setErrN(false);
-                    }}
-                  />
-                </div>
-                <div className="input_target">
-                  <label>Телефон номер для обращения</label>
-                  <InputMask
-                    placeholder="+998 __ ___ __ __"
-                    formatChars={{ b: "[0-9]", k: "[3-9]" }}
-                    mask="+998 (kb) bbb-bb-bb"
-                    maskChar=""
-                    name="phone"
-                    className={errP ? "err InputMask" : "InputMask"}
-                    value={obj2?.phone || ""}
-                    onChange={(e) => {
-                      handlechangeInput(e);
-                      setErrP(false);
-                    }}
-                    //  onFocus={() => setSmsInvalid(false)}
-                  />
-                </div>
-              </div>
               {obj?.answers.map((anasrersItem, i) => {
                 return (
                   <>
@@ -573,12 +537,7 @@ export default function Form() {
                           )}
                         </div>
                         {/*   <hr /> */}
-                        <hr
-                          style={{
-                            marginTop: "23px",
-                            border: "1px solid #8F939A",
-                          }}
-                        />
+                        {i !== 0 ? <hr className="hr" /> : ""}
                       </div>
                     ) : (
                       ""
@@ -602,8 +561,8 @@ export default function Form() {
                                           `${i}.oerr.${item?.id}`,
                                           false
                                         )
-                                          ? "err"
-                                          : ""
+                                          ? "err input_"
+                                          : "input_"
                                       }
                                       value={get(
                                         get(obj, `answers[${i}]`, []).find(
@@ -633,8 +592,8 @@ export default function Form() {
                                           `${i}.oerr.${item?.id}`,
                                           false
                                         )
-                                          ? "err"
-                                          : ""
+                                          ? "err input_"
+                                          : "input_"
                                       }
                                       value={get(
                                         get(obj, `answers[${i}]`, []).find(
@@ -769,40 +728,36 @@ export default function Form() {
                                 <>
                                   <div className="input_target">
                                     <label htmlFor="">{item?.label}</label>
-                                    {/* <Stack>
-                                      <DatePicker
-                                        format="yyyy-MM-dd HH:mm"
-                                        className={
-                                          get(
-                                            objErr,
-                                            `${i}.oerr.${item?.id}`,
-                                            false
-                                          )
-                                            ? "err time input"
-                                            : "time input"
-                                        }
-                                        placeholder="дд.мм.гг. - чч.мм."
-                                        onChange={(e) =>
-                                          changeInput(
-                                            e,
-                                            i,
-                                            item?.id,
-                                            item?.type
-                                          )
-                                        }
-                                        value={
+
+                                    <DatePicker
+                                      format="dd-MM-yyyy HH:mm"
+                                      placeholder={item?.label}
+                                      className={
+                                        get(
+                                          objErr,
+                                          `${i}.oerr.${item?.id}`,
+                                          false
+                                        )
+                                          ? "err input "
+                                          : "input "
+                                      }
+                                      onChange={(e) => {
+                                        changeInput(e, i, item?.id, item?.type);
+                                      }}
+                                      //disabledDate={disabledDate}
+                                      value={
+                                        new Date(
                                           get(
                                             get(obj, `answers[${i}]`, []).find(
                                               (qq) => qq.question === item.id
                                             ),
                                             "answer",
-                                            ""
-                                          ) || ""
-                                        }
-                                      />
-                                    </Stack> */}
-
-                                    <input
+                                            new Date()
+                                          )
+                                        )
+                                      }
+                                    />
+                                    {/*          <input
                                       type="datetime-local"
                                       className={
                                         get(
@@ -827,45 +782,36 @@ export default function Form() {
                                           ""
                                         ) || ""
                                       }
-                                    />
-                                    {/*     <InputMask
-                                      placeholder={item?.label}
-                                      formatChars={{ b: "[0-9]", k: "[3-9]" }}
-                                      mask="bb/bb/bbbb bb:bb"
-                                      maskChar=""
-                                      className={
-                                        get(
-                                          objErr,
-                                          `${i}.oerr.${item?.id}`,
-                                          false
-                                        )
-                                          ? "err time"
-                                          : "time"
-                                      }
-                                     // placeholder="дд.мм.гг. - чч.мм."
-                                      onChange={(e) =>
-                                        changeInput(e, i, item?.id, item?.type)
-                                      }
-                                      value={
-                                        get(
-                                          get(obj, `answers[${i}]`, []).find(
-                                            (qq) => qq.question === item.id
-                                          ),
-                                          "answer",
-                                          ""
-                                        ) || ""
-                                      }
                                     /> */}
                                   </div>
                                 </>
                               ) : item.type === 7 ? (
                                 <>
+                                  {console.log(
+                                    (get(
+                                      get(obj, `answers[${i}]`, []).find(
+                                        (qq) => qq.question === item.id
+                                      ),
+                                      "answer",
+                                      ""
+                                    ) || "").slice(6,8)
+                                  )}
                                   <div className="input_target">
                                     <label htmlFor="">{item?.label}</label>
                                     <InputMask
                                       placeholder={item?.label}
-                                      formatChars={{ b: "[0-9]", k: "[3-9]" }}
-                                      mask="+998 (kb) bbb-bb-bb"
+                                      formatChars={{
+                                        k: "[3-9]",
+                                        c: "[0-9]",
+                                        b: `[${(get(
+                                          get(obj, `answers[${i}]`, []).find(
+                                            (qq) => qq.question === item.id
+                                          ),
+                                          "answer",
+                                          ""
+                                        ) || "").slice(6,7) == 3 ? '3' : '0'}-9]`,
+                                      }}
+                                      mask={`+998 (kb) ccc-cc-cc`}
                                       maskChar=""
                                       className={
                                         get(
@@ -873,8 +819,8 @@ export default function Form() {
                                           `${i}.oerr.${item?.id}`,
                                           false
                                         )
-                                          ? "err"
-                                          : ""
+                                          ? "err input_"
+                                          : "input_"
                                       }
                                       name={question?.id}
                                       value={
@@ -909,8 +855,8 @@ export default function Form() {
                                           `${i}.oerr.${item?.id}`,
                                           false
                                         )
-                                          ? "err date"
-                                          : "date"
+                                          ? "err date input_"
+                                          : "date input_"
                                       }
                                       onChange={(e) =>
                                         changeInput(e, i, item?.id, item?.type)
@@ -992,6 +938,7 @@ export default function Form() {
           obj={obj}
           notify={notify}
           statusYesN={true}
+          send_group={complaints?.send_group}
           objList={objList}
           company={company
             .filter((i) => i.id === parseInt(id))

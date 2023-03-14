@@ -2,13 +2,15 @@
 
 body {
   margin: 0;
-  font-family: "Rubik", sans-serif!important;
-  -webkit-font-smoothing: antialiased!important;
-  -moz-osx-font-smoothing: grayscale!important;
+  font-family: "Rubik", sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
 }
-
+a {
+  text-decoration: none !important;
+}
 code {
-  font-family: "Rubik", sans-serif!important;
+  font-family: "Rubik", sans-serif !important;
 }
 .css-1xc3v61-indicatorContainer {
   padding: 0px !important;
@@ -18,6 +20,13 @@ code {
 }
 .css-15lsz6c-indicatorContainer {
   padding: 0px !important;
+}
+.rs-picker-toggle-value {
+  color: black !important;
+}
+.css-1nmdiq5-menu {
+  z-index: 9999999999999999 !important;
+  color: black!important;
 }
 .css-tj5bde-Svg {
   color: #4f89cb;
@@ -82,7 +91,6 @@ code {
 .err {
   border: 2px solid #e46c4b !important;
   border-radius: 12px;
-
 }
 .page span {
   margin: 12px;
@@ -95,6 +103,32 @@ code {
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+.input {
+  width: 100%;
+}
+.rs-picker-toggle {
+  min-height: 44px;
+  align-items: center !important;
+  display: flex !important;
+  border-radius: 12px !important;
+  border: none !important;
+  width: 100% !important;
+  box-shadow: 0px 4px 4px rgb(0 0 0 / 25%) !important;
+  flex-wrap: wrap;
+  flex-direction: column-reverse !important;
+  align-items: baseline !important;
+  align-content: flex-start!;
+  font-weight: 400 !important;
+  font-size: 15px !important;
+  padding-left: 17px !important;
+}
+.rs-picker-toggle-caret {
+  padding-top: 8px !important;
+}
+.rs-picker-date .rs-picker-toggle.rs-btn .rs-picker-toggle-clean {
+  top: 12px !important;
+  right: 12px !important;
 }
 .Toastify {
   border-radius: 10px;

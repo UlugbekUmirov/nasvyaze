@@ -59,6 +59,19 @@ export const Container = styled.div`
     & .forms {
       margin-bottom: 20px;
       width: 100%;
+      & .checkbox {
+        margin: 10px;
+        display: flex;
+        align-items: center;
+        & input {
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+        }
+      }
+      & .hr {
+        border: 1px solid #8f939a;
+      }
       & .complaint {
         margin: 10px 0px;
         display: flex;
@@ -111,7 +124,7 @@ export const Container = styled.div`
             padding-top: 15px;
             line-height: 18px;
             color: #223346;
-            width: 100%!important;
+            width: 100% !important;
             outline: none;
             outline: 0;
             font-family: "Rubik", sans-serif;
@@ -177,13 +190,16 @@ export const Container = styled.div`
             line-height: 20px;
             font-family: "Rubik", sans-serif;
           }
-          & input , & .input{
+          & .input_ {
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+          }
+          & input {
             height: 44px;
             background: #ffffff;
             border: 1px solid #ffffff;
             border-radius: 12px;
-            width: 100%!important;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            width: 100% !important;
+
             width: calc(100% - 30px);
             display: block;
             font-weight: 400;
@@ -261,6 +277,17 @@ export const Container = styled.div`
         }
       }
     }
+    & .infooo {
+      line-height: 24px;
+      color: red;
+      font-weight: 500;
+      font-size: 18px;
+      margin-left: 40px;
+      @media (max-width: 600px) {
+        text-align: center;
+        margin: 0;
+      }
+    }
     & .title {
       display: flex;
       justify-content: space-between;
@@ -271,9 +298,6 @@ export const Container = styled.div`
       color: #001d56;
       text-align: center;
       margin-bottom: 22px;
-      & .info {
-        cursor: pointer;
-      }
       & div {
         @media (max-width: 400px) {
           font-size: 17px;
@@ -297,5 +321,32 @@ export const Container = styled.div`
   }
   & .complaint-old {
     width: 800px;
+    & .react-pagination {
+      margin: 60px 0px;
+      padding: 0;
+      display: flex;
+      list-style-type: none;
+      //  justify-content: space-between;
+      justify-content: center;
+      & li {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0px 12px;
+        & a {
+          color: black;
+        }
+      }
+      & .disabled {
+        opacity: 0.5;
+      }
+      & .selected {
+        border-radius: 12px;
+        width: 31px;
+        height: 36px;
+        background-color: #eaf2f9;
+      }
+    }
   }
 `;

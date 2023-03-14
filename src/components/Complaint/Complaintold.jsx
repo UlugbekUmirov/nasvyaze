@@ -8,16 +8,18 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { Container } from "../../styleComponents/GlobalCompanyStyle";
-import UiCard from "../../styleComponents/UiComponents/UiCard";
 import UiInput from "../../styleComponents/UiComponents/UiInput";
 import Axios from "../../utils/httpClient";
 import Loyout from "../sections/loyout/Loyout";
-import { FiFilter } from "react-icons/fi";
 import { TbRefresh } from "react-icons/tb";
 import UiResult from "../../styleComponents/UiComponents/UIResult";
 import { MdDeleteOutline, MdOutlineModeEditOutline } from "react-icons/md";
 import Modal from "../Modal";
+import { Pagination } from "@nextui-org/react";
 
+/* import Pagination, {
+  bootstrap5PaginationPreset,
+} from "react-responsive-pagination"; */
 export default function Complaintold() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -46,7 +48,7 @@ export default function Complaintold() {
   }, [searchParams]);
 
   const getlist = () => {
-    setMainLoading(true);
+    // setMainLoading(true);
     let s = "";
     if (search) {
       s = "&search=" + search;
@@ -54,7 +56,7 @@ export default function Complaintold() {
 
     Axios()
       .get(
-        `/api/v1/application/list/?pre_page=5&company=${id}` +
+        `/api/v1/application/list/?pre_page=10&company=${id}` +
           (s !== "" ? s : "") +
           (page !== "" ? "&page=" + page : "&page=1")
       )
@@ -74,42 +76,34 @@ export default function Complaintold() {
       setSearch(e.target.value);
     }
   };
-  const pageshow = (ii) => {
-    for (let i = 0; i < count / 10; i++) {
-      if (ii === i) {
-        setPage(i + 1);
-        setSearch(search);
-        search
-          ? setSearchParams({
-              search: search,
-              page: i + 1,
-            })
-          : searchParams.get("")
-          ? setSearchParams({
-              page: i + 1,
-            })
-          : search
-          ? setSearchParams({
-              search: search,
-              page: i + 1,
-            })
-          : setSearchParams({
-              page: i + 1,
-            });
-      }
-      setSearch(search);
-    }
+  const pageshow = (p) => {
+    setPage(p);
+    setSearch(search);
+    search
+      ? setSearchParams({
+          search: search,
+          page: p,
+        })
+      : searchParams.get("")
+      ? setSearchParams({
+          page: p,
+        })
+      : search
+      ? setSearchParams({
+          search: search,
+          page: p,
+        })
+      : setSearchParams({
+          page: p,
+        });
   };
   const Refresh = () => {
-    /* setSearchParams({
-      search: "",
-      page: 1,
-    }); */
     setSearch("");
     setPage(1);
     navigate(`/conversation-type/${id}/old`);
   };
   const handlDelete = () => {
+    setMainLoading(true);
     Axios()
       .post(`/api/v1/application/delete/${findId}/`)
       .then((res) => {
@@ -130,9 +124,10 @@ export default function Complaintold() {
         setStaff(res?.data?.is_staff);
       })
       .finally(() => {
-        setMainLoading();
+        setMainLoading(false);
       });
   };
+
   let totalP = [];
   for (let i = 0; i < count / 10; i++) {
     totalP.push(i);
@@ -172,18 +167,18 @@ export default function Complaintold() {
             </div>
             <form className="formm" onSubmit={handleSearch}>
               <UiInput className="search">
-                <label
+                {/*  <label
                   htmlFor="
               "
-                >
-                  <input
-                    type="text"
-                    placeholder="Искать"
-                    value={search !== null ? search : ""}
-                    name="search"
-                    onChange={handlechange}
-                  />
-                </label>
+                > */}
+                <input
+                  type="text"
+                  placeholder="Искать"
+                  value={search !== null ? search : ""}
+                  name="search"
+                  onChange={handlechange}
+                />
+                {/*  </label> */}
                 <button
                   type="submit"
                   style={{ border: "none", marginBottom: "27px", padding: "0" }}
@@ -202,34 +197,28 @@ export default function Complaintold() {
                 {results.map((results) => (
                   <UiResult>
                     {staff === true ? (
-                      <Link to={`/edit/${results?.id}`} className="edit">
-                        <MdOutlineModeEditOutline color="black" />
-                      </Link>
+                      <>
+                        <Link
+                          to={`/edit/${results?.company?.id}/${results?.form?.id}/${results?.id}/`}
+                          className="edit"
+                        >
+                          <MdOutlineModeEditOutline color="black" size={16} />
+                        </Link>
+                        <div
+                          onClick={() => {
+                            setFindId(results?.id);
+                            setStatusModal(true);
+                          }}
+                          className="delete"
+                        >
+                          <MdDeleteOutline color="black" size={16} />
+                        </div>
+                      </>
                     ) : (
                       ""
                     )}
 
-                    <div
-                      onClick={() => {
-                        setFindId(results?.id);
-                        setStatusModal(true);
-                      }}
-                      className="delete"
-                    >
-                      <MdDeleteOutline color="black" />
-                    </div>
                     <div className="otvet_informations">
-                      <div className="otvet_information">
-                        <p>
-                          Ф.И.О клиента: <span>{results?.full_name}</span>
-                        </p>
-                      </div>
-                      <div className="otvet_information">
-                        <p>
-                          Контакт: <span>{results?.phone}</span>
-                        </p>
-                      </div>
-
                       {results?.app_item.map((e) => {
                         return (e?.app_answer).map((ee) => {
                           return (
@@ -307,7 +296,7 @@ export default function Complaintold() {
                       {
                         <div className="otvet_information">
                           <p>
-                            Оператор: <span>{results?.operator}</span>
+                            Оператор: <span> № {results?.operator}</span>
                           </p>
                         </div>
                       }
@@ -335,20 +324,18 @@ export default function Complaintold() {
               <h4 className="notFoundResult">Результат не найден!</h4>
             )}
 
-            <div className="page">
-              {totalP.map((ee) => (
-                <>
-                  <span
-                    style={{ cursor: "pointer" }}
-                    className={
-                      parseInt(ee) + 1 === parseInt(page) ? "active" : ""
-                    }
-                    onClick={() => pageshow(ee)}
-                  >
-                    {ee + 1}
-                  </span>
-                </>
-              ))}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                margin: "40px 0px",
+              }}
+            >
+              <Pagination
+                total={totalP.length}
+                initialPage={parseInt(page)}
+                onChange={pageshow}
+              />
             </div>
           </div>
         </Container>

@@ -71,7 +71,7 @@ export default function Home() {
             <div>Выберите компанию</div>
             <div></div>
           </div>
-          <div className="home-company">
+          <div className={ company && company.toString().length !== 0 ? 'home-company':''}>
             {company && company.toString().length !== 0 ? (
               company.map(({ name, id, image }) => (
                 <Link

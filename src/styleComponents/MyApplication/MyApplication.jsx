@@ -12,6 +12,13 @@ export const Container = styled.div`
     & .filter {
       min-width: 245px;
       margin-right: 25px;
+      & h4 {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+        color: #01304f;
+        margin-bottom: 15px;
+      }
       & .client {
         & label {
           margin-bottom: 17px;
@@ -20,6 +27,12 @@ export const Container = styled.div`
           & p {
             margin: 0;
             margin-top: 3px;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 19px;
+            /* identical to box height */
+
+            color: #223260;
           }
           & .checkbox {
             border-radius: 5px;
@@ -41,7 +54,7 @@ export const Container = styled.div`
         border: 1px solid #e2e6e9;
         border-radius: 8px;
         margin-bottom: 92px;
-        ::placeholder{
+        ::placeholder {
           color: #6f818f;
         }
         @media (max-width: 1000px) {
@@ -68,6 +81,33 @@ export const Container = styled.div`
     }
     & .results {
       width: 100%;
+        & .react-pagination {
+      margin: 60px 0px;
+      padding: 0;
+      display: flex;
+      list-style-type: none;
+      //  justify-content: space-between;
+      justify-content: center;
+      & li {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0px 12px;
+        & a {
+          color: black;
+        }
+      }
+      & .disabled {
+        opacity: 0.5;
+      }
+      & .selected {
+        border-radius: 12px;
+        width: 31px;
+        height: 36px;
+        background-color: #eaf2f9;
+      }
+    }
       & .title {
         display: flex;
         justify-content: space-between;

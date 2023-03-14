@@ -13,17 +13,22 @@ import { MdContentCopy } from "react-icons/md";
 import { toast, ToastContainer } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import Select from "react-select";
+import { Pagination } from "@nextui-org/react";
+
 export default function Applications() {
   const [company, setCompany] = useState([]);
   const [results, setResults] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const [count, setCount] = useState(1);
+  const [page, setPage] = useState(
+    searchParams.get("page") ? searchParams.get("page") : 1
+  );
   const [copyy, setCopy] = useState("");
   const [answer, setAnswer] = useState(
     searchParams.get("company") ? searchParams.get("company") : ""
   );
   const [phone, setPhone] = useState(
-    searchParams.get("phone") ? searchParams.get("phone") : ""
+    searchParams.get("search") ? searchParams.get("search") : ""
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,9 +41,11 @@ export default function Applications() {
   useEffect(() => {
     getCompany();
     const c = searchParams.get("company") ? searchParams.get("company") : "";
-    const p = searchParams.get("phone") ? searchParams.get("phone") : "";
+    const p = searchParams.get("search") ? searchParams.get("search") : "";
+    const pg = searchParams.get("page") ? searchParams.get("page") : 1;
     setAnswer(c);
     setPhone(p);
+    setPage(pg);
     getlist(p, c);
 
     //setCopy(copy.current.innerText);
@@ -46,60 +53,7 @@ export default function Applications() {
   const codeSnippet = `
   ${copyy}
  `;
-  const defaultOptionsss = {
-    isMulti: false,
-    isSearchable: false,
-    isDisabled: false,
-    styles: {
-      control: (styles) => ({
-        ...styles,
-        width: "100%",
-        maxHeight: "48px",
-        border: "none",
-        borderRadius: "12px",
-        boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)",
-        "&:hover": {
-          borderColor: "#CED5DC",
-        },
-      }),
-      indicatorSeparator: (styles) => ({
-        ...styles,
-        backgroundColor: "white",
-        with: "0px",
-      }),
-      indicatorsContainer: (styles) => ({
-        ...styles,
-        color: "black",
-        margin: "10px 14px",
-        height: "25px",
-        width: "25px",
-        //  border: "2px solid #4F89CB",
-        borderRadius: "50%",
-      }),
-      indicatorContainer: (styles) => ({
-        ...styles,
-        padding: "0px",
-      }),
-      MultiValueGeneric: (styles) => ({
-        ...styles,
-        paddingTop: "10px",
-      }),
-      multiValue: (styles) => ({
-        ...styles,
-        maxHeight: "35px",
-        borderRadius: "5px",
-        marginLeft: "-6px",
-        marginRight: "8px",
-        background: "#F4F6F9",
-      }),
-      placeholder: (styles) => ({
-        ...styles,
-        fontWeight: 400,
-        fontSize: "15px",
-        lineHeight: "18px",
-      }),
-    },
-  };
+
   const getCompany = () => {
     setMainLoading(true);
     Axios()
@@ -119,8 +73,9 @@ export default function Applications() {
     //   searchParams.get("phone") ? searchParams.get("phone") : "",
     //   ee.target.value
     // );
+    setPage(1);
     navigate(
-      "./?company=" + inputValueToUrll + (phone ? "&phone=" + phone : "")
+      "./?company=" + inputValueToUrll + (phone ? "&search=" + phone : "")
     );
   };
   const PhoneNum = (e) => {
@@ -150,22 +105,30 @@ export default function Applications() {
       //   searchParams.get("company") ? searchParams.get("company") : ""
       // );
       navigate(
-        "./?phone=" + inputValueToUrl + (answer ? "&company=" + answer : "")
+        "./?search=" +
+          inputValueToUrl +
+          (answer ? "&company=" + answer : "") +
+          (page ? "&page=" + page : "")
       );
     }
   };
   const Clear = () => {
     setAnswer("");
     setPhone("");
-    navigate("/my-applications");
+    setPage("1");
+    setSearchParams({
+      page: 1,
+    });
+    navigate("/my-applications/?page=1");
   };
   const getlist = (phoneNum = phone, Client = answer) => {
     //setCopy(copy.current.innerText);
     setMainLoading(true);
     Axios()
       .get(
-        `/api/v1/application/list/?is_my=1` +
+        `/api/v1/application/list/?is_my=1&per_page=10` +
           (Client !== "" ? `&company=${Client}` : "") +
+          (page !== "" ? "&page=" + page : "&page=1") +
           (phoneNum
             .replace(/-/g, "")
             .replace(/\(/g, "")
@@ -174,7 +137,7 @@ export default function Applications() {
             .replace(/\s/g, "")
             .replace(/_/g, "")
             .toString().length === 12
-            ? `&phone=${phoneNum
+            ? `&search=${phoneNum
                 .replace(/-/g, "")
                 .replace(/\(/g, "")
                 .replace(/\)/g, "")
@@ -185,14 +148,30 @@ export default function Applications() {
       )
       .then((res) => {
         setResults(get(res, "data.results", []));
+        setCount(get(res, "data.count", 1));
       })
       .finally(() => {
         setMainLoading();
       });
   };
+  const pageshow = (p) => {
+    console.log("pageshow====>", p);
 
+    setPage(p.toString());
+    const inputValueToUrll = encodeURI(p);
+    /*  setSearchParams({
+      page: p?.selected + 1,
+    }); */
+
+    navigate(
+      "./?page=" +
+        inputValueToUrll +
+        (answer ? "&company=" + answer : "") +
+        (phone ? "&search=" + phone : "")
+    );
+  };
   const copyTextGenerete = (item) => {
-    let s = `Ф.И.О клиента: ${item?.full_name}\nКонтакт: ${item?.phone} `;
+    let s = `№ Оператор: ${item?.operator}`;
     item?.app_item.forEach((e) => {
       e?.app_answer.forEach((ee) => {
         if (ee?.question?.type === 1) {
@@ -212,15 +191,23 @@ export default function Applications() {
         } else if (ee?.question?.type === 6) {
           s += `\n${ee?.question?.name}: ${ee.answer.replace(/T/g, " ")}`;
         } else if (ee?.question?.type === 7) {
-          s += `\n${ee?.question?.name}: ${ee.answer}`;
+          s += `\n${ee?.question?.name}: ${ee.answer
+            .replace(/-/g, "")
+            .replace(/\(/g, "")
+            .replace(/\)/g, "")
+            .replace(/\s/g, "")
+            .replace(/_/g, "")}`;
         } else {
           s += `\n${ee?.question?.name}: ${ee.answer}`;
         }
       });
     });
-    s += `\nОператор: ${item?.operator}`;
     return s;
   };
+  let totalP = [];
+  for (let i = 0; i < count / 10; i++) {
+    totalP.push(i);
+  }
   return (
     <>
       <Loyout>
@@ -329,16 +316,6 @@ export default function Applications() {
 
                         id={"item_" + ind}
                       >
-                        <div className="otvet_information">
-                          <p>
-                            Ф.И.О клиента: <span>{results?.full_name}</span>
-                          </p>
-                        </div>
-                        <div className="otvet_information">
-                          <p>
-                            Контакт: <span>{results?.phone}</span>
-                          </p>
-                        </div>
                         {results?.app_item.map((e) => {
                           return (e?.app_answer).map((ee) => {
                             return (
@@ -421,7 +398,7 @@ export default function Applications() {
                         })}
                         <div className="otvet_information">
                           <p>
-                            Оператор: <span>{results?.operator}</span>
+                            Оператор: <span> № {results?.operator}</span>
                           </p>
                         </div>
                         {results?.reply.toString().length !== 0 ? (
@@ -452,6 +429,24 @@ export default function Applications() {
                   {" "}
                   <h4>Результат не найден! </h4>
                 </div>
+              )}
+              {console.log("==> page", page)}
+              {results && results.length !== 0 ? (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    margin: "40px 0px",
+                  }}
+                >
+                  <Pagination
+                    total={totalP.length}
+                    initialPage={parseInt(page)}
+                    onChange={pageshow}
+                  />
+                </div>
+              ) : (
+                ""
               )}
             </div>
           </div>

@@ -4,6 +4,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { ToastContainer } from "react-toastify";
 import { MdContentCopy } from "react-icons/md";
 import { get } from "lodash";
+import Moment from "react-moment";
 const Main = styled.div`
   & .layer {
     position: fixed;
@@ -140,6 +141,7 @@ const ModalInfo = (props) => {
     title0,
     title1,
     close,
+    send_group,
     statusYesN,
     del,
     obj2,
@@ -184,16 +186,7 @@ const ModalInfo = (props) => {
             </CopyToClipboard>
           </div>
           <div id="copy" ref={copy} className="tekst">
-            {obj2?.full_name ? (
-              <div>
-                Ф.И.О клиента: <span>{obj2?.full_name}</span>
-              </div>
-            ) : null}
-            {obj2?.phone ? (
-              <div>
-                Контакт: <span>{obj2?.phone}</span>
-              </div>
-            ) : null}
+           
             {obj?.answers.map((anasrersItem, i) => {
               return (
                 <div>
@@ -270,13 +263,15 @@ const ModalInfo = (props) => {
                         <div>
                           {item.label ? item.label : ""}:{" "}
                           <span>
-                            {get(
-                              get(obj, `answers[${i}]`, []).find(
-                                (qq) => qq.question === item.id
-                              ),
-                              "answer",
-                              ""
-                            ).replace(/T/, " ")}
+                            <Moment format="DD-MM-YYYY HH:mm">
+                              {get(
+                                get(obj, `answers[${i}]`, []).find(
+                                  (qq) => qq.question === item.id
+                                ),
+                                "answer",
+                                ""
+                              )}
+                            </Moment>
                           </span>
                         </div>
                       ) : item.type === 7 ? (
@@ -289,7 +284,12 @@ const ModalInfo = (props) => {
                               ),
                               "answer",
                               ""
-                            )}
+                            )
+                              .replace(/-/g, "")
+                              .replace(/\(/g, "")
+                              .replace(/\)/g, "")
+                              .replace(/\s/g, "")
+                              .replace(/_/g, "")}
                           </span>
                         </div>
                       ) : item.type === 8 ? (
@@ -318,7 +318,9 @@ const ModalInfo = (props) => {
             <div className="yesNoBtnGroup">
               <button onClick={() => close(false)}>Отменить</button>
               <CopyToClipboard text={codeSnippet} onCopy={onCopyText}>
-                <button onClick={del}>Копировать и отправить</button>
+                <button onClick={del}>
+                  {send_group ? `Копировать и отправить` : `Копировать`}
+                </button>
               </CopyToClipboard>
             </div>
           ) : (

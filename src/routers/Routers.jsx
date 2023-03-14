@@ -33,9 +33,9 @@ const Routers = () => {
         <Route path="/my-applications">
           <Route index element={<Applications />} />
         </Route>
-        <Route path="/edit/:id">
+        <Route path="/edit/:id1/:id2/:id">
           <Route index element={<Edit />} />
-        </Route> 
+        </Route>
       </Routes>
     </>
   );

@@ -24,7 +24,8 @@ const UiCard = styled.div`
     //  position: absolute;
     //top: 40%;
     width: 100%;
-    & span{
+    & span {
+      line-height: 1.2;
     }
     & img {
       max-height: 70px;

@@ -9,31 +9,27 @@ import Loyout from "../sections/loyout/Loyout";
 import InputMask from "react-input-mask";
 import ModalInfo from "../ModalInfo";
 import { toast } from "react-toastify";
+import { DatePicker } from "rsuite";
+import moment from "moment";
 export default function Edit() {
   const navigate = useNavigate();
   //const notify = () => toast(`Copied!`);
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { id1, id2, id } = useParams();
   const [question, setQuestion] = useState([]);
   const [complaints, setComplaints] = useState([]);
   const [statusModal, setStatusModal] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [company, setCompany] = useState([]);
-  const [errP, setErrP] = useState(false);
-  const [errN, setErrN] = useState(false);
-  const [startDate, setStartDate] = useState(new Date());
   const [objE, setObjE] = useState({});
   const [obj, setObj] = useState({
     answers: [[]],
   });
   const notify = () => toast(`Copied!`);
-  const [input, setInput] = useState([]);
-
-  const [obj2, setObj2] = useState({});
   const [objList, setObjList] = useState([]);
   const defaultOptionsss = {
     isMulti: false,
-    isSearchable: false,
+    isSearchable: true,
     isDisabled: false,
     styles: {
       control: (styles) => ({
@@ -77,6 +73,10 @@ export default function Edit() {
         marginRight: "8px",
         background: "#F4F6F9",
       }),
+      Option: (styles) => ({
+        ...styles,
+        zIndex: "9999999999",
+      }),
       placeholder: (styles) => ({
         ...styles,
         fontWeight: 400,
@@ -87,13 +87,13 @@ export default function Edit() {
   };
   const defaultOptionss = {
     isMulti: true,
-    isSearchable: false,
+    isSearchable: true,
     isDisabled: false,
     styles: {
       control: (styles) => ({
         ...styles,
         width: "100%",
-        maxHeight: "48px",
+        minHeight: "40px",
         border: "none",
         borderRadius: "12px",
         boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)",
@@ -101,15 +101,20 @@ export default function Edit() {
           borderColor: "#CED5DC",
         },
       }),
+      valueContainer: (styles) => ({ ...styles, height: "48px" }),
       indicatorContainer: (styles) => ({
         ...styles,
         /*  backgroundColor: "white",
-      with: "0px", */
+        with: "0px", */
         margin: "0px 5px",
-        height: "25px",
+        height: "48px",
         width: "25px",
         border: "2px solid #4F89CB",
         borderRadius: "50%",
+      }),
+      Option: (styles) => ({
+        ...styles,
+        zIndex: "9999999999",
       }),
       indicatorsContainer: (styles) => ({
         ...styles,
@@ -136,7 +141,7 @@ export default function Edit() {
       }),
       valueContainer: (styles) => ({
         ...styles,
-        padding: "7px 11px",
+        padding: "0px 11px",
       }),
       placeholder: (styles) => ({
         ...styles,
@@ -144,13 +149,14 @@ export default function Edit() {
         fontSize: "15px",
         marginLeft: "7px",
         lineHeight: "18px",
-        paddingBottom: "11px",
+
         paddinfLeft: "7px",
       }),
     },
   };
   useEffect(() => {
     getDetail();
+    getForm();
   }, []);
   const setMainLoading = (l = false) => {
     dispatch({ type: "SET_LOADING", payload: l });
@@ -201,6 +207,19 @@ export default function Edit() {
       answers: l,
     });
   };
+
+  const getForm = () => {
+    setMainLoading(true);
+    Axios()
+      .get(`/api/v1/questionnaire/question-list/${id1}/${id2}/`)
+      .then((res) => {
+        setComplaints(get(res, "data", []));
+      })
+      .finally(() => {
+        setMainLoading(false);
+      });
+  };
+
   const changeInput = (e, i, q_id, q_type) => {
     let l = get(obj, "answers", []);
     let cl = get(l, `[${i}]`, []);
@@ -209,14 +228,24 @@ export default function Edit() {
 
     cl.forEach((cc) => {
       if (cc?.question === q_id) {
-        ncl = [...ncl, { ...cc, answer: e?.target?.value ?? "", type: q_type }];
+        ncl = [
+          ...ncl,
+          {
+            ...cc,
+            answer: q_type === 6 ? e : e?.target?.value ?? "",
+            type: q_type,
+          },
+        ];
         t = false;
       } else {
         ncl = [...ncl, cc];
       }
     });
     if (t) {
-      ncl = [...ncl, { question: q_id, answer: e?.target?.value }];
+      ncl = [
+        ...ncl,
+        { question: q_id, answer: q_type === 6 ? e : e?.target?.value ?? "" },
+      ];
     }
     l[i] = ncl;
 
@@ -228,6 +257,7 @@ export default function Edit() {
       .get(`/api/v1/application/list/${id}/`)
       .then((res) => {
         let lista = [];
+
         get(res, "data.app_item[0].app_answer", []).forEach((ee) => {
           lista.push({
             id: ee?.question?.id,
@@ -238,11 +268,7 @@ export default function Edit() {
           });
         });
         setObjList(lista);
-        setObj2({
-          ...obj2,
-          full_name: res?.data?.full_name,
-          phone: res?.data?.phone,
-        });
+
         let ls = [];
         res.data.app_item.forEach((qq, index) => {
           let cl = [];
@@ -263,13 +289,19 @@ export default function Edit() {
             } else if (ss?.question?.type === 5) {
               cl.push({
                 question: ss?.question?.id,
-                answer: ss?.select_answer,
+                answer: ss?.select_answer.map(
+                  ({ id, name }) => ({
+                    label: name,
+                    value: id,
+                  }),
+                  {}
+                ),
                 type: ss?.question?.type,
               });
             } else if (ss?.question?.type === 6) {
               cl.push({
                 question: ss?.question?.id,
-                answer: ss?.answer?.replace(/ /g, "T0"),
+                answer: ss?.answer,
                 type: ss?.question?.type,
               });
             } else {
@@ -284,15 +316,11 @@ export default function Edit() {
         });
         setObj({ answers: ls });
       })
-
       .finally(() => {
         setMainLoading();
       });
   };
-  const handlechangeInput = (e) => {
-    setObj2({ ...obj2, [e.target.name]: e.target.value });
-    setObjE({ ...objE, [e.target.name]: false });
-  };
+
   const handleAdd = () => {
     setObj({ ...obj, answers: [...obj?.answers, []] });
   };
@@ -327,7 +355,7 @@ export default function Edit() {
         } else if (ss.type === 6) {
           cl.push({
             question: ss?.question,
-            answer: ss?.answer.replace(/T0/, " "),
+            answer: moment(ss?.answer).format("DD-MM-YYYY HH:ss"),
           });
         } else {
           cl.push({ question: ss?.question, answer: ss?.answer });
@@ -336,41 +364,24 @@ export default function Edit() {
       ls.push(cl);
     });
 
-    let t = true,
-      err = {};
-
-    if (!obj2?.phone) {
-      t = false;
-      err = { ...err, phone: true };
-    }
-
     setMainLoading(true);
 
     let post_data = {
       ...obj,
-      full_name: obj2?.full_name,
       answers: ls,
-      phone: obj2?.phone
-        .replace(/-/g, "")
-        .replace(/\(/g, "")
-        .replace(/\)/g, "")
-        .replace(/\+/g, "")
-        .replace(/\s/g, "")
-        .replace(/_/g, ""),
     };
-    if (t) {
-      Axios()
-        .post(`/api/v1/application/updated/${id}/`, post_data)
-        .then((res) => {
-          navigate("/");
-        })
-        .catch((err) => {
-          setObjE(err);
-        })
-        .finally(() => {
-          setMainLoading(false);
-        });
-    }
+
+    Axios()
+      .post(`/api/v1/application/updated/${id}/`, post_data)
+      .then((res) => {
+        navigate("/");
+      })
+      .catch((err) => {
+        setObjE(err);
+      })
+      .finally(() => {
+        setMainLoading(false);
+      });
   };
 
   return (
@@ -387,40 +398,8 @@ export default function Edit() {
               <div></div>
               <div></div>
             </div>
+
             <form className="forms">
-              <div className="create">
-                <div className="input_target">
-                  <label>ФИО Заявителя</label>
-                  <input
-                    type="text"
-                    placeholder="ФИО"
-                    name="full_name"
-                    value={obj2?.full_name || ""}
-                    className={errN ? "err " : ""}
-                    onChange={(e) => {
-                      handlechangeInput(e);
-                      setErrN(false);
-                    }}
-                  />
-                </div>
-                <div className="input_target">
-                  <label>Телефон номер для обращения</label>
-                  <InputMask
-                    placeholder="+998 __ ___ __ __"
-                    formatChars={{ b: "[0-9]", k: "[33-99]" }}
-                    mask="+998 (kk) bbb-bb-bb"
-                    maskChar=""
-                    name="phone"
-                    className={errP ? "err InputMask" : "InputMask"}
-                    value={obj2?.phone || ""}
-                    onChange={(e) => {
-                      handlechangeInput(e);
-                      setErrP(false);
-                    }}
-                    //  onFocus={() => setSmsInvalid(false)}
-                  />
-                </div>
-              </div>{" "}
               {obj?.answers.map((anasrersItem, i) => {
                 return (
                   <>
@@ -445,12 +424,7 @@ export default function Edit() {
                           )}
                         </div>
                         {/*   <hr /> */}
-                        <hr
-                          style={{
-                            marginTop: "23px",
-                            border: "1px solid #8F939A",
-                          }}
-                        />
+                        {i !== 0 ? <hr className="hr" /> : ""}
                       </div>
                     ) : (
                       ""
@@ -465,6 +439,7 @@ export default function Edit() {
                                   <div className="input_target">
                                     <label>{item?.label}</label>
                                     <input
+                                      className="input_"
                                       type="text"
                                       placeholder={item?.label}
                                       name={question?.id}
@@ -490,6 +465,7 @@ export default function Edit() {
                                       pattern="[0-9]*"
                                       placeholder={item?.label}
                                       name={question?.id}
+                                      className="input_"
                                       value={get(
                                         get(obj, `answers[${i}]`, []).find(
                                           (qq) => qq.question === item.id
@@ -545,12 +521,12 @@ export default function Edit() {
                                         )
                                       }
                                       name={question?.id}
-                                      options={item.select_answer.map(
-                                        ({ id, name }) => ({
+                                      options={complaints
+                                        .find((e) => e?.id === item?.id)
+                                        ?.select_answer.map(({ id, name }) => ({
                                           label: name,
                                           value: id,
-                                        })
-                                      )}
+                                        }))}
                                       placeholder={item?.label}
                                     />
                                   </div>
@@ -569,6 +545,7 @@ export default function Edit() {
                                           item?.type
                                         )
                                       }
+                                      className="select_input "
                                       value={get(
                                         get(obj, `answers[${i}]`, []).find(
                                           (qq) => qq.question === item?.id
@@ -576,13 +553,27 @@ export default function Edit() {
                                         "answer",
                                         []
                                       )}
-                                      name={question?.id}
-                                      options={item.select_answer.map(
-                                        ({ id, name }) => ({
+                                      options={complaints
+                                        .find((e) => e?.id === item?.id)
+                                        ?.select_answer.filter(
+                                          ({ id }) =>
+                                            id !==
+                                            get(
+                                              get(
+                                                obj,
+                                                `answers[${i}]`,
+                                                []
+                                              ).find(
+                                                (qq) => qq.question === item?.id
+                                              ),
+                                              "answer?.value",
+                                              {}
+                                            )
+                                        )
+                                        .map(({ id, name }) => ({
                                           label: name,
                                           value: id,
-                                        })
-                                      )}
+                                        }))}
                                       placeholder={item?.label}
                                     />
                                   </div>
@@ -592,7 +583,7 @@ export default function Edit() {
                                   <div className="input_target">
                                     <label htmlFor="">{item?.label}</label>
 
-                                    <input
+                                    {/*  <input
                                       className="date-time"
                                       type="datetime-local"
                                       placeholder="дд.мм.гг. - чч.мм."
@@ -600,13 +591,35 @@ export default function Edit() {
                                         changeInput(e, i, item?.id, item?.type)
                                       }
                                       value={
-                                        get(
-                                          get(obj, `answers[${i}]`, []).find(
-                                            (qq) => qq.question === item.id
-                                          ),
-                                          "answer",
-                                          ""
-                                        ) || ""
+                                        new Date(
+                                          get(
+                                            get(obj, `answers[${i}]`, []).find(
+                                              (qq) => qq.question === item.id
+                                            ),
+                                            "answer",
+                                            new Date()
+                                          )
+                                        )
+                                      }
+                                    /> */}
+                                    <DatePicker
+                                      format="dd-MM-yyyy HH:mm"
+                                      placeholder={item?.label}
+                                      onChange={(e) => {
+                                        changeInput(e, i, item?.id, item?.type);
+                                      }}
+                                      className="input _input"
+                                      //disabledDate={disabledDate}
+                                      value={
+                                        new Date(
+                                          get(
+                                            get(obj, `answers[${i}]`, []).find(
+                                              (qq) => qq.question === item.id
+                                            ),
+                                            "answer",
+                                            new Date()
+                                          )
+                                        )
                                       }
                                     />
                                   </div>
@@ -617,9 +630,20 @@ export default function Edit() {
                                     <label htmlFor="">{item?.label}</label>
                                     <InputMask
                                       placeholder="+998 __ ___ __ __"
-                                      formatChars={{ b: "[0-9]", k: "[33-99]" }}
-                                      mask="+998 (kk) bbb-bb-bb"
+                                      formatChars={{
+                                        k: "[3-9]",
+                                        c: "[0-9]",
+                                        b: `[${(get(
+                                          get(obj, `answers[${i}]`, []).find(
+                                            (qq) => qq.question === item.id
+                                          ),
+                                          "answer",
+                                          ""
+                                        ) || "").slice(6,7) == 3 ? '3' : '0'}-9]`,
+                                      }}
+                                      mask="+998 (kb) bbb-bb-bb"
                                       maskChar=""
+                                      className="input_"
                                       name={question?.id}
                                       value={
                                         get(
@@ -643,7 +667,7 @@ export default function Edit() {
                                     <label htmlFor="">{item?.label}</label>
 
                                     <input
-                                      className="date"
+                                      className="date _input"
                                       type="date"
                                       placeholder="дд.мм.гг"
                                       onChange={(e) =>
@@ -717,9 +741,6 @@ export default function Edit() {
           title1={"Тескт жалобы"}
           title2={"/images/Vector (10).svg"}
           close={setStatusModal}
-          obj2={obj2}
-          // onCopyText={onCopyText}
-
           obj={obj}
           notify={notify}
           statusYesN={true}
