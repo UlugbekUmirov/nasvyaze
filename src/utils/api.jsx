@@ -6,8 +6,8 @@
 // export const IMG_URL = `http://${API_HOST}/storage/`;
 // export const FILE_URL = `http://${API_HOST}/storage/`;
 
-export const API_HOST = "isurvey.gazon-tashkent.uz";
-export const WS_HOST = "isurvey.gazon-tashkent.uz";
+export const API_HOST = "isurvey3.gazon-tashkent.uz:81";
+export const WS_HOST = "isurvey3.gazon-tashkent.uz:81";
 export const API_URL = `https://${API_HOST}/`;
 export const IMG_URL = `https://${API_HOST}/storage/`;
 export const FILE_URL = `https://${API_HOST}/storage/`;
