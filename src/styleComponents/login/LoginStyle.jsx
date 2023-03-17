@@ -41,6 +41,7 @@ export const Container = styled.div`
         margin-bottom: 21px;
         border-radius: 12px;
         padding: 14px 18px;
+        color:black;
         font-weight: 400;
         font-size: 15px;
         line-height: 18px;

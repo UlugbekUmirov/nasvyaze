@@ -14,6 +14,7 @@ import { toast, ToastContainer } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import Select from "react-select";
 import { Pagination } from "@nextui-org/react";
+import { CSmartPagination } from "@coreui/react-pro";
 
 export default function Applications() {
   const [company, setCompany] = useState([]);
@@ -47,7 +48,6 @@ export default function Applications() {
     setPhone(p);
     setPage(pg);
     getlist(p, c);
-
     //setCopy(copy.current.innerText);
   }, [searchParams]);
   const codeSnippet = `
@@ -105,10 +105,7 @@ export default function Applications() {
       //   searchParams.get("company") ? searchParams.get("company") : ""
       // );
       navigate(
-        "./?search=" +
-          inputValueToUrl +
-          (answer ? "&company=" + answer : "") +
-          (page ? "&page=" + page : "")
+        "./?search=" + inputValueToUrl + (answer ? "&company=" + answer : "")
       );
     }
   };
@@ -117,9 +114,9 @@ export default function Applications() {
     setPhone("");
     setPage("1");
     setSearchParams({
-      page: 1,
+      page: "1",
     });
-    navigate("/my-applications/?page=1");
+    navigate("/my-applications");
   };
   const getlist = (phoneNum = phone, Client = answer) => {
     //setCopy(copy.current.innerText);
@@ -155,13 +152,11 @@ export default function Applications() {
       });
   };
   const pageshow = (p) => {
-    console.log("pageshow====>", p);
-
-    setPage(p.toString());
+    setPage(p);
     const inputValueToUrll = encodeURI(p);
-    /*  setSearchParams({
-      page: p?.selected + 1,
-    }); */
+    setSearchParams({
+      page: p,
+    });
 
     navigate(
       "./?page=" +
@@ -171,7 +166,8 @@ export default function Applications() {
     );
   };
   const copyTextGenerete = (item) => {
-    let s = `№ Оператор: ${item?.operator}`;
+    
+    let s = ``;
     item?.app_item.forEach((e) => {
       e?.app_answer.forEach((ee) => {
         if (ee?.question?.type === 1) {
@@ -202,6 +198,11 @@ export default function Applications() {
         }
       });
     });
+    s += `\nОператор:${
+      item?.operator?.operator_name
+        ? item?.operator?.operator_name
+        : `№ ` + item?.operator?.id
+    }`;
     return s;
   };
   let totalP = [];
@@ -230,18 +231,7 @@ export default function Applications() {
                   </label>
                 </div>
               ))}
-              {/* 
-              <Select
-                {...defaultOptionsss}
-                value={company.find((ee) => ee?.id === answer)}
-                onChange={(e) => Client(e)}
-          
-                options={company.map(({ id, name }) => ({
-                  label: name,
-                  value: id,
-                }))}
-               
-              /> */}
+           
               <h4>Номер телефона</h4>
               <InputMask
                 className="InputMask"
@@ -398,7 +388,12 @@ export default function Applications() {
                         })}
                         <div className="otvet_information">
                           <p>
-                            Оператор: <span> № {results?.operator}</span>
+                            Оператор:{" "}
+                            <span>
+                              {results?.operator?.operator_name
+                                ? results?.operator?.operator_name
+                                : `№ ` + results?.operator?.id}
+                            </span>
                           </p>
                         </div>
                         {results?.reply.toString().length !== 0 ? (
@@ -430,7 +425,7 @@ export default function Applications() {
                   <h4>Результат не найден! </h4>
                 </div>
               )}
-              {console.log("==> page", page)}
+        
               {results && results.length !== 0 ? (
                 <div
                   style={{
@@ -439,10 +434,12 @@ export default function Applications() {
                     margin: "40px 0px",
                   }}
                 >
-                  <Pagination
-                    total={totalP.length}
-                    initialPage={parseInt(page)}
-                    onChange={pageshow}
+                  <CSmartPagination
+                    align="center"
+                    className="red"
+                    pages={totalP.length}
+                    onActivePageChange={pageshow}
+                    activePage={parseInt(page)}
                   />
                 </div>
               ) : (

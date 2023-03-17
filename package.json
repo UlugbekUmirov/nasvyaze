@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^2.5.1",
+    "@coreui/react": "^4.6.0",
+    "@coreui/react-pro": "^4.8.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.11",

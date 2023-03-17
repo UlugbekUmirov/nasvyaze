@@ -299,9 +299,13 @@ export default function Edit() {
                 type: ss?.question?.type,
               });
             } else if (ss?.question?.type === 6) {
+              console.log(ss?.answer.replace("T", " "), "ss");
               cl.push({
                 question: ss?.question?.id,
-                answer: ss?.answer,
+                answer: moment(
+                  ss?.answer.replace("T", " "),
+                  "DD-MM-YYYY HH:mm"
+                ).format(),
                 type: ss?.question?.type,
               });
             } else {
@@ -345,6 +349,7 @@ export default function Edit() {
     objs?.answers.forEach((qq, index) => {
       let cl = [];
       qq.forEach((ss) => {
+        console.log(ss?.answer, "ss");
         if (ss.type === 4) {
           cl.push({ question: ss?.question, answer: ss?.answer?.value });
         } else if (ss.type === 5) {
@@ -353,14 +358,16 @@ export default function Edit() {
             answer: ss?.answer.map((e) => e.value),
           });
         } else if (ss.type === 6) {
+          console.log(ss?.answer, "ss");
           cl.push({
             question: ss?.question,
-            answer: moment(ss?.answer).format("DD-MM-YYYY HH:ss"),
+            answer: moment(ss?.answer).format("DD-MM-YYYY HH:mm"),
           });
         } else {
           cl.push({ question: ss?.question, answer: ss?.answer });
         }
       });
+
       ls.push(cl);
     });
 
@@ -390,6 +397,7 @@ export default function Edit() {
         <Container>
           <div className="body">
             <div className="title">
+              {console.log(obj?.answers, "o")}
               <img
                 src="/images/back-arrow-icon 1.svg"
                 alt=""
@@ -633,15 +641,25 @@ export default function Edit() {
                                       formatChars={{
                                         k: "[3-9]",
                                         c: "[0-9]",
-                                        b: `[${(get(
-                                          get(obj, `answers[${i}]`, []).find(
-                                            (qq) => qq.question === item.id
-                                          ),
-                                          "answer",
-                                          ""
-                                        ) || "").slice(6,7) == 3 ? '3' : '0'}-9]`,
+                                        b: `[${
+                                          (
+                                            get(
+                                              get(
+                                                obj,
+                                                `answers[${i}]`,
+                                                []
+                                              ).find(
+                                                (qq) => qq.question === item.id
+                                              ),
+                                              "answer",
+                                              ""
+                                            ) || ""
+                                          ).slice(6, 7) === 3
+                                            ? "3"
+                                            : "0"
+                                        }-9]`,
                                       }}
-                                      mask="+998 (kb) bbb-bb-bb"
+                                      mask="+998 (kb) ccc-cc-cc"
                                       maskChar=""
                                       className="input_"
                                       name={question?.id}
@@ -665,9 +683,8 @@ export default function Edit() {
                                   {" "}
                                   <div className="input_target">
                                     <label htmlFor="">{item?.label}</label>
-
                                     <input
-                                      className="date _input"
+                                      className="date input_"
                                       type="date"
                                       placeholder="дд.мм.гг"
                                       onChange={(e) =>

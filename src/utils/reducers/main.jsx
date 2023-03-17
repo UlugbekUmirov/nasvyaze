@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   refrashe: true,
   loading: false,
   sale_type: [],
+  is_active: true,
 };
 
 const reducers = (state = INITIAL_STATE, action) => {
@@ -14,7 +15,12 @@ const reducers = (state = INITIAL_STATE, action) => {
         loading: action.payload,
       };
     }
-
+    case "IS_ACTIVE": {
+      return {
+        ...state,
+        is_active: action?.payload,
+      };
+    }
     default:
       return state;
   }

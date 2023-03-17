@@ -16,10 +16,9 @@ import UiResult from "../../styleComponents/UiComponents/UIResult";
 import { MdDeleteOutline, MdOutlineModeEditOutline } from "react-icons/md";
 import Modal from "../Modal";
 import { Pagination } from "@nextui-org/react";
+import { CPagination, CPaginationItem } from "@coreui/react";
+import { CSmartPagination } from "@coreui/react-pro";
 
-/* import Pagination, {
-  bootstrap5PaginationPreset,
-} from "react-responsive-pagination"; */
 export default function Complaintold() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -29,6 +28,7 @@ export default function Complaintold() {
   const [results, setResults] = useState();
   const [statusModal, setStatusModal] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [active, setActive] = useState(true);
   const [staff, setStaff] = useState(false);
   const [search, setSearch] = useState(
     searchParams.get("search") ? searchParams.get("search") : ""
@@ -69,7 +69,7 @@ export default function Complaintold() {
       });
   };
   const handlechange = (e) => {
-    console.log(e.target.value, "value");
+    
     if (e.target.value == null) {
       setSearch(null);
     } else {
@@ -122,6 +122,11 @@ export default function Complaintold() {
       .get("/api/v1/account/get-role/")
       .then((res) => {
         setStaff(res?.data?.is_staff);
+        setActive(res?.is_active);
+        dispatch({
+          type: "IS_ACTIVE",
+          payload: res?.is_active,
+        });
       })
       .finally(() => {
         setMainLoading(false);
@@ -134,7 +139,7 @@ export default function Complaintold() {
   }
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(search, "s");
+   
     if (search !== "") {
       setSearchParams({
         // ...searchParams,
@@ -296,7 +301,12 @@ export default function Complaintold() {
                       {
                         <div className="otvet_information">
                           <p>
-                            Оператор: <span> № {results?.operator}</span>
+                            Оператор:{" "}
+                            <span>
+                              {results?.operator?.operator_name
+                                ? results?.operator?.operator_name
+                                : `№ ` + results?.operator?.id}
+                            </span>
                           </p>
                         </div>
                       }
@@ -323,20 +333,29 @@ export default function Complaintold() {
             ) : (
               <h4 className="notFoundResult">Результат не найден!</h4>
             )}
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                margin: "40px 0px",
-              }}
-            >
-              <Pagination
-                total={totalP.length}
-                initialPage={parseInt(page)}
-                onChange={pageshow}
-              />
-            </div>
+            {results && results.toString().length !== 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  margin: "40px 0px",
+                }}
+              >
+                {/* <Pagination
+                  total={totalP.length}
+                  initialPage={parseInt(page)}
+                  onChange={pageshow}
+                /> */}
+                <CSmartPagination
+                  align="center"
+                  pages={totalP.length}
+                  onActivePageChange={pageshow}
+                  activePage={parseInt(page)}
+                />
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </Container>
         {statusModal === true ? (

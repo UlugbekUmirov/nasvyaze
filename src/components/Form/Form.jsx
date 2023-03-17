@@ -207,7 +207,6 @@ export default function Form() {
           }
         });
         lc.push(ls);
-
         setObj({ answers: lc });
       })
       .finally(() => {
@@ -240,8 +239,6 @@ export default function Form() {
   };
 
   const handleAdd = () => {
-    //  setObj({ ...obj, answers: [...obj?.answers, []] });
-
     let ls = [];
     objList.forEach((ss) => {
       if (ss?.type === 3) {
@@ -394,7 +391,7 @@ export default function Form() {
         } else if (ss.type === 6) {
           cl.push({
             question: ss?.question,
-            answer: moment(ss?.answer).format("DD-MM-YYYY HH:ss"),
+            answer: moment(ss?.answer).format("DD-MM-YYYY HH:mm"),
           });
         } else if (ss.type === 7) {
           cl.push({
@@ -485,7 +482,7 @@ export default function Form() {
         <Container>
           <div className="body">
             <div className="title">
-              {console.log(obj?.answers, "obj")}
+            
               <img
                 src="/images/back-arrow-icon 1.svg"
                 alt=""
@@ -787,15 +784,7 @@ export default function Form() {
                                 </>
                               ) : item.type === 7 ? (
                                 <>
-                                  {console.log(
-                                    (get(
-                                      get(obj, `answers[${i}]`, []).find(
-                                        (qq) => qq.question === item.id
-                                      ),
-                                      "answer",
-                                      ""
-                                    ) || "").slice(6,8)
-                                  )}
+                                 
                                   <div className="input_target">
                                     <label htmlFor="">{item?.label}</label>
                                     <InputMask

@@ -26,7 +26,7 @@ code {
 }
 .css-1nmdiq5-menu {
   z-index: 9999999999999999 !important;
-  color: black!important;
+  color: black !important;
 }
 .css-tj5bde-Svg {
   color: #4f89cb;
@@ -143,9 +143,10 @@ code {
   color: white;
   border-radius: 10px;
 }
-.active {
-  background: #eaf2f9 !important;
+.Toastify__toast {
+  box-shadow: none !important;
 }
+
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
@@ -154,6 +155,23 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 .MdContentCopy:hover {
   background: #f1f3f4;
+}
+.edit,
+.delete {
+  padding: 5px 6px !important;
+}
+.page-item {
+  cursor: pointer;
+}
+.active > .page-link {
+  background-color: #4f89cb;
+  color: white;
+}
+.page-link {
+  margin: 5px;
+  color: black;
+  border: none;
+  border-radius: 12px;
 }
 @media (max-width: 450px) {
   .my_application {
