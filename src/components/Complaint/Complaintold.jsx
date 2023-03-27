@@ -48,7 +48,7 @@ export default function Complaintold() {
   }, [searchParams]);
 
   const getlist = () => {
-    // setMainLoading(true);
+     setMainLoading(true);
     let s = "";
     if (search) {
       s = "&search=" + search;
@@ -69,7 +69,6 @@ export default function Complaintold() {
       });
   };
   const handlechange = (e) => {
-    
     if (e.target.value == null) {
       setSearch(null);
     } else {
@@ -139,7 +138,7 @@ export default function Complaintold() {
   }
   const handleSearch = (e) => {
     e.preventDefault();
-   
+
     if (search !== "") {
       setSearchParams({
         // ...searchParams,
@@ -318,6 +317,22 @@ export default function Complaintold() {
                               <>
                                 <div className="otvet">
                                   <p>{ee?.text}</p>
+                                  <span
+                                    style={{
+                                      textAlign: "end",
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      fontSize: "12px",
+                                      color: "rgb(120, 120, 120)",
+                                    }}
+                                  >
+                                    <>
+                                      {" "}
+                                      {ee?.created_at
+                                        .replace("T", " ")
+                                        .slice(0, 16)}
+                                    </>
+                                  </span>
                                 </div>
                               </>
                             );

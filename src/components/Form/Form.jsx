@@ -1,7 +1,7 @@
 import { get } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Container } from "../../styleComponents/GlobalCompanyStyle";
 import Axios from "../../utils/httpClient";
 import "rsuite/dist/rsuite.css";
@@ -181,6 +181,7 @@ export default function Form() {
     getForm();
     setIddd(idd);
     getCompanyyyyy();
+
     // setObjE({ ...objE, login: false, common: false });
   }, []);
 
@@ -192,6 +193,7 @@ export default function Form() {
   };
   const getQuestion = () => {
     setMainLoading(true);
+
     Axios()
       .get(`/api/v1/questionnaire/question-list/${id}/${idd}/`)
       .then((res) => {
@@ -442,7 +444,7 @@ export default function Form() {
 
         if (
           (s?.answer && item?.type !== 7 && item?.is_required === true) ||
-          (item?.is_requerid === false && item?.type !== 7)
+          (item?.is_required === false && item?.type !== 7)
         ) {
           oerr = { ...oerr, [item?.id]: false };
         } else if (
@@ -456,7 +458,7 @@ export default function Form() {
               .replace(/_/g, "")
               .toString().length >= 12 &&
             item?.is_required === true) ||
-          (item?.is_requerid === false && item?.type === 7)
+          (item?.is_required === false && item?.type === 7)
         ) {
           oerr = { ...oerr, [item?.id]: false };
         } else {
@@ -482,11 +484,11 @@ export default function Form() {
         <Container>
           <div className="body">
             <div className="title">
-            
               <img
                 src="/images/back-arrow-icon 1.svg"
                 alt=""
-                onClick={() => navigate(`/conversation-type/${id}/new`)}
+                // onClick={() => navigate(`/conversation-type/${id}/new`)}
+                onClick={() => navigate(-1)}
               />
               <div style={{ padding: "0px 25px" }}>{complaints?.label}</div>
               <div></div>
@@ -784,7 +786,6 @@ export default function Form() {
                                 </>
                               ) : item.type === 7 ? (
                                 <>
-                                 
                                   <div className="input_target">
                                     <label htmlFor="">{item?.label}</label>
                                     <InputMask
@@ -792,13 +793,23 @@ export default function Form() {
                                       formatChars={{
                                         k: "[3-9]",
                                         c: "[0-9]",
-                                        b: `[${(get(
-                                          get(obj, `answers[${i}]`, []).find(
-                                            (qq) => qq.question === item.id
-                                          ),
-                                          "answer",
-                                          ""
-                                        ) || "").slice(6,7) == 3 ? '3' : '0'}-9]`,
+                                        b: `[${
+                                          (
+                                            get(
+                                              get(
+                                                obj,
+                                                `answers[${i}]`,
+                                                []
+                                              ).find(
+                                                (qq) => qq.question === item.id
+                                              ),
+                                              "answer",
+                                              ""
+                                            ) || ""
+                                          ).slice(6, 7) == 3
+                                            ? "3"
+                                            : "0"
+                                        }-9]`,
                                       }}
                                       mask={`+998 (kb) ccc-cc-cc`}
                                       maskChar=""

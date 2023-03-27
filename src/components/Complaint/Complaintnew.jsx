@@ -1,7 +1,12 @@
 import { get } from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { Container } from "../../styleComponents/GlobalCompanyStyle";
 import UiCard from "../../styleComponents/UiComponents/UiCard";
 import Axios from "../../utils/httpClient";
@@ -15,7 +20,8 @@ export default function Complaint() {
   const dispatch = useDispatch();
   const [idd, setIdd] = useState(0);
   const [parentt, setParent] = useState(null);
-  const [index, setIndex] = useState([null]);
+
+  const [searchParams, setSearchParams] = useSearchParams();
   const setMainLoading = (l = false) => {
     dispatch({ type: "SET_LOADING", payload: l });
   };
@@ -23,7 +29,12 @@ export default function Complaint() {
   useEffect(() => {
     getCompany();
     setIdd(id);
-  }, []);
+    setParent(
+      parseInt(searchParams.get("parent"))
+        ? parseInt(searchParams.get("parent"))
+        : null
+    );
+  }, [searchParams]);
 
   const getCompany = () => {
     setMainLoading(true);
@@ -37,24 +48,26 @@ export default function Complaint() {
       });
   };
   const getChild = (i) => {
-    setIndex([...index, i]);
+
     setParent(i);
     const o = company.filter((parent) => i === parent.parent);
     if (o.length === 0) {
       navigate(`/conversation-type/${idd}/${i}/new`);
+    } else {
+      navigate(`/conversation-type/${idd}/new?parent=${i}`);
     }
   };
   const GoBack = () => {
-    if (index.length === 1) {
+    /* if (index.length === 1) {
       navigate("/conversation-type/" + idd);
     } else {
       setParent(index[index.length - 2]);
       setIndex(index.slice(0, index.length - 1));
-    }
+    } */
+    navigate(-1)
   };
   return (
     <Loyout>
-
       <Container>
         <div className="body">
           <div className="title">

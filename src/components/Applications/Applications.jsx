@@ -166,7 +166,6 @@ export default function Applications() {
     );
   };
   const copyTextGenerete = (item) => {
-    
     let s = ``;
     item?.app_item.forEach((e) => {
       e?.app_answer.forEach((ee) => {
@@ -203,6 +202,14 @@ export default function Applications() {
         ? item?.operator?.operator_name
         : `№ ` + item?.operator?.id
     }`;
+    if (item?.reply.toString().length !== 0) {
+      s += `\n${`Ответь:`}`;
+      item?.reply.forEach((ee) => {
+        s += `\n${ee?.text}`;
+      });
+    } else {
+      s += ``;
+    }
     return s;
   };
   let totalP = [];
@@ -231,7 +238,7 @@ export default function Applications() {
                   </label>
                 </div>
               ))}
-           
+
               <h4>Номер телефона</h4>
               <InputMask
                 className="InputMask"
@@ -404,6 +411,19 @@ export default function Applications() {
                                 <>
                                   <div className="otvet">
                                     <p>{ee?.text}</p>
+                                    <span
+                                      style={{
+                                        textAlign: "end",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        fontSize:"12px",
+                                        color:'rgb(120, 120, 120)'
+                                      }}
+                                    >
+                                    <>  {ee?.created_at
+                                        .replace("T", " ")
+                                        .slice(0, 16)}</>
+                                    </span>
                                   </div>
                                 </>
                               );
@@ -425,7 +445,7 @@ export default function Applications() {
                   <h4>Результат не найден! </h4>
                 </div>
               )}
-        
+
               {results && results.length !== 0 ? (
                 <div
                   style={{

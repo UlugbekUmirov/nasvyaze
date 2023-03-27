@@ -80,14 +80,15 @@ export default function Home() {
                 >
                   {}
                   <UiCard>
-                    <div className="companyCardd" key={id}>
+                    <div className="companyCardd" key={id} title={name}>
                       {image === "" ? (
                         <div className="name">{name}</div>
                       ) : (
                         <img
+                          
                           width={"100%"}
                           height={"100%"}
-                          src={`https://isurvey.gazon-tashkent.uz/media/${image}`}
+                          src={`http://apiform.nasvyazi.uz:81/media/${image}`}
                           alt=""
                         />
                       )}

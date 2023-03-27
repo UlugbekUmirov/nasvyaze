@@ -6,7 +6,7 @@ import { Container } from "../../../styleComponents/loyout/HeaderStyle";
 import Axios from "../../../utils/httpClient";
 import { removeToken } from "../../../utils/tokenStorge";
 export default function Header() {
-  const { is_active } = useSelector((state) => state.main);
+  const [is_activee, setActive] = useState(false);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -15,26 +15,27 @@ export default function Header() {
   };
 
   useEffect(() => {
-    getRole();
-  }, [is_active]);
-
-  const getRole = () => {
     Axios()
       .get("/api/v1/account/get-role/")
       .then((res) => {
-        const interval = setTimeout(() => {
-          console.log(res?.data?.is_active);
-          if (res?.data?.is_active === false) {
-            removeToken();
-            navigate("/login");
-          }
-        }, 60000);
-        return () => clearInterval(interval);
+        console.log(res?.data?.is_active, "s");
+        setActive(res?.data?.is_active);
+        if (res?.data?.is_active === false) {
+          removeToken();
+          navigate("/login");
+        }
+        /*  const interval = setTimeout(() => {
+          //console.log(res?.data?.is_active , 'ee');
+        }, 60000); */
+        //  return () => clearInterval(interval);
       })
       .finally(() => {
         setMainLoading(false);
       });
-  };
+    console.log(is_activee, "s");
+  }, [is_activee]);
+
+  //const getRole = () => {};
 
   return (
     <>

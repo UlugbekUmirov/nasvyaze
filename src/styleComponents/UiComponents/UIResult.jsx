@@ -74,6 +74,7 @@ const UIResult = styled.div`
       text-align: left;
       margin-left: 25px;
       margin-top: 15px;
+     
     }
     & .otvet {
       font-weight: 500;
@@ -84,6 +85,12 @@ const UIResult = styled.div`
       border-radius: 12px;
       color: #223260;
       margin-top: 10px;
+      position: relative;
+      & span {
+        bottom: 7px;
+        right: 14px;
+        position: absolute;
+      }
       & p {
         margin: 0;
       }
