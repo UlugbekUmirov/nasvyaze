@@ -10,9 +10,19 @@ export const Container = styled.div`
   & .body {
     width: 679px;
     margin: 0 32px;
+    & .new_problem {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 1rem;
+    }
     & .home-company {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 1rem;
+    }
+    & .status-company {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 1rem;
     }
     & .search {
@@ -87,14 +97,67 @@ export const Container = styled.div`
           max-height: 14px;
         }
       }
+      & .status_form {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1.6fr));
+        gap: 31px;
+        /*  & form.input_select_year:after {
+          font-size: 30px;
+          line-height: 23px;
+          padding-right: 2px;
+        } */
+        .select-input_select_year:after {
+          position: absolute;
+          content: "";
+          top: 14px;
+          right: 10px;
+          width: 0;
+          height: 0;
+          border: 6px solid transparent;
+          border-color: #fff transparent transparent transparent;
+        }
+
+        /*point the arrow upwards when the select box is open (active):*/
+        .select-input_select_year.select-arrow-active:after {
+          border-color: transparent transparent #fff transparent;
+          top: 7px;
+        }
+        & .input_target {
+          & .input_ {
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+          }
+
+          & input,
+          & .select_year,
+          & .datepicker {
+            height: 44px;
+            background: #ffffff;
+            border: 1px solid #ffffff;
+            border-radius: 12px;
+            width: 100% !important;
+            width: calc(100% - 30px);
+            display: block;
+            font-weight: 400;
+            font-size: 15px;
+            padding-right: 15px;
+            padding-left: 15px;
+            line-height: 18px;
+            color: #223346;
+            outline: none;
+            caret-color: #4f89cb;
+            :focus {
+              border: 2px solid #4f89cb;
+            }
+          }
+        }
+      }
       & .create {
         margin-top: 10px;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(324px, 1.6fr));
         gap: 31px;
-        & .input_target:nth-child(1) {
-          /*     margin-right: 39px; */
-        }
+
         & .input_target3:nth-child(1) {
           margin-right: 24px;
         }
@@ -173,9 +236,6 @@ export const Container = styled.div`
           }
         }
         & .input_target {
-          /*  margin-top: 24px; */
-
-          /*   justify-content: space-between; */
           & label {
             font-weight: 400;
             font-size: 14px;
@@ -193,13 +253,14 @@ export const Container = styled.div`
           & .input_ {
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
           }
-          & input {
+          & input,
+          & .select_year,
+          & .datepicker {
             height: 44px;
             background: #ffffff;
             border: 1px solid #ffffff;
             border-radius: 12px;
             width: 100% !important;
-
             width: calc(100% - 30px);
             display: block;
             font-weight: 400;

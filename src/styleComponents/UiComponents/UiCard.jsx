@@ -20,7 +20,7 @@ const UiCard = styled.div`
     font-weight: 500;
     font-size: 25px;
     line-height: 20px;
-    padding: 0px 25px;
+    padding: 10px 25px;
     //  position: absolute;
     //top: 40%;
     width: 100%;

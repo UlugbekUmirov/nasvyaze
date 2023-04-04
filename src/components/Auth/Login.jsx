@@ -7,13 +7,14 @@ import httpClient from "../../utils/httpClient";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../utils/tokenStorge";
 import ModalInfo from "../ModalInfo";
+import Axios from "../../utils/httpClient";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const inputRef = useRef(null);
-  const inputRefTwo = useRef(null);
+
   const [obj, setObj] = useState({});
   const [statusModal, setStatusModal] = useState(false);
+  const [networkErr, setNetworkErr] = useState(false);
   const navigate = useNavigate();
   const [objE, setObjE] = useState({});
 
@@ -35,27 +36,32 @@ const Login = () => {
       err = { ...err, password: true };
     }
     if (t) {
-      httpClient()
+      Axios()
         .post("/api/v1/account/login/", obj, { headers: {} })
         .then((res) => {
-    
-
+          console.log(res, "res");
           if (res?.status === 200) {
             const token = res?.data?.tokens?.access ?? "";
             setToken(token);
             navigate("/");
+          } else if (res?.status === false) {
+            setObjE({ ...objE, common: true });
           } else {
             setStatusModal(true);
           }
         })
         .catch((error) => {
-          setObjE({ ...objE, common: true });
+          console.log(error, "err");
+          if (error?.message === "Request failed with status code 400") {
+            setObjE({ ...objE, common: true });
+          }else{
+          setNetworkErr(true)
+          }
         })
         .finally(() => {
           setMainLoading(false);
         });
     } else {
-
       setObjE(err);
       setMainLoading(false);
     }
@@ -103,6 +109,7 @@ const Login = () => {
               <div className="errs">
                 {objE.password ? <div>Password requered</div> : ""}
                 {objE.common ? <div>User not found</div> : ""}
+                {networkErr ? <div>Network Error</div> : ""}
               </div>
               <div>
                 <button
@@ -124,9 +131,7 @@ const Login = () => {
           statusYesN={false}
         />
       ) : null}
-      <div className="footer_login">
-
-      </div>
+      <div className="footer_login"></div>
     </>
   );
 };

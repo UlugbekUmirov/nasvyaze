@@ -173,10 +173,60 @@ input[type="number"]::-webkit-inner-spin-button {
   border: none;
   border-radius: 12px;
 }
+
+table {
+  width: 100%;
+  margin-bottom: 100px;
+}
+
+td,
+th {
+  border: 1px solid white;
+  text-align: left;
+  padding: 15px;
+  background-color: #f8f8f8;
+  max-height: 54px;
+}
+
+/* tr:nth-child(even) {
+  background-color: #f8f8f8;
+} */
+tr:nth-child(1) > th {
+  border-top: 3px solid #4f89cb !important;
+  font-weight: 500;
+  font-size: 20px;
+  padding: 10px;
+  line-height: 20px;
+  color: #000000;
+}
+tr:nth-child(2) > th {
+  border-top: 3px solid #4f89cb !important;
+  font-weight: 450;
+  font-size: 20px;
+  padding: 10px;
+  line-height: 20px;
+  color: #000000;
+}
+tr > td {
+  font-size: 20px;
+  padding: 10px;
+}
+.active{
+color:#1675e0
+}
 @media (max-width: 450px) {
   .my_application {
     margin-right: 10px;
     font-size: 14px;
+  }
+  tr:nth-child(1) > th {
+    font-size: 16px;
+  }
+  tr:nth-child(2) > th {
+    font-size: 16px;
+  }
+  tr > td {
+    font-size: 16px;
   }
 }
 @media (max-width: 356px) {

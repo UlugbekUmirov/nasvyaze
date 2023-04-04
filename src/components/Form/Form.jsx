@@ -16,10 +16,6 @@ import { DatePicker } from "rsuite";
 import "react-toastify/dist/ReactToastify.css";
 
 import ModalInfoForm from "../ModalInfoForm";
-/* 
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers"; */
 
 export default function Form() {
   const navigate = useNavigate();

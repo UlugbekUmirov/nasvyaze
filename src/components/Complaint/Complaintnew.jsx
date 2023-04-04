@@ -48,7 +48,6 @@ export default function Complaint() {
       });
   };
   const getChild = (i) => {
-
     setParent(i);
     const o = company.filter((parent) => i === parent.parent);
     if (o.length === 0) {
@@ -64,10 +63,11 @@ export default function Complaint() {
       setParent(index[index.length - 2]);
       setIndex(index.slice(0, index.length - 1));
     } */
-    navigate(-1)
+    navigate(-1);
   };
   return (
     <Loyout>
+      {console.log(company?.toString()?.length , 'c')}
       <Container>
         <div className="body">
           <div className="title">
@@ -75,19 +75,21 @@ export default function Complaint() {
             <div>Новая жалоба</div>
             <div></div>
           </div>
-          {company
-            ? company
-                .filter((parent) => parentt === parent.parent)
-                .map(({ label, id, parent }) => (
-                  <>
-                    <UiCard key={id} onClick={() => getChild(id)}>
-                      <div className="companyCardd">
-                        <span>{label}</span>
-                      </div>
-                    </UiCard>
-                  </>
-                ))
-            : ""}
+          <div className={company.length === 1 ? `` : `new_problem`}>
+            {company
+              ? company
+                  .filter((parent) => parentt === parent.parent)
+                  .map(({ label, id, parent }) => (
+                    <>
+                      <UiCard key={id} onClick={() => getChild(id)}>
+                        <div className="companyCardd">
+                          <span>{label}</span>
+                        </div>
+                      </UiCard>
+                    </>
+                  ))
+              : ""}
+          </div>
         </div>
       </Container>
     </Loyout>

@@ -10,6 +10,8 @@ import Form from "../components/Form/Form";
 import TestForm from "../components/Form/TestForm";
 import Home from "../components/Home";
 import NotFound from "../components/NotFound";
+import StatusCompany from "../components/StatusCompany";
+import StatusCompanyResult from "../components/StatusCompanyResult";
 
 const Routers = () => {
   return (
@@ -35,6 +37,12 @@ const Routers = () => {
         </Route>
         <Route path="/edit/:id1/:id2/:id">
           <Route index element={<Edit />} />
+        </Route>
+        <Route path='/status-company'>
+          <Route index element={<StatusCompany/>}/>
+        </Route>
+        <Route path='/status-company-result/:id'>
+          <Route index element={<StatusCompanyResult/>}/>
         </Route>
       </Routes>
     </>
