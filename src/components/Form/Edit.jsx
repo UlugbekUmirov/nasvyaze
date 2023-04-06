@@ -35,13 +35,16 @@ export default function Edit() {
       control: (styles) => ({
         ...styles,
         width: "100%",
-        maxHeight: "48px",
         border: "none",
         borderRadius: "12px",
         boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)",
         "&:hover": {
           borderColor: "#CED5DC",
         },
+      }),
+      valueContainer: (styles) => ({
+        ...styles,
+        padding: "0px 8px",
       }),
       indicatorSeparator: (styles) => ({
         ...styles,
@@ -52,7 +55,6 @@ export default function Edit() {
         ...styles,
         color: "black",
         margin: "10px 14px",
-        height: "25px",
         width: "25px",
         //  border: "2px solid #4F89CB",
         borderRadius: "50%",
@@ -76,6 +78,7 @@ export default function Edit() {
       Option: (styles) => ({
         ...styles,
         zIndex: "9999999999",
+        color: "black",
       }),
       placeholder: (styles) => ({
         ...styles,
@@ -93,7 +96,7 @@ export default function Edit() {
       control: (styles) => ({
         ...styles,
         width: "100%",
-        minHeight: "40px",
+
         border: "none",
         borderRadius: "12px",
         boxShadow: " 0px 4px 4px rgba(0, 0, 0, 0.25)",
@@ -101,13 +104,12 @@ export default function Edit() {
           borderColor: "#CED5DC",
         },
       }),
-      valueContainer: (styles) => ({ ...styles, height: "48px" }),
       indicatorContainer: (styles) => ({
         ...styles,
         /*  backgroundColor: "white",
         with: "0px", */
         margin: "0px 5px",
-        height: "48px",
+        height: "25px",
         width: "25px",
         border: "2px solid #4F89CB",
         borderRadius: "50%",
@@ -119,8 +121,10 @@ export default function Edit() {
       indicatorsContainer: (styles) => ({
         ...styles,
         color: "black",
-        margin: "12px 6px",
-        height: "25px",
+        margin: "0px 6px",
+        minHeight: "25px",
+
+
       }),
       indicatorSeparator: (styles) => ({
         ...styles,

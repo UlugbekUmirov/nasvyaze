@@ -49,7 +49,7 @@ export default function Header() {
         <div style={{ display: "flex", alignItems: "center" }} className="">
           {staff === true ? (
             <NavLink  activeClassName={'active'} className="my_application" to={"/status-company"}>
-              Статус
+              Статистика
             </NavLink>
           ) : (
             ""

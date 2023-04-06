@@ -11,11 +11,47 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 export default function StatusCompanyResult() {
   const { id } = useParams();
+  const optionMonth = [
+    { name: "январь", id: 1 },
+    { name: "февраль", id: 2 },
+    { name: "март", id: 3 },
+    { name: "апрель", id: 4 },
+    { name: "май", id: 5 },
+    { name: "июнь", id: 6 },
+    { name: "июль", id: 7 },
+    { name: "август", id: 8 },
+    { name: "сентябрь", id: 9 },
+    { name: "октябрь", id: 10 },
+    { name: "ноябрь", id: 11 },
+    { name: "декабрь", id: 12 },
+  ];
   const [results, setResults] = useState([]);
   const [company, setCompany] = useState([id]);
-  const [startDate, setStartDate] = useState(new Date());
-  const [obj, setObj] = useState({});
-  const [getYear, setGetYear] = useState(new Date().getFullYear());
+  const [startDate, setStartDate] = useState({
+    label: optionMonth
+      .filter((e) => e?.id === new Date().getMonth())
+      .map((e) => e?.name)[0],
+
+    value: new Date().getMonth(),
+  });
+  const [obj, setObj] = useState({
+    label: company
+      .filter((e) => {
+        return e.id === parseInt(id);
+      })
+      .map((e) => e.name)[0],
+    value: parseInt(
+      company
+        .filter((e) => {
+          return e.id === parseInt(id);
+        })
+        .map((e) => e.id)[0]
+    ),
+  });
+  const [getYear, setGetYear] = useState({
+    label: new Date().getFullYear(),
+    value: new Date().getFullYear() - 2020,
+  });
   const dispatch = useDispatch();
 
   const defaultOptionsss = {
@@ -36,7 +72,7 @@ export default function StatusCompanyResult() {
       }),
       valueContainer: (styles) => ({
         ...styles,
-        padding:"0px 8px"
+        padding: "0px 8px",
       }),
       indicatorSeparator: (styles) => ({
         ...styles,
@@ -95,7 +131,7 @@ export default function StatusCompanyResult() {
       .get(
         `/api/v1/application/statistics/?company=${
           obj?.value ? obj?.value : id
-        }&year=${getYear}&month=${startDate.getMonth() + 1}`
+        }&year=${getYear?.label}&month=${startDate?.value}`
       )
       .then((res) => {
         setResults(res?.data);
@@ -121,18 +157,30 @@ export default function StatusCompanyResult() {
   const year = new Date().getFullYear();
 
   const years = [];
-  for (let i = 2020; i <= year; i++) {
-    years.push(i);
+  let l = {};
+  for (let i = year; i >= 2020; i--) {
+    l = { ...l, name: i, id: i - 2020 };
+    years.push(l);
   }
-  const changeYear = (e) => {
-    setGetYear(e.target.value);
+  const changeInput = (e) => {
+    setObj(e);
     console.log(e, "e");
   };
+  const changeYear = (e) => {
+    setGetYear(e);
+  };
+  const changeMonth = (e) => {
+    setStartDate(e);
+  };
+  let summa = 0;
+  results.forEach((e) => {
+    summa = summa + e?.app_count;
+  });
   return (
     <>
       <Loyout>
         <Container>
-          {console.log(obj?.id, "oj")}
+          {console.log(summa, "oj")}
           <div className="body">
             <div className="title"></div>
             <div className="">
@@ -140,11 +188,11 @@ export default function StatusCompanyResult() {
                 <div className="status_form">
                   <React.Fragment>
                     <div className="input_target">
-                      <label htmlFor="">company</label>
+                      <label htmlFor="">компания</label>
                       <Select
                         {...defaultOptionsss}
                         value={
-                          obj?.id !== undefined
+                          obj?.label !== undefined
                             ? obj
                             : {
                                 label: company
@@ -161,7 +209,7 @@ export default function StatusCompanyResult() {
                                 ),
                               }
                         }
-                        onChange={(value) => setObj(value)}
+                        onChange={(value) => changeInput(value)}
                         options={company.map(({ id, name }) => ({
                           label: name,
                           value: id,
@@ -169,37 +217,41 @@ export default function StatusCompanyResult() {
                       />
                     </div>
                     <form className="input_target  input_select_year">
-                      <label htmlFor="">year</label>
-                      <select
+                      <label htmlFor="">год</label>
+
+                      <Select
+                        {...defaultOptionsss}
+                        onChange={(value) => changeYear(value)}
                         value={getYear}
-                        onChange={changeYear}
-                        className="select_year input_"
-                      >
-                        {years.map((e) => (
-                          <option key={e} value={e}>
-                            {e}
-                          </option>
-                        ))}
-                      </select>
+                        options={years.map(({ id, name }) => ({
+                          label: name,
+                          value: id,
+                        }))}
+                      />
                     </form>
                     <div className="input_target">
-                      <label htmlFor="">month</label>
-                      <DatePicker
-                        selected={startDate}
-                        className="input_ datepicker"
-                        onChange={(date) => setStartDate(date)}
-                        dateFormat="MM"
-                        showMonthYearPicker
+                      <label htmlFor="">месяц</label>
+                      <Select
+                        {...defaultOptionsss}
+                        onChange={(value) => changeMonth(value)}
+                        value={startDate}
+                        options={optionMonth.map(({ id, name }) => ({
+                          label: name,
+                          value: id,
+                        }))}
                       />
                     </div>
                   </React.Fragment>
                 </div>
               </form>
               <div>
+                <div style={{ fontSize: "18px", marginBottom: "5px" }}>
+                  Общий : <b>{summa}</b>
+                </div>
                 <table style={{ overflow: "auto" }}>
                   <tr>
                     <th>Тип жалобы</th>
-                    <th>номер</th>
+                    <th>Номер</th>
                   </tr>
                   {results && results.length !== 0 ? (
                     results.map(({ tag_name, app_count }) => (

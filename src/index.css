@@ -12,14 +12,26 @@ a {
 code {
   font-family: "Rubik", sans-serif !important;
 }
+.css-qbdosj-Input,
+.css-19bb58m {
+  padding: 0px !important;
+  margin: 0;
+}
+.css-d45ks3-indicatorSeparator {
+  background-color: white !important;
+}
 .css-1xc3v61-indicatorContainer {
   padding: 0px !important;
   border: 2px solid #4f89cb;
   border-radius: 50%;
-  margin: 0px 5px;
+}
+.css-5dwkag-control {
+  width: auto !important;
 }
 .css-15lsz6c-indicatorContainer {
   padding: 0px !important;
+  border: 2px solid #4f89cb;
+  border-radius: 50%;
 }
 .rs-picker-toggle-value {
   color: black !important;
@@ -211,8 +223,8 @@ tr > td {
   font-size: 20px;
   padding: 10px;
 }
-.active{
-color:#1675e0
+.active {
+  color: #1675e0;
 }
 @media (max-width: 450px) {
   .my_application {
